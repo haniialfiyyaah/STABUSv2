@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navBahan"
+        android:title="Bahan Baku"
+        android:icon="@drawable/ic_home_white"
+        />
+    <item
+        android:id="@+id/navProduk"
+        android:title="Produk"
+        android:icon="@drawable/ic_home_white"
+        />
+    <item
+        android:id="@+id/navKalkulator"
+        android:title="Kalkulator"
+        android:icon="@drawable/ic_home_white"
+        />
+    <item
+        android:id="@+id/navRiwayat"
+        android:title="Riwayat"
+        android:icon="@drawable/ic_home_white"
+        />
+
+
+</menu>

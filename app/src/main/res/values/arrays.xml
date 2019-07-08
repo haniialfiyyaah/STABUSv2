@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="satuanBerat">
+        <item>ml</item>
+        <item>gr</item>
+        <item>pcs</item>
+    </string-array>
+
+</resources>

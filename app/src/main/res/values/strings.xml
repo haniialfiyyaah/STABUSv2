@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">STABUS</string>
+    <string name="sub_name">Start Your Business</string>
+
+    <!-- Fragment tags BK-->
+    <string name="BahanBaku">Bahan Baku</string>
+    <string name="HargaBahanBaku">Harga Bahan Baku</string>
+    <string name="TambahBahan">Tambah Bahan Baku</string>
+    <string name="TambahHarga">Tambah Harga </string>
+
+
+    <!-- Bundle tags BK-->
+    <string name="selectedId">selected_id</string>
+    <string name="selectedNama">selected_nama</string>
+    <string name="selectedKategori">selected_kategori</string>
+
+    <!-- Bundle tags BK-->
+    <string name="tambahNama">tambah_nama</string>
+    <string name="tambahMerk">tambah_merk</string>
+    <string name="tambahIsi">tambah_tempat</string>
+    <string name="tambahSatuan">tambah_satuan</string>
+    <string name="tambahTempat">tambah_tempat</string>
+    <string name="tambahHarga">tambah_harga</string>
+
+
+</resources>
