@@ -28,16 +28,20 @@ public class DBAdapter {
     }
 
     public boolean cekSameData(String query,String[] selectionArgs){
-        return getQuery(query,selectionArgs).getCount() > 0;
+        return getRawQuery(query,selectionArgs).getCount() > 0;
     }
 
-    public Cursor getQuery(String query, String[] selectionArgs){
+    public Cursor getRawQuery(String query, String[] selectionArgs){
         return db.rawQuery(query,selectionArgs);
     }
 
-    public Cursor getAllData(String tableName, String having){
+    public Cursor getQuery(String table, String selection,String[] selectionArgs){
+        return db.query(table,null,selection,selectionArgs,null,null,null);
+    }
+
+    public Cursor getAllData(String tableName){
         return db.query(tableName, null, null, null,
-                        null, having, null);
+                        null, null, null);
     }
 
     public long addData(String tableName, ContentValues cv){

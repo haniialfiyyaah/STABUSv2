@@ -20,7 +20,6 @@ import com.stabus.app.Model.MHargaBahan;
 import com.stabus.app.RecyclerView.BahanBakuAdapter;
 import com.stabus.app.RecyclerView.HargaBahanAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DialogTambah implements View.OnClickListener {
@@ -29,57 +28,61 @@ public class DialogTambah implements View.OnClickListener {
     private Spinner mSpSatuan;
     private FloatingActionButton fabsave;
     private TextInputLayout mENama, mEMerk, mEIsi, mETempat, mEHarga;
-    private String nama, merk, satuan, tempat, title;
-    private int isi;
-    private float harga;
 
     private View view;
-    private DBMBahan dbmBahan;
-    private List<MBahanBaku> bahanBakuList;
-    private BahanBakuAdapter mAdapter;
     private FrameLayout frameRV;
     private ScrollView scrollView;
-
-    private String tag;
-
-    DBMHarga dbmHarga;
-    List<MHargaBahan> hargaBahanList;
-    HargaBahanAdapter mHAdapter;
-
     private Activity activity;
+    //harga
+    private List<MHargaBahan> hargaBahanList;
+    private HargaBahanAdapter mHAdapter;
+    //bahan
+    private List<MBahanBaku> bahanBakuList;
+    private BahanBakuAdapter mAdapter;
 
-    public DialogTambah(String tag, Activity activity, View view, DBMBahan dbmBahan, List<MBahanBaku> bahanBakuList, BahanBakuAdapter mAdapter, FrameLayout frameRV, ScrollView scrollView) {
+    private int sId;
+    private String tag;
+    private boolean cekHarga;
+    private Class_Validasi validasi;
+    private DBMBahan dbmBahan;
+    private DBMHarga dbmHarga;
+
+    //bahan
+    DialogTambah(String tag, Activity activity, View view, List<MBahanBaku> bahanBakuList, BahanBakuAdapter mAdapter, FrameLayout frameRV, ScrollView scrollView) {
         this.tag = tag;
         this.activity = activity;
         this.view = view;
-        this.dbmBahan = dbmBahan;
         this.bahanBakuList = bahanBakuList;
         this.mAdapter = mAdapter;
         this.frameRV = frameRV;
         this.scrollView = scrollView;
+        dbmBahan = new DBMBahan(view);
+        dbmHarga = new DBMHarga(view);
     }
 
-    public DialogTambah(String tag, Activity activity, View view,  DBMHarga dbmHarga, List<MHargaBahan> hargaBahanList, HargaBahanAdapter mHAdapter,FrameLayout frameRV, ScrollView scrollView) {
+    //harga
+    DialogTambah(String tag, Activity activity, View view, List<MHargaBahan> hargaBahanList, HargaBahanAdapter mHAdapter, FrameLayout frameRV, ScrollView scrollView) {
         this.tag = tag;
         this.view = view;
         this.frameRV = frameRV;
         this.scrollView = scrollView;
-        this.dbmHarga = dbmHarga;
         this.hargaBahanList = hargaBahanList;
         this.mHAdapter = mHAdapter;
         this.activity = activity;
+        dbmBahan = new DBMBahan(view);
+        dbmHarga = new DBMHarga(view);
     }
 
-    public void tambahDialog(String title){
+    void tambahDialog(String title, int sId){
         showDialog(new Dialog(view.getContext()));
         mTitle.setText(title);
+        this.sId = sId;
         fabsave.setOnClickListener(this);
         //clearMenu();
     }
     private void showDialog(Dialog dialog){
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_tambah_bahan);
-
         mENama = dialog.findViewById(R.id.textNama);
         mEMerk = dialog.findViewById(R.id.textMerk);
         mEIsi = dialog.findViewById(R.id.textIsi);
@@ -89,100 +92,116 @@ public class DialogTambah implements View.OnClickListener {
         fabsave = dialog.findViewById(R.id.fabTambahBK);
         mTitle = dialog.findViewById(R.id.titleHarga);
 
-        Toast toast = Toast.makeText(view.getContext(), tag, Toast.LENGTH_SHORT);
-        toast.show();
+        cekHarga = tag.matches(activity.getString(R.string.HargaBahanBaku));
+        validasi = new Class_Validasi(mENama,mEMerk,mEIsi,mETempat,mEHarga,mSpSatuan);
 
+        if (cekHarga){
+            mENama.setVisibility(View.GONE);
+        }
         InputFilter[] inputFilter = new InputFilter[]{new InputFilter.AllCaps()};
         if (mENama.getEditText()!=null && mEMerk.getEditText()!=null&& mETempat.getEditText()!=null){
             mENama.getEditText().setFilters(inputFilter);
             mEMerk.getEditText().setFilters(inputFilter);
             mETempat.getEditText().setFilters(inputFilter);
         }
-
         dialog.show();
     }
     private void tambahData(){
-        getString();
-        //validasi
-        if (nama.trim().length() == 0) {
-            setErrorMessage(mENama,"Tidak Boleh Kosong");
-            return;
-        }
-        if (dbmBahan.cekNama(nama) && (merk.trim().length() == 0&&isi <= 0&&tempat.trim().length() == 0&&harga <= 0)){
-            setErrorMessage(mENama, "Data Sudah Ada");
-            return;
-        }
-        if (merk.trim().length() != 0||isi > 0||tempat.trim().length() != 0||harga > 0){
-            if (isi == 0){
-                setErrorMessage(mEIsi,"");
+        //cek nama kosong atau spasi
+        boolean cekIsiHarga = false;
+        if (!cekHarga) {
+            if (validasi.getNama().trim().length() == 0) {
+                validasi.setErrorMessage(mENama, "Tidak Boleh Kosong");
                 return;
             }
-            if (harga==0){
-                setErrorMessage(mEHarga,"Tidak Boleh Kosong");
+            //cek isi dan harga tidak boleh kosong jika salah satu ada terisi
+            if (validasi.getMerk().trim().length() != 0||validasi.getIsi() > 0||validasi.getTempat().trim().length() != 0||validasi.getHarga() > 0){
+                if (validasi.getIsi() == 0){
+                    validasi.setErrorMessage(mEIsi,"");
+                    return;
+                }
+                if (validasi.getHarga()==0){
+                    validasi.setErrorMessage(mEHarga,"Tidak Boleh Kosong");
+                    return;
+                }
+                cekIsiHarga = true;
+            }
+            //cek bahan sudah ada atau belum
+            if (dbmBahan.cekNama(validasi.getNama()) && (validasi.getMerk().trim().length() == 0&&validasi.getIsi() <= 0&&validasi.getTempat().trim().length() == 0&&validasi.getHarga() <= 0)){
+                validasi.setErrorMessage(mENama, "Data Sudah Ada");
                 return;
             }
+            //simpan harga jika data sudah ada
+            //nama sama : harga isi ? saveharga cek harga else error
+            if (dbmBahan.cekNama(validasi.getNama())&& cekIsiHarga){
+                int idBK = dbmBahan.bahanBaku(validasi.getNama()).getId();
+                boolean cekHargaSama = dbmHarga.cekHarga(validasi.getMerk(),validasi.getIsi(),validasi.getSatuan(),validasi.getTempat(),validasi.getHarga(),idBK);
+                if (cekHargaSama){
+                    validasi.setErrorMessage(mEHarga,"Harga ini sudah ada!");
+                    return;
+                }
+                dbmHarga.save(validasi.getMerk(),validasi.getIsi(),validasi.getSatuan(),validasi.getTempat(),validasi.getHarga(),idBK);
+                dbmBahan.getAllBahan(bahanBakuList);
+                mAdapter.notifyDataSetChanged();
+                cekEmptyList();
+            }
+            //nama beda : harga isi ? savenama saveharga
+            else if (cekIsiHarga){
+                dbmBahan.save(validasi.getNama(),"Bahan Baku");
+                int idBK = dbmBahan.bahanBaku(validasi.getNama()).getId();
+                dbmHarga.save(validasi.getMerk(),validasi.getIsi(),validasi.getSatuan(),validasi.getTempat(),validasi.getHarga(),idBK);
+                saveBahan();
+            }
+            //nama beda : harga kosong ? savenama
+            else {
+                dbmBahan.save(validasi.getNama(),"Bahan Baku");
+                saveBahan();
+            }
         }
-        //saveharga
-        if (dbmBahan.cekNama(nama)){
-            //show dialog tambah harga
-            //save harga
-            //inflate fragment nama
-        }else {
-            dbmBahan.save(nama,"Bahan Baku");
-            bahanBakuList.add(0,dbmBahan.bahanBaku(nama));
-            mAdapter.notifyItemInserted(0);
-            mAdapter.notifyDataSetChanged();
-            cekEmptyList();
+        //cek isi dan harga tidak boleh kosong
+        else {
+            if (validasi.getIsi() == 0){
+                validasi.setErrorMessage(mEIsi,"");
+                return;
+            }
+            if (validasi.getHarga()==0){
+                validasi.setErrorMessage(mEHarga,"Tidak Boleh Kosong");
+                return;
+            }
+            boolean cekHargaSama = dbmHarga.cekHarga(validasi.getMerk(),validasi.getIsi(),validasi.getSatuan(),validasi.getTempat(),validasi.getHarga(),sId);
+            if (cekHargaSama){
+                validasi.setErrorMessage(mEHarga,"Harga ini sudah ada!");
+                return;
+            }
+            saveHarga(sId);
         }
-        clearText();
+
+        validasi.clearText(cekHarga);
         //refreshList();
     }
-    private void clearText(){
-        if (mENama.getEditText()!=null && mEMerk.getEditText()!=null&& mEIsi.getEditText()!=null&& mETempat.getEditText()!=null&& mEHarga.getEditText()!=null){
-            mENama.getEditText().getText().clear();
-            mEMerk.getEditText().getText().clear();
-            mEIsi.getEditText().getText().clear();
-            mETempat.getEditText().getText().clear();
-            mEHarga.getEditText().getText().clear();
-            mENama.requestFocus();
-            mSpSatuan.setSelection(0);
-            clearError();
-        }
+    private void saveHarga(int idBK){
+        dbmHarga.save(validasi.getMerk(),validasi.getIsi(),validasi.getSatuan(),validasi.getTempat(),validasi.getHarga(),idBK);
+        hargaBahanList.add(0,dbmHarga.hargaBahan(idBK));
+        mHAdapter.notifyItemInserted(0);
+        mHAdapter.notifyDataSetChanged();
+        cekEmptyList();
     }
-    private void clearError(){
-        mENama.setError(null);
-        mEMerk.setError(null);
-        mEIsi.setError(null);
-        mETempat.setError(null);
-        mEHarga.setError(null);
+    private void saveBahan(){
+        //dbmBahan.save(validasi.getNama(),"Bahan Baku");
+        bahanBakuList.add(0,dbmBahan.bahanBaku(validasi.getNama()));
+        mAdapter.notifyItemInserted(0);
+        mAdapter.notifyDataSetChanged();
+        cekEmptyList();
     }
-    private void getString(){
-        if (mENama.getEditText()!=null && mEMerk.getEditText()!=null&& mEIsi.getEditText()!=null&& mETempat.getEditText()!=null&& mEHarga.getEditText()!=null) {
 
-            nama = mENama.getEditText().getText().toString();
-            merk = mEMerk.getEditText().getText().toString();
-            if (mEIsi.getEditText().getText().toString().trim().length() != 0) {
-                isi = Integer.parseInt(mEIsi.getEditText().getText().toString());
-            } else {
-                isi = 0;
-            }
-            satuan = mSpSatuan.getSelectedItem().toString();
-            tempat = mETempat.getEditText().getText().toString();
-            if (mEHarga.getEditText().getText().toString().trim().length() != 0) {
-                harga = Float.parseFloat(mEHarga.getEditText().getText().toString());
-            } else {
-                harga = 0;
-            }
-            title = mTitle.getText().toString();
+    private void cekEmptyList(){
+        int size;
+        if (cekHarga){
+            size = hargaBahanList.size();
+        }else {
+            size = bahanBakuList.size();
         }
-    }
-    private void setErrorMessage(TextInputLayout inputLayout, String message){
-        clearError();
-        inputLayout.setError(message);
-        inputLayout.requestFocus();
-    }
-    public void cekEmptyList(){
-        if (bahanBakuList.size()==0){
+        if (size==0){
             scrollView.setVisibility(View.GONE);
             frameRV.setVisibility(View.VISIBLE);
         }else {
@@ -190,8 +209,6 @@ public class DialogTambah implements View.OnClickListener {
             frameRV.setVisibility(View.GONE);
         }
     }
-
-
     private void callMenu(){
         if (activity!=null){
             activity.invalidateOptionsMenu();

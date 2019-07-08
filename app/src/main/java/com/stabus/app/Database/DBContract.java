@@ -17,7 +17,7 @@ class DBContract {
         //information TABLE
         static final String TABLE_HARGA = "Harga";
         //information COLUMNS for TABLE BAHAN BAKU
-        //static final String COLS_ID_HARGA = "id_harga";
+        static final String COLS_ID_HARGA = "id_harga";
         static final String COLS_MERK_HARGA = "merk";
         static final String COLS_JUMLAH_HARGA = "jumlah";
         static final String COLS_SATUAN_HARGA = "satuan";
@@ -35,7 +35,7 @@ class DBContract {
 
     static final String CREATE_TABLE_HARGA = "CREATE TABLE "
             +HargaBKEntry.TABLE_HARGA +"("
-            //+HargaBKEntry.COLS_ID_HARGA+" INTEGER PRIMARY KEY AUTOINCREMENT,"
+            +HargaBKEntry.COLS_ID_HARGA+" INTEGER PRIMARY KEY AUTOINCREMENT,"
             +HargaBKEntry.COLS_MERK_HARGA+" TEXT,"
             + HargaBKEntry.COLS_JUMLAH_HARGA+" INTEGER NOT NULL,"
             + HargaBKEntry.COLS_SATUAN_HARGA+" TEXT NOT NULL,"

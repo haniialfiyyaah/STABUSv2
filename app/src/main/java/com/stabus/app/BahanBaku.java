@@ -59,8 +59,8 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mISetListener.setToolbarTitle(getTag());
+        mISetListener.setNavigationIcon(R.drawable.ic_home_white, false);
         setHasOptionsMenu(true);
-        //mISetListener.setNavigationIcon(R.drawable.ic_home_white, false);
     }
 
     @Nullable
@@ -85,7 +85,7 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
     private void initObject(View view){
         dbmBahan = new DBMBahan(view);
         setRV(view);
-        dialogTambah = new DialogTambah(getString(R.string.BahanBaku),getActivity(),view,dbmBahan,bahanBakuList,mAdapter,frameRV,scrollView);
+        dialogTambah = new DialogTambah(getString(R.string.BahanBaku),getActivity(),view,bahanBakuList,mAdapter,frameRV,scrollView);
         dialogHapus = new DialogHapus(view,bahanBakuList,selectedList,mAdapter,selected,dbmBahan,getActivity(),mISetListener);
     }
     private void setRV(View view){
@@ -150,6 +150,7 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
             @Override
             public boolean onQueryTextChange(String s) {
                 mAdapter.filter(bahanBakuListFull, s);
+                cekEmptyList();
                 return true;
             }
         });
@@ -160,7 +161,7 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
     public void onClick(View v) {
         if (v==fabTambah){
             callMenu();
-            dialogTambah.tambahDialog(getString(R.string.TambahBahan));
+            dialogTambah.tambahDialog(getString(R.string.TambahBahan),0);
         }
     }
 
@@ -251,14 +252,17 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
     private void deleteDB(){
         for (MBahanBaku bahanBaku : selectedList){
             dbmBahan.delete(bahanBaku.getId());
+            dbmBahan.deleteHarga(bahanBaku.getId());
         }
     }
 
     @Override
     public void onResume() {
-        super.onResume();
         mISetListener.setToolbarTitle(getTag());
         mISetListener.setNavigationIcon(R.drawable.ic_home_white, false);
+        callMenu();
+        super.onResume();
+
     }
 
     @Override

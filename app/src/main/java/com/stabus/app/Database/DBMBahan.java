@@ -25,7 +25,7 @@ public class DBMBahan {
         db.openDB();
 
         bahanBakuList.clear();
-        cursor = db.getAllData(BahanBakuEntry.TABLE_BAHANBAKU,null);
+        cursor = db.getAllData(BahanBakuEntry.TABLE_BAHANBAKU);
 
         while (cursor.moveToNext()){
             int id = cursor.getInt(0);
@@ -44,7 +44,7 @@ public class DBMBahan {
         String query = "SELECT COUNT(*) FROM "+HargaBKEntry.TABLE_HARGA+" WHERE "
                 +HargaBKEntry.COLS_ID_BAHAN_HARGA+" = "+id;
 
-        Cursor cursor = db.getQuery(query,null);
+        Cursor cursor = db.getRawQuery(query,null);
         cursor.moveToNext();
         int jumlah = cursor.getInt(0);
         db.closeDB();
@@ -74,6 +74,15 @@ public class DBMBahan {
         return result;
     }
 
+    public long deleteHarga(int id){
+        db.openDB();
+
+        long result = db.deleteData(HargaBKEntry.TABLE_HARGA,HargaBKEntry.COLS_ID_BAHAN_HARGA+" =?",new String[]{String.valueOf(id)});
+
+        db.closeDB();
+        return result;
+    }
+
     public boolean cekNama(String textNama){
         db.openDB();
         String query = "SELECT "+BahanBakuEntry.COLS_NAMA_BAHAN+" FROM "
@@ -86,29 +95,7 @@ public class DBMBahan {
         return cek;
 
     }
-    
-    public void getDataTambah(List<MBahanBaku> bahanBakuList, String textNama){
-        
-        db.openDB();
-        
-        String query = "SELECT * FROM "
-                +BahanBakuEntry.TABLE_BAHANBAKU+" WHERE "
-                +BahanBakuEntry.COLS_NAMA_BAHAN+" =?";
-        
-        db.getQuery(query, new String[]{textNama});
 
-        while (cursor.moveToNext()){
-            int id = cursor.getInt(0);
-            String kategori = cursor.getString(1);
-            String nama = cursor.getString(2);
-            int jumlah = jumlahHarga(id);
-            MBahanBaku bahanBaku = new MBahanBaku(id,kategori,nama,jumlah);
-            bahanBakuList.add(0,bahanBaku);
-        }
-        
-        db.closeDB();
-        
-    }
     public MBahanBaku bahanBaku(String textNama){
 
         MBahanBaku bahanBaku = null;
@@ -118,7 +105,7 @@ public class DBMBahan {
                 +BahanBakuEntry.TABLE_BAHANBAKU+" WHERE "
                 +BahanBakuEntry.COLS_NAMA_BAHAN+" =?";
 
-        cursor = db.getQuery(query, new String[]{textNama});
+        cursor = db.getRawQuery(query, new String[]{textNama});
 
         while (cursor.moveToNext()){
             int id = cursor.getInt(0);

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -17,8 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.stabus.app.Database.DBMHarga;
 import com.stabus.app.Interface.ISetListener;
@@ -35,6 +32,7 @@ public class HargaBahanBaku extends Fragment implements View.OnClickListener, On
     private HargaBahanAdapter mAdapter;
     private List<MHargaBahan> hargaBahanList;
     private List<MHargaBahan> hargaBahanListFull;
+    private List<MHargaBahan> selectedList;
 
     private String sNama;
     private int sId;
@@ -88,7 +86,7 @@ public class HargaBahanBaku extends Fragment implements View.OnClickListener, On
     private void initObject(View view){
         dbmHarga = new DBMHarga(view);
         setRV(view);
-        dialogTambah = new DialogTambah(getString(R.string.HargaBahanBaku),getActivity(),view, dbmHarga,hargaBahanList,mAdapter,frameRV,scrollView);
+        dialogTambah = new DialogTambah(getString(R.string.HargaBahanBaku),getActivity(),view, hargaBahanList,mAdapter,frameRV,scrollView);
     }
     private void setRV(View view){
         hargaBahanList = new ArrayList<>();
@@ -111,7 +109,7 @@ public class HargaBahanBaku extends Fragment implements View.OnClickListener, On
     }
 
     private void refreshList(){
-        dbmHarga.getAllHarga(hargaBahanList);
+        dbmHarga.getAllHarga(hargaBahanList,sId);
         mAdapter.notifyDataSetChanged();
         cekEmptyList();
     }
@@ -151,6 +149,7 @@ public class HargaBahanBaku extends Fragment implements View.OnClickListener, On
             @Override
             public boolean onQueryTextChange(String s) {
                 mAdapter.filter(hargaBahanListFull, s);
+                cekEmptyList();
                 return true;
             }
         });
@@ -161,22 +160,105 @@ public class HargaBahanBaku extends Fragment implements View.OnClickListener, On
     public void onClick(View v) {
         if (v==fabTambah){
             callMenu();
-            dialogTambah.tambahDialog(getString(R.string.TambahHarga)+sNama);
+            dialogTambah.tambahDialog(getString(R.string.TambahHarga)+" "+sNama,sId);
+            //dbmHarga.deleteAll();
         }
+    }
+
+    @Override
+    public void OnClickListener(int position, View view) {
+        int setId = hargaBahanList.get(position).getId();
+        String setMerk =hargaBahanList.get(position).getMerk();
+        int setIsi =hargaBahanList.get(position).getIsi();
+        String setSatuan =hargaBahanList.get(position).getSatuan();
+        String setTempat =hargaBahanList.get(position).getTempat_beli();
+        float setHarga =hargaBahanList.get(position).getHarga();
+        int idBK= hargaBahanList.get(position).getIdBK();
+        if (hargaBahanList.get(position).isOpen()){
+            hargaBahanList.get(position).setSelected(!hargaBahanList.get(position).isSelected());
+            selectList(position);
+            mISetListener.setToolbarTitle(selected +" item terpilih");
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public boolean OnLongListener(int position, View view) {
+        if (!hargaBahanListFull.get(position).isOpen()){
+            selected = selected+1;
+            //set toolbar
+            setToolbarHapus();
+            //call All Open
+            openDelete();
+            //click list
+            clickFirstList(position);
+        }
+        return false;
+    }
+
+    private void selectList(int position){
+        if (hargaBahanList.get(position).isSelected()){
+            selectedList.add(hargaBahanList.get(position));
+            selected++;
+        }else {
+            selectedList.remove(hargaBahanList.get(position));
+            selected--;
+        }
+    }
+    private void clickFirstList(int position){
+        hargaBahanList.get(position).setSelected(!hargaBahanList.get(position).isSelected());
+        selectedList = new ArrayList<>();
+        selectedList.add(hargaBahanList.get(position));
+    }
+    private void setToolbarHapus(){
+        mISetListener.setToolbarTitle(selected +" item selected");
+        mISetListener.setNavigationListener(R.drawable.ic_arrow_back_white, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearMenu();
+            }
+        });
+        callMenu();
+    }
+    private void openDelete(){
+        for (int ind = 0; ind < hargaBahanList.size(); ind++){
+            hargaBahanList.get(ind).setOpen(true);
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+    private void closeDelete(){
+        for (int ind = 0; ind < hargaBahanList.size(); ind++){
+            hargaBahanList.get(ind).setOpen(false);
+            hargaBahanList.get(ind).setSelected(false);
+        }
+        mAdapter.notifyDataSetChanged();
     }
     private void callMenu(){
         if (getActivity()!=null){
             getActivity().invalidateOptionsMenu();
         }
     }
-
-    @Override
-    public void OnClickListener(int position, View view) {
-
+    private void clearMenu(){
+        selected=0;
+        callMenu();
+        mISetListener.setToolbarTitle(sNama);
+        mISetListener.setNavigationIcon(R.drawable.ic_arrow_back_white, true);
+        closeDelete();
+    }
+    private void deleteDB(){
+        for (MHargaBahan bahanBaku : selectedList){
+            dbmHarga.deleteHarga(bahanBaku.getId());
+        }
     }
 
     @Override
-    public boolean OnLongListener(int position, View view) {
-        return false;
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.actdelete) {
+            deleteDB();
+            clearMenu();
+            mAdapter.delete(selectedList);
+            cekEmptyList();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
