@@ -53,6 +53,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:layout_gravity="center|bottom"
+        android:backgroundTint="#DB5A31"
+        android:src="@drawable/ic_tombol_tambah"
         app:fabSize="auto"/>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -29,11 +29,6 @@ class DBContract {
     static final class ProdukEntry implements BaseColumns{
         //information TABLE
         static final String TABLE_PRODUK = "Produk";
-<<<<<<< HEAD
-        //infromation COLUMNS for TABLE PRODUK
-        static final String COLS_ID_PRODUK="id_produk";
-        static final String COLS_NAMA_PRODUK="nama_produk";
-=======
         //information COLUMNS for TABLE BAHAN BAKU
         static final String COLS_ID_PRODUK = "id_produk";
         static final String COLS_NAMA_PRODUK = "nama";
@@ -41,16 +36,15 @@ class DBContract {
 
     static final class ProdukBKEntry implements BaseColumns{
         //information TABLE
-        static final String TABLE_PRODUK_BAHAN = "Produk";
+        static final String TABLE_PRODUK_BAHAN = "ProdukBahan";
         //information COLUMNS for TABLE BAHAN BAKU
         static final String COLS_ID_RELASI = "id_relasi";
         static final String COLS_FK_ID_PRODUK = "fk_id_produk";
         static final String COLS_JUMLAH_PRODUK = "jumlah";
         static final String COLS_SATUAN_PRODUK = "satuan";
         static final String COLS_FK_ID_BAHAN = "fk_id_bahan";
-        static final String COLS_JUMLAH_DIGUNAKAN = "jumlah";
-        static final String COLS_SATUAN_DIGUNAKAN = "satuan";
->>>>>>> origin/master
+        static final String COLS_JUMLAH_DIGUNAKAN = "jumlah_dg";
+        static final String COLS_SATUAN_DIGUNAKAN = "satuan_dg";
     }
 
     //Create Table in database
