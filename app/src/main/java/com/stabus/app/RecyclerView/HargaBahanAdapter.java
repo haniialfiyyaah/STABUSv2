@@ -86,4 +86,11 @@ public class HargaBahanAdapter extends RecyclerView.Adapter<HargaBahanHolder> {
         hargaBahanList.addAll(filteredList);
         notifyDataSetChanged();
     }
+
+    public void delete(List<MHargaBahan> selectedList){
+        for (MHargaBahan bahanBaku : selectedList){
+            hargaBahanList.remove(bahanBaku);
+            notifyDataSetChanged();
+        }
+    }
 }

@@ -1,28 +1,22 @@
 package com.stabus.app;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.stabus.app.Database.DBMBahan;
 import com.stabus.app.Interface.ISetListener;
@@ -50,24 +44,20 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
 
     private DBMBahan dbmBahan;
 
-    private DialogTambah dialogTambah;
-    private DialogHapus dialogHapus;
-
-    private SearchView searchView;
+    private ClassDialogTambah dialogTambah;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mISetListener.setToolbarTitle(getTag());
+        mISetListener.setNavigationIcon(R.drawable.ic_home_white, false);
         setHasOptionsMenu(true);
-        //mISetListener.setNavigationIcon(R.drawable.ic_home_white, false);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_bahan_baku, container, false);
-
+        View view = inflater.inflate(R.layout.fragment_bahan, container, false);
         initView(view);
         initObject(view);
         initListener();
@@ -85,13 +75,12 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
     private void initObject(View view){
         dbmBahan = new DBMBahan(view);
         setRV(view);
-        dialogTambah = new DialogTambah(getString(R.string.BahanBaku),getActivity(),view,dbmBahan,bahanBakuList,mAdapter,frameRV,scrollView);
-        dialogHapus = new DialogHapus(view,bahanBakuList,selectedList,mAdapter,selected,dbmBahan,getActivity(),mISetListener);
+        dialogTambah = new ClassDialogTambah(getString(R.string.BahanBaku), getActivity(), view, bahanBakuList, mAdapter, frameRV, scrollView);
     }
     private void setRV(View view){
         bahanBakuList = new ArrayList<>();
         mAdapter = new BahanBakuAdapter(bahanBakuList,this);
-        mISetListener.setRecyclerView(view, mRecyclerView, mAdapter);
+        mISetListener.setRecyclerView(new LinearLayoutManager(view.getContext()), mRecyclerView, mAdapter);
         mAdapter.notifyDataSetChanged();
         refreshList();
     }
@@ -103,7 +92,6 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
         mAdapter.notifyDataSetChanged();
         cekEmptyList();
     }
-
     private void cekEmptyList(){
         if (bahanBakuList.size()==0){
             scrollView.setVisibility(View.GONE);
@@ -125,19 +113,17 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
         inflater.inflate(R.menu.menu_bahan_baku, menu);
         MenuItem menuItem = menu.findItem(R.id.actsearch);
 
-        searchView = (SearchView) menuItem.getActionView();
+        SearchView searchView = (SearchView) menuItem.getActionView();
         searchView.setQueryHint("Cari Bahan Baku..");
         searchView.setPadding(-22, 0, 0, 0);
 
         if (selected<=0){
             menu.findItem(R.id.actsearch).setVisible(true);
             menu.findItem(R.id.actdelete).setVisible(false);
-            menu.findItem(R.id.actSelectAll).setVisible(false);
         }
         else{
             menu.findItem(R.id.actsearch).setVisible(false);
             menu.findItem(R.id.actdelete).setVisible(true);
-            menu.findItem(R.id.actSelectAll).setVisible(true);
         }
         bahanBakuListFull = new ArrayList<>();
         dbmBahan.getAllBahan(bahanBakuListFull);
@@ -150,6 +136,7 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
             @Override
             public boolean onQueryTextChange(String s) {
                 mAdapter.filter(bahanBakuListFull, s);
+                cekEmptyList();
                 return true;
             }
         });
@@ -160,7 +147,7 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
     public void onClick(View v) {
         if (v==fabTambah){
             callMenu();
-            dialogTambah.tambahDialog(getString(R.string.TambahBahan));
+            dialogTambah.tambahDialog(getString(R.string.TambahBahan),0);
         }
     }
 
@@ -214,7 +201,7 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
         selectedList.add(bahanBakuList.get(position));
     }
     private void setToolbarHapus(){
-        mISetListener.setToolbarTitle(selected +" item selected");
+        mISetListener.setToolbarTitle(selected +" item terpilih");
         mISetListener.setNavigationListener(R.drawable.ic_arrow_back_white, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -251,14 +238,17 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
     private void deleteDB(){
         for (MBahanBaku bahanBaku : selectedList){
             dbmBahan.delete(bahanBaku.getId());
+            dbmBahan.deleteHarga(bahanBaku.getId());
         }
     }
 
     @Override
     public void onResume() {
-        super.onResume();
         mISetListener.setToolbarTitle(getTag());
         mISetListener.setNavigationIcon(R.drawable.ic_home_white, false);
+        callMenu();
+        super.onResume();
+
     }
 
     @Override
