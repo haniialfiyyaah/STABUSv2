@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbarPBK"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="@drawable/shape_search_view"
+            app:contentInsetStartWithNavigation="0dp"
+            app:contentInsetStart="0dp"
+            app:contentInsetLeft="0dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TAMBAH PRODUK"
+                android:textAlignment="center"/>
+        </android.support.v7.widget.Toolbar>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:text="NAMA PRODUK"/>
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textNama"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:errorEnabled="true">
+                <android.support.design.widget.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapCharacters" />
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabTambahProduk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_gravity="end|bottom"
+        app:fabSize="auto"/>
+
+</android.support.design.widget.CoordinatorLayout>
