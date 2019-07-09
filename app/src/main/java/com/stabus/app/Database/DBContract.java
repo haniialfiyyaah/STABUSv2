@@ -26,6 +26,14 @@ class DBContract {
         static final String COLS_ID_BAHAN_HARGA = "id_bahanbaku";
     }
 
+    static final class ProdukEntry implements BaseColumns{
+        //information TABLE
+        static final String TABLE_PRODUK = "Produk";
+        //infromation COLUMNS for TABLE PRODUK
+        static final String COLS_ID_PRODUK="id_produk";
+        static final String COLS_NAMA_PRODUK="nama_produk";
+    }
+
     //Create Table in database
     static final String CREATE_TABLE_BAHANBAKU = "CREATE TABLE "
             +BahanBakuEntry.TABLE_BAHANBAKU +"("
