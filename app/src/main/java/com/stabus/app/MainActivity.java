@@ -5,6 +5,7 @@ import android.support.annotation.MenuRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -49,14 +50,18 @@ public class MainActivity extends AppCompatActivity implements ISetListener {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
             Fragment fragment=null ;
+            Drawable drawable ;
+            int color;
             switch (menuItem.getItemId()){
                 case R.id.navBahan:
                     //setmToolbar("Bahan Baku", R.drawable.ic_home_white);
                     fragment = new BahanBaku();
+                    mToolbar.setVisibility(View.VISIBLE);
                     break;
                 case R.id.navProduk:
                     //setmToolbar("Produk", R.drawable.ic_home_white);
-                    fragment = new BahanBaku();
+                    fragment = new Produk();
+                    mToolbar.setVisibility(View.GONE);
                     break;
                 case R.id.navKalkulator:
                     //setmToolbar("Kalkulator", R.drawable.ic_home_white);
@@ -68,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements ISetListener {
                     break;
             }
             setFragment(fragment,getString(R.string.BahanBaku),false,null);
+
             return true;
         }
     };
@@ -92,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements ISetListener {
 
     @Override
     public void setToolbarTitle(String toolbarTitle) {
-        mTitle.setText(toolbarTitle);
+        if (toolbarTitle.trim().length()>0) mTitle.setText(toolbarTitle);
     }
 
     @Override
@@ -101,32 +107,37 @@ public class MainActivity extends AppCompatActivity implements ISetListener {
             Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_edit);
             drawable.setBounds(0,0,30,30);
             mTitle.setCompoundDrawables(null,null,drawable,null);
+
+            if (listener!=null) mTitle.setClickable(true);
+            mTitle.setOnClickListener(listener);
         }
-        if (listener!=null) mTitle.setClickable(true);
-        mTitle.setOnClickListener(listener);
     }
 
     @Override
     public void setNavigationIcon(int resId, boolean backStack) {
-        mToolbar.setNavigationIcon(resId);
-        if (backStack) mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-        if (!backStack)mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        if (resId!=0){
+            mToolbar.setNavigationIcon(resId);
+            if (backStack) mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                }
+            });
+            if (!backStack)mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-            }
-        });
+                }
+            });
+        }
     }
 
     @Override
     public void setNavigationListener(int resId, View.OnClickListener listener) {
-        mToolbar.setNavigationIcon(resId);
-        mToolbar.setNavigationOnClickListener(listener);
+        if (resId!=0){
+            mToolbar.setNavigationIcon(resId);
+            mToolbar.setNavigationOnClickListener(listener);
+        }
     }
 
     @Override
@@ -138,9 +149,9 @@ public class MainActivity extends AppCompatActivity implements ISetListener {
     }
 
     @Override
-    public void setRecyclerView(View view, RecyclerView recyclerView, RecyclerView.Adapter mAdapter) {
+    public void setRecyclerView(RecyclerView.LayoutManager layoutManager, RecyclerView recyclerView, RecyclerView.Adapter mAdapter) {
         recyclerView.setHasFixedSize(false);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getContext());
+        //RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(mAdapter);
     }

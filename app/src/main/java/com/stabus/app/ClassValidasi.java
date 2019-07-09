@@ -5,7 +5,7 @@ import android.widget.Spinner;
 
 import com.stabus.app.Database.DBMBahan;
 
-public class Class_Validasi {
+public class ClassValidasi {
 
     private TextInputLayout mENama, mEMerk, mEIsi, mETempat, mEHarga;
     private Spinner mSpSatuan;
@@ -13,9 +13,9 @@ public class Class_Validasi {
     private int isi;
     private float harga;
 
-    Class_Validasi(TextInputLayout mENama,
-                   TextInputLayout mEMerk, TextInputLayout mEIsi, TextInputLayout mETempat,
-                   TextInputLayout mEHarga, Spinner mSpSatuan) {
+    ClassValidasi(TextInputLayout mENama,
+                  TextInputLayout mEMerk, TextInputLayout mEIsi, TextInputLayout mETempat,
+                  TextInputLayout mEHarga, Spinner mSpSatuan) {
         this.mENama = mENama;
         this.mEMerk = mEMerk;
         this.mEIsi = mEIsi;

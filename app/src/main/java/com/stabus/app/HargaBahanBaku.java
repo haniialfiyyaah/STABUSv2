@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
@@ -48,8 +49,8 @@ public class HargaBahanBaku extends Fragment implements View.OnClickListener, On
     private DBMHarga dbmHarga;
     private DBMBahan dbmBahan;
 
-    private DialogTambah dialogTambah;
-    private DialogEdit dialogEdit;
+    private ClassDialogTambah dialogTambah;
+    private ClassDialogEdit dialogEdit;
 
     int selected =0;
 
@@ -77,7 +78,7 @@ public class HargaBahanBaku extends Fragment implements View.OnClickListener, On
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_bahan_baku, container, false);
+        View view = inflater.inflate(R.layout.fragment_bahan, container, false);
 
         initView(view);
         initObject(view);
@@ -96,13 +97,13 @@ public class HargaBahanBaku extends Fragment implements View.OnClickListener, On
         dbmHarga = new DBMHarga(view);
         dbmBahan= new DBMBahan(view);
         setRV(view);
-        dialogTambah = new DialogTambah(getString(R.string.HargaBahanBaku),getActivity(),view, hargaBahanList,mAdapter,frameRV,scrollView);
-        dialogEdit = new DialogEdit(mISetListener,view,getActivity(),hargaBahanList,mAdapter,scrollView,frameRV);
+        dialogTambah = new ClassDialogTambah(getString(R.string.HargaBahanBaku), getActivity(), view, hargaBahanList, mAdapter, frameRV, scrollView);
+        dialogEdit = new ClassDialogEdit(mISetListener, view, getActivity(), hargaBahanList, mAdapter, scrollView, frameRV);
     }
     private void setRV(View view){
         hargaBahanList = new ArrayList<>();
         mAdapter = new HargaBahanAdapter(hargaBahanList, this);
-        mISetListener.setRecyclerView(view, mRecyclerView, mAdapter);
+        mISetListener.setRecyclerView(new LinearLayoutManager(view.getContext()), mRecyclerView, mAdapter);
         mAdapter.notifyDataSetChanged();
         refreshList();
     }
@@ -143,11 +144,9 @@ public class HargaBahanBaku extends Fragment implements View.OnClickListener, On
         if (selected<=0){
             menu.findItem(R.id.actsearch).setVisible(true);
             menu.findItem(R.id.actdelete).setVisible(false);
-            menu.findItem(R.id.actSelectAll).setVisible(false);
         }else{
             menu.findItem(R.id.actsearch).setVisible(false);
             menu.findItem(R.id.actdelete).setVisible(true);
-            menu.findItem(R.id.actSelectAll).setVisible(true);
         }
 
         hargaBahanListFull = new ArrayList<>(hargaBahanList);

@@ -3,7 +3,6 @@ package com.stabus.app;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
-import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.text.InputFilter;
@@ -23,14 +22,14 @@ import com.stabus.app.RecyclerView.HargaBahanAdapter;
 
 import java.util.List;
 
-public class DialogEdit implements View.OnClickListener {
+public class ClassDialogEdit implements View.OnClickListener {
 
     private TextView mTitle;
     private Spinner mSpSatuan;
     private FloatingActionButton fabsave;
     private TextInputLayout mENama, mEMerk, mEIsi, mETempat, mEHarga;
 
-    private DialogTambah dialogTambah;
+    private ClassDialogTambah dialogTambah;
 
     private View view;
     private Activity activity;
@@ -47,13 +46,13 @@ public class DialogEdit implements View.OnClickListener {
 
     private DBMBahan dbmBahan;
     private DBMHarga dbmHarga;
-    private Class_Validasi validasi;
+    private ClassValidasi validasi;
     private boolean cekBahan;
 
     private ISetListener mISetListener;
     private Dialog dialog;
 
-    DialogEdit(ISetListener mISetListener,View view, Activity activity, List<MHargaBahan> hargaBahanList, HargaBahanAdapter mHAdapter,ScrollView scrollView, FrameLayout frameLayout) {
+    ClassDialogEdit(ISetListener mISetListener, View view, Activity activity, List<MHargaBahan> hargaBahanList, HargaBahanAdapter mHAdapter, ScrollView scrollView, FrameLayout frameLayout) {
         this.mISetListener = mISetListener;
         this.view = view;
         this.activity = activity;
@@ -125,7 +124,7 @@ public class DialogEdit implements View.OnClickListener {
         }
         cekBahan=false;
         cekBahan = tag.matches(activity.getString(R.string.UbahBahan));
-        validasi = new Class_Validasi(mENama,mEMerk,mEIsi,mETempat,mEHarga,mSpSatuan);
+        validasi = new ClassValidasi(mENama, mEMerk, mEIsi, mETempat, mEHarga, mSpSatuan);
         if (cekBahan){
             mENama.setEnabled(true);
             mEMerk.setVisibility(View.GONE);

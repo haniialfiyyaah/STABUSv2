@@ -12,9 +12,9 @@ import java.util.List;
 
 public class DBMBahan {
 
-    View view;
-    DBAdapter db;
-    Cursor cursor;
+    private View view;
+    private DBAdapter db;
+    private Cursor cursor;
 
     public DBMBahan(View view) {
         this.view = view;

@@ -21,7 +21,7 @@ import com.stabus.app.RecyclerView.HargaBahanAdapter;
 
 import java.util.List;
 
-public class DialogTambah implements View.OnClickListener {
+public class ClassDialogTambah implements View.OnClickListener {
 
     private TextView mTitle;
     private Spinner mSpSatuan;
@@ -42,12 +42,12 @@ public class DialogTambah implements View.OnClickListener {
     private int sId;
     private String tag;
     private boolean cekHarga;
-    private Class_Validasi validasi;
+    private ClassValidasi validasi;
     private DBMBahan dbmBahan;
     private DBMHarga dbmHarga;
 
     //bahan
-    DialogTambah(String tag, Activity activity, View view, List<MBahanBaku> bahanBakuList, BahanBakuAdapter mAdapter, FrameLayout frameRV, ScrollView scrollView) {
+    ClassDialogTambah(String tag, Activity activity, View view, List<MBahanBaku> bahanBakuList, BahanBakuAdapter mAdapter, FrameLayout frameRV, ScrollView scrollView) {
         this.tag = tag;
         this.activity = activity;
         this.view = view;
@@ -59,7 +59,7 @@ public class DialogTambah implements View.OnClickListener {
     }
 
     //harga
-    DialogTambah(String tag, Activity activity, View view, List<MHargaBahan> hargaBahanList, HargaBahanAdapter mHAdapter, FrameLayout frameRV, ScrollView scrollView) {
+    ClassDialogTambah(String tag, Activity activity, View view, List<MHargaBahan> hargaBahanList, HargaBahanAdapter mHAdapter, FrameLayout frameRV, ScrollView scrollView) {
         this.tag = tag;
         this.view = view;
         this.frameRV = frameRV;
@@ -72,7 +72,8 @@ public class DialogTambah implements View.OnClickListener {
     void tambahDialog(String title, int sId){
         dbmBahan = new DBMBahan(view);
         dbmHarga = new DBMHarga(view);
-        showDialog(new Dialog(view.getContext()));
+        Dialog dialog = new Dialog(view.getContext());
+        showDialog(dialog);
         mTitle.setText(title);
         this.sId = sId;
         fabsave.setOnClickListener(this);
@@ -91,7 +92,7 @@ public class DialogTambah implements View.OnClickListener {
         mTitle = dialog.findViewById(R.id.titleHarga);
 
         cekHarga = tag.matches(activity.getString(R.string.HargaBahanBaku));
-        validasi = new Class_Validasi(mENama,mEMerk,mEIsi,mETempat,mEHarga,mSpSatuan);
+        validasi = new ClassValidasi(mENama, mEMerk, mEIsi, mETempat, mEHarga, mSpSatuan);
 
         if (cekHarga){
             mENama.setVisibility(View.GONE);
