@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -46,14 +48,17 @@ public class Produk extends Fragment implements OnListener, View.OnClickListener
     //tampilan
     private ScrollView scrollView;
     private FrameLayout frameLayout;
-
     private Toolbar toolbar;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+
         mISetListener.setNavigationIcon(0,false);
+
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        setHasOptionsMenu(true);
+
     }
 
     @Nullable
@@ -67,6 +72,7 @@ public class Produk extends Fragment implements OnListener, View.OnClickListener
     }
 
     private void initView(View view){
+        toolbar = view.findViewById(R.id.toolbarProduk);
         searchView = view.findViewById(R.id.svProduk);
         recyclerView = view.findViewById(R.id.rvProduk);
         scrollView = view.findViewById(R.id.scrollProduk);
@@ -89,7 +95,7 @@ public class Produk extends Fragment implements OnListener, View.OnClickListener
         refreshList();
     }
     private void refreshList(){
-        dbmProduk.getAllProduk(produkList);
+        //dbmProduk.getAllProduk(produkList);
         produkList.add(new MProdukBahan(0, "RESEP KUE BOLU HIGIENIS"));
         produkList.add(new MProdukBahan(0, "RESEP NIS"));
         produkList.add(new MProdukBahan(0, "RESEP KUE BOLU HIGIENIS"));
@@ -141,6 +147,14 @@ public class Produk extends Fragment implements OnListener, View.OnClickListener
 
     @Override
     public void onClick(View v) {
+        if (v==fabTambah){
+            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+            //AMBIL DATA DARI FRAGMENT BAHAN BAKU
+            ProdukTambah fragment = new ProdukTambah();
+            fragmentTransaction.replace(R.id.frameContainer, fragment,"");
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        }
 
     }
 }

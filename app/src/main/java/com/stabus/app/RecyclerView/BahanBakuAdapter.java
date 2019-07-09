@@ -37,6 +37,7 @@ public class BahanBakuAdapter extends RecyclerView.Adapter<BahanBakuHolder> {
         final MBahanBaku bahanBaku = bahanBakuList.get(i);
         String nama = bahanBaku.getNama_bahan();
         String jumlah;
+
         if (bahanBaku.getJumlah()>99){
             jumlah = "99+ harga";
         }else if (bahanBaku.getJumlah()<=0){
@@ -44,6 +45,7 @@ public class BahanBakuAdapter extends RecyclerView.Adapter<BahanBakuHolder> {
         }else {
             jumlah = String.format("%s harga",bahanBaku.getJumlah());
         }
+
         bahanBakuHolder.nameText.setText(nama);
         bahanBakuHolder.jumlahText.setText(jumlah);
 

@@ -15,27 +15,31 @@
             android:id="@+id/toolbarPBK"
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
-            android:background="@drawable/shape_search_view"
+            android:background="@drawable/shape_cornor_upp"
             app:contentInsetStartWithNavigation="0dp"
             app:contentInsetStart="0dp"
-            app:contentInsetLeft="0dp">
+            app:contentInsetLeft="0dp"
+            android:layout_marginBottom="10dp"
+            android:theme="@style/ThemeOverlay.MaterialComponents.Dark"
+            app:popupTheme="@style/ThemeOverlay.MaterialComponents.ActionBar"
+            app:navigationIcon="@drawable/ic_close">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TAMBAH PRODUK"
+                android:textColor="@color/backgroundColor"
                 android:textAlignment="center"/>
         </android.support.v7.widget.Toolbar>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="20dp"
             android:orientation="horizontal">
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_gravity="center"
                 android:text="NAMA PRODUK"/>
             <android.support.design.widget.TextInputLayout
@@ -47,10 +51,51 @@
                 <android.support.design.widget.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textCapCharacters" />
+                    android:inputType="textCapCharacters"/>
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="15dp"
+            android:paddingEnd="20dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="JUMLAH PRODUK"/>
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textJumlah"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:errorEnabled="true">
+                <android.support.design.widget.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number" />
+            </android.support.design.widget.TextInputLayout>
+            <Spinner
+                android:id="@+id/spSatuanProduk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:entries="@array/satuanProduk">
 
+            </Spinner>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/lightgray"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvTambahBahan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
