@@ -1,7 +1,7 @@
 package com.stabus.app.Model;
 
 public class MHargaBahan {
-    //private int id;
+    private int id;
     private String merk;
     private int isi;
     private String satuan;
@@ -13,14 +13,22 @@ public class MHargaBahan {
     boolean isSelected = false;
     boolean isOpen = false;
 
-    public MHargaBahan(String merk, int isi, String satuan, String tempat_beli, float harga, int idBK) {
-        //this.id = id;
+    public MHargaBahan(int id, String merk, int isi, String satuan, String tempat_beli, float harga, int idBK) {
+        this.id = id;
         this.merk = merk;
         this.isi = isi;
         this.satuan = satuan;
         this.tempat_beli = tempat_beli;
         this.harga = harga;
         this.idBK = idBK;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getMerk() {

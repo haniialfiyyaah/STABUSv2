@@ -3,10 +3,12 @@
     <string name="sub_name">Start Your Business</string>
 
     <!-- Fragment tags BK-->
-    <string name="BahanBaku">Bahan Baku</string>
-    <string name="HargaBahanBaku">Harga Bahan Baku</string>
-    <string name="TambahBahan">Tambah Bahan Baku</string>
-    <string name="TambahHarga">Tambah Harga </string>
+    <string name="BahanBaku">BAHAN BAKU</string>
+    <string name="HargaBahanBaku">HARGA BAHAN BAKU</string>
+    <string name="TambahBahan">TAMBAH BAHAN BAKU</string>
+    <string name="TambahHarga">TAMBAH HARGA</string>
+    <string name="UbahHarga">UBAH HARGA</string>
+    <string name="UbahBahan">UBAH BAHAN</string>
 
 
     <!-- Bundle tags BK-->
@@ -21,6 +23,18 @@
     <string name="tambahSatuan">tambah_satuan</string>
     <string name="tambahTempat">tambah_tempat</string>
     <string name="tambahHarga">tambah_harga</string>
+
+
+    <string name="getIDBahan">get_id_bahan</string>
+    <string name="getIDHarga">get_id_harga</string>
+    <string name="getNama">get_nama</string>
+    <string name="getMerk">get_merk</string>
+    <string name="getIsi">get_isi</string>
+    <string name="getSatuan">get_satuan</string>
+    <string name="getTempat">get_tempat</string>
+    <string name="getHarga">get_harga</string>
+
+
 
 
 </resources>

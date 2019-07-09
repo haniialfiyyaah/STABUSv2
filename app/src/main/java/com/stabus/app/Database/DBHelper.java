@@ -19,12 +19,16 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(DBContract.CREATE_TABLE_BAHANBAKU);
         db.execSQL(DBContract.CREATE_TABLE_HARGA);
+        db.execSQL(DBContract.CREATE_TABLE_PRODUK);
+        db.execSQL(DBContract.CREATE_TABLE_RELASI);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS "+ BahanBakuEntry.TABLE_BAHANBAKU);
         db.execSQL("DROP TABLE IF EXISTS "+HargaBKEntry.TABLE_HARGA);
+        db.execSQL("DROP TABLE IF EXISTS "+ ProdukEntry.TABLE_PRODUK);
+        db.execSQL("DROP TABLE IF EXISTS "+ProdukBKEntry.TABLE_PRODUK_BAHAN);
         onCreate(db);
     }
 }
