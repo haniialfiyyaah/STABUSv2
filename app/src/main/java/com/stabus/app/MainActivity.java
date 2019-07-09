@@ -1,10 +1,12 @@
 package com.stabus.app;
 
+import android.graphics.drawable.Drawable;
 import android.support.annotation.MenuRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements ISetListener {
         mTitle = findViewById(R.id.tvTitle);
         //set action bar
         setSupportActionBar(mToolbar);
+        setTitle("");
 
         BottomNavigationView navigation = findViewById(R.id.bottomNav);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -93,6 +96,17 @@ public class MainActivity extends AppCompatActivity implements ISetListener {
     }
 
     @Override
+    public void setToolbarTitleListener(boolean editTitle, View.OnClickListener listener) {
+        if (editTitle){
+            Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_edit);
+            drawable.setBounds(0,0,30,30);
+            mTitle.setCompoundDrawables(null,null,drawable,null);
+        }
+        if (listener!=null) mTitle.setClickable(true);
+        mTitle.setOnClickListener(listener);
+    }
+
+    @Override
     public void setNavigationIcon(int resId, boolean backStack) {
         mToolbar.setNavigationIcon(resId);
         if (backStack) mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -140,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements ISetListener {
 
             }
         });
+        mTitle.setCompoundDrawables(null,null,null,null);
     }
 
 

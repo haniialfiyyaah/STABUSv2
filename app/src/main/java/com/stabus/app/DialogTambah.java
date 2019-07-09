@@ -11,7 +11,6 @@ import android.widget.FrameLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.stabus.app.Database.DBMBahan;
 import com.stabus.app.Database.DBMHarga;
@@ -56,8 +55,7 @@ public class DialogTambah implements View.OnClickListener {
         this.mAdapter = mAdapter;
         this.frameRV = frameRV;
         this.scrollView = scrollView;
-        dbmBahan = new DBMBahan(view);
-        dbmHarga = new DBMHarga(view);
+
     }
 
     //harga
@@ -69,18 +67,18 @@ public class DialogTambah implements View.OnClickListener {
         this.hargaBahanList = hargaBahanList;
         this.mHAdapter = mHAdapter;
         this.activity = activity;
-        dbmBahan = new DBMBahan(view);
-        dbmHarga = new DBMHarga(view);
     }
 
     void tambahDialog(String title, int sId){
+        dbmBahan = new DBMBahan(view);
+        dbmHarga = new DBMHarga(view);
         showDialog(new Dialog(view.getContext()));
         mTitle.setText(title);
         this.sId = sId;
         fabsave.setOnClickListener(this);
         //clearMenu();
     }
-    private void showDialog(Dialog dialog){
+    void showDialog(Dialog dialog){
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_tambah_bahan);
         mENama = dialog.findViewById(R.id.textNama);
@@ -110,45 +108,27 @@ public class DialogTambah implements View.OnClickListener {
         //cek nama kosong atau spasi
         boolean cekIsiHarga = false;
         if (!cekHarga) {
-            if (validasi.getNama().trim().length() == 0) {
-                validasi.setErrorMessage(mENama, "Tidak Boleh Kosong");
-                return;
-            }
+            if (validasi.cekBahan()||validasi.cekSame(dbmBahan)) return;
             //cek isi dan harga tidak boleh kosong jika salah satu ada terisi
             if (validasi.getMerk().trim().length() != 0||validasi.getIsi() > 0||validasi.getTempat().trim().length() != 0||validasi.getHarga() > 0){
-                if (validasi.getIsi() == 0){
-                    validasi.setErrorMessage(mEIsi,"");
-                    return;
-                }
-                if (validasi.getHarga()==0){
-                    validasi.setErrorMessage(mEHarga,"Tidak Boleh Kosong");
-                    return;
-                }
+                if (validasi.cekIsi() || validasi.cekHarga()) return;
                 cekIsiHarga = true;
-            }
-            //cek bahan sudah ada atau belum
-            if (dbmBahan.cekNama(validasi.getNama()) && (validasi.getMerk().trim().length() == 0&&validasi.getIsi() <= 0&&validasi.getTempat().trim().length() == 0&&validasi.getHarga() <= 0)){
-                validasi.setErrorMessage(mENama, "Data Sudah Ada");
-                return;
             }
             //simpan harga jika data sudah ada
             //nama sama : harga isi ? saveharga cek harga else error
             if (dbmBahan.cekNama(validasi.getNama())&& cekIsiHarga){
-                int idBK = dbmBahan.bahanBaku(validasi.getNama()).getId();
+                int idBK = dbmBahan.bahanBaku(validasi.getNama(),0).getId();
                 boolean cekHargaSama = dbmHarga.cekHarga(validasi.getMerk(),validasi.getIsi(),validasi.getSatuan(),validasi.getTempat(),validasi.getHarga(),idBK);
-                if (cekHargaSama){
-                    validasi.setErrorMessage(mEHarga,"Harga ini sudah ada!");
-                    return;
-                }
+
+                if (validasi.cekHargaSama(cekHargaSama)) return;
+
                 dbmHarga.save(validasi.getMerk(),validasi.getIsi(),validasi.getSatuan(),validasi.getTempat(),validasi.getHarga(),idBK);
-                dbmBahan.getAllBahan(bahanBakuList);
-                mAdapter.notifyDataSetChanged();
-                cekEmptyList();
+                refreshList();
             }
             //nama beda : harga isi ? savenama saveharga
             else if (cekIsiHarga){
                 dbmBahan.save(validasi.getNama(),"Bahan Baku");
-                int idBK = dbmBahan.bahanBaku(validasi.getNama()).getId();
+                int idBK = dbmBahan.bahanBaku(validasi.getNama(),0).getId();
                 dbmHarga.save(validasi.getMerk(),validasi.getIsi(),validasi.getSatuan(),validasi.getTempat(),validasi.getHarga(),idBK);
                 saveBahan();
             }
@@ -160,19 +140,8 @@ public class DialogTambah implements View.OnClickListener {
         }
         //cek isi dan harga tidak boleh kosong
         else {
-            if (validasi.getIsi() == 0){
-                validasi.setErrorMessage(mEIsi,"");
-                return;
-            }
-            if (validasi.getHarga()==0){
-                validasi.setErrorMessage(mEHarga,"Tidak Boleh Kosong");
-                return;
-            }
             boolean cekHargaSama = dbmHarga.cekHarga(validasi.getMerk(),validasi.getIsi(),validasi.getSatuan(),validasi.getTempat(),validasi.getHarga(),sId);
-            if (cekHargaSama){
-                validasi.setErrorMessage(mEHarga,"Harga ini sudah ada!");
-                return;
-            }
+            if (validasi.cekIsi() || validasi.cekHarga() || validasi.cekHargaSama(cekHargaSama)) return;
             saveHarga(sId);
         }
 
@@ -181,19 +150,24 @@ public class DialogTambah implements View.OnClickListener {
     }
     private void saveHarga(int idBK){
         dbmHarga.save(validasi.getMerk(),validasi.getIsi(),validasi.getSatuan(),validasi.getTempat(),validasi.getHarga(),idBK);
-        hargaBahanList.add(0,dbmHarga.hargaBahan(idBK));
+        hargaBahanList.add(0,dbmHarga.hargaBahan(0,idBK));
         mHAdapter.notifyItemInserted(0);
         mHAdapter.notifyDataSetChanged();
         cekEmptyList();
     }
     private void saveBahan(){
         //dbmBahan.save(validasi.getNama(),"Bahan Baku");
-        bahanBakuList.add(0,dbmBahan.bahanBaku(validasi.getNama()));
+        bahanBakuList.add(0,dbmBahan.bahanBaku(validasi.getNama(),0));
         mAdapter.notifyItemInserted(0);
         mAdapter.notifyDataSetChanged();
         cekEmptyList();
     }
 
+    private void refreshList(){
+        dbmBahan.getAllBahan(bahanBakuList);
+        mAdapter.notifyDataSetChanged();
+        cekEmptyList();
+    }
     private void cekEmptyList(){
         int size;
         if (cekHarga){
@@ -214,6 +188,7 @@ public class DialogTambah implements View.OnClickListener {
             activity.invalidateOptionsMenu();
         }
     }
+
 
     @Override
     public void onClick(View v) {

@@ -56,8 +56,8 @@ public class DBAdapter {
         return db.delete(tableName, null, null);
     }
 
-    public long updateData(String tableName, String whereClause, ContentValues cv){
-        return db.update(tableName, cv, whereClause, null);
+    public long updateData(String tableName, ContentValues cv, String whereClause, String[] id){
+        return db.update(tableName, cv, whereClause, id);
     }
 
 }

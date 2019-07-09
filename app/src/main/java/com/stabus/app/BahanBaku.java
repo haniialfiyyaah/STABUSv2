@@ -1,28 +1,21 @@
 package com.stabus.app;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.stabus.app.Database.DBMBahan;
 import com.stabus.app.Interface.ISetListener;
@@ -51,9 +44,6 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
     private DBMBahan dbmBahan;
 
     private DialogTambah dialogTambah;
-    private DialogHapus dialogHapus;
-
-    private SearchView searchView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,7 +76,6 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
         dbmBahan = new DBMBahan(view);
         setRV(view);
         dialogTambah = new DialogTambah(getString(R.string.BahanBaku),getActivity(),view,bahanBakuList,mAdapter,frameRV,scrollView);
-        dialogHapus = new DialogHapus(view,bahanBakuList,selectedList,mAdapter,selected,dbmBahan,getActivity(),mISetListener);
     }
     private void setRV(View view){
         bahanBakuList = new ArrayList<>();
@@ -125,7 +114,7 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
         inflater.inflate(R.menu.menu_bahan_baku, menu);
         MenuItem menuItem = menu.findItem(R.id.actsearch);
 
-        searchView = (SearchView) menuItem.getActionView();
+        SearchView searchView = (SearchView) menuItem.getActionView();
         searchView.setQueryHint("Cari Bahan Baku..");
         searchView.setPadding(-22, 0, 0, 0);
 
@@ -215,7 +204,7 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
         selectedList.add(bahanBakuList.get(position));
     }
     private void setToolbarHapus(){
-        mISetListener.setToolbarTitle(selected +" item selected");
+        mISetListener.setToolbarTitle(selected +" item terpilih");
         mISetListener.setNavigationListener(R.drawable.ic_arrow_back_white, new View.OnClickListener() {
             @Override
             public void onClick(View v) {

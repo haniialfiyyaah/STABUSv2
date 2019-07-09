@@ -1,13 +1,9 @@
 package com.stabus.app;
 
 import android.support.design.widget.TextInputLayout;
-import android.view.View;
 import android.widget.Spinner;
 
 import com.stabus.app.Database.DBMBahan;
-import com.stabus.app.Database.DBMHarga;
-
-import org.w3c.dom.Text;
 
 public class Class_Validasi {
 
@@ -17,9 +13,9 @@ public class Class_Validasi {
     private int isi;
     private float harga;
 
-    public Class_Validasi(TextInputLayout mENama,
-                          TextInputLayout mEMerk, TextInputLayout mEIsi, TextInputLayout mETempat,
-                          TextInputLayout mEHarga, Spinner mSpSatuan) {
+    Class_Validasi(TextInputLayout mENama,
+                   TextInputLayout mEMerk, TextInputLayout mEIsi, TextInputLayout mETempat,
+                   TextInputLayout mEHarga, Spinner mSpSatuan) {
         this.mENama = mENama;
         this.mEMerk = mEMerk;
         this.mEIsi = mEIsi;
@@ -28,32 +24,32 @@ public class Class_Validasi {
         this.mSpSatuan = mSpSatuan;
     }
 
-    public String getNama() {
+    String getNama() {
         if (mENama.getEditText() != null) {
             nama = mENama.getEditText().getText().toString().trim();
         }
         return nama;
     }
 
-    public String getMerk() {
+    String getMerk() {
         if (mEMerk.getEditText() != null) {
             merk = mEMerk.getEditText().getText().toString().trim();
         }
         return merk;
     }
 
-    public String getSatuan() {
+    String getSatuan() {
         return satuan = mSpSatuan.getSelectedItem().toString().trim();
     }
 
-    public String getTempat() {
+    String getTempat() {
         if (mETempat.getEditText() != null) {
             tempat = mETempat.getEditText().getText().toString().trim();
         }
         return tempat;
     }
 
-    public int getIsi() {
+    int getIsi() {
         if (mEIsi.getEditText() != null) {
             if (mEIsi.getEditText().getText().toString().trim().length() != 0) {
                 isi = Integer.parseInt(mEIsi.getEditText().getText().toString());
@@ -75,7 +71,7 @@ public class Class_Validasi {
         return harga;
     }
 
-    public void setErrorMessage(TextInputLayout inputLayout, String message){
+    private void setErrorMessage(TextInputLayout inputLayout, String message){
         clearError();
         inputLayout.setError(message);
         inputLayout.requestFocus();
@@ -87,7 +83,7 @@ public class Class_Validasi {
         mETempat.setError(null);
         mEHarga.setError(null);
     }
-    public void clearText(boolean cekHarga){
+    void clearText(boolean cekHarga){
         if (mENama.getEditText()!=null && mEMerk.getEditText()!=null&& mEIsi.getEditText()!=null&& mETempat.getEditText()!=null&& mEHarga.getEditText()!=null){
             mENama.getEditText().getText().clear();
             mEMerk.getEditText().getText().clear();
@@ -104,11 +100,42 @@ public class Class_Validasi {
         }
     }
 
-    public void cekBahan(){
+    boolean cekBahan(){
         if (getNama().trim().length() == 0) {
             setErrorMessage(mENama, "Tidak Boleh Kosong");
-            return;
+            return true;
         }
+        return false;
     }
+    boolean cekIsi(){
+        if (getIsi() == 0){
+            setErrorMessage(mEIsi,"");
+            return true;
+        }
+        return false;
+    }
+    boolean cekHarga(){
+        if (getHarga()==0){
+            setErrorMessage(mEHarga,"Tidak Boleh Kosong");
+            return true;
+        }
+        return false;
+    }
+    boolean cekHargaSama(boolean cekHargaSama){
+        if (cekHargaSama){
+            setErrorMessage(mEHarga,"Harga ini sudah ada!");
+            return true;
+        }
+        return false;
+    }
+    boolean cekSame(DBMBahan dbmBahan){
+        if (dbmBahan.cekNama(getNama()) && (getMerk().trim().length() == 0&&getIsi() <= 0&&getTempat().trim().length() == 0&&getHarga() <= 0)){
+            setErrorMessage(mENama, "Data Sudah Ada");
+            return true;
+        }
+        return false;
+    }
+
+
 
 }

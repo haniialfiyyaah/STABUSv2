@@ -39,7 +39,7 @@ public class DBMBahan {
         db.closeDB();
     }
 
-    public int jumlahHarga(int id){
+    private int jumlahHarga(int id){
         db.openDB();
         String query = "SELECT COUNT(*) FROM "+HargaBKEntry.TABLE_HARGA+" WHERE "
                 +HargaBKEntry.COLS_ID_BAHAN_HARGA+" = "+id;
@@ -73,13 +73,25 @@ public class DBMBahan {
         db.closeDB();
         return result;
     }
-
     public long deleteHarga(int id){
         db.openDB();
 
         long result = db.deleteData(HargaBKEntry.TABLE_HARGA,HargaBKEntry.COLS_ID_BAHAN_HARGA+" =?",new String[]{String.valueOf(id)});
 
         db.closeDB();
+        return result;
+    }
+
+    public long ubahBahan(int id,String nama, String kategori){
+        db.openDB();
+        ContentValues cv = new ContentValues();
+        cv.put(BahanBakuEntry.COLS_NAMA_BAHAN, nama);
+        cv.put(BahanBakuEntry.COLS_KATEGORI_BAHAN, kategori);
+
+        long result = db.updateData(BahanBakuEntry.TABLE_BAHANBAKU ,cv,BahanBakuEntry.COLS_ID_BAHAN+" =?",new String[]{String.valueOf(id)});
+
+        db.closeDB();
+
         return result;
     }
 
@@ -95,17 +107,24 @@ public class DBMBahan {
         return cek;
 
     }
-
-    public MBahanBaku bahanBaku(String textNama){
+    public MBahanBaku bahanBaku(String textNama, int idBahan){
 
         MBahanBaku bahanBaku = null;
         db.openDB();
 
-        String query = "SELECT * FROM "
-                +BahanBakuEntry.TABLE_BAHANBAKU+" WHERE "
-                +BahanBakuEntry.COLS_NAMA_BAHAN+" =?";
+        String selection;
+        String args ;
+        if (textNama.trim().length()>0){
+            selection = BahanBakuEntry.COLS_NAMA_BAHAN;
+            args = textNama;
+        }else {
+            selection = BahanBakuEntry.COLS_ID_BAHAN;
+            args = String.valueOf(idBahan);
+        }
 
-        cursor = db.getRawQuery(query, new String[]{textNama});
+        cursor=db.getQuery(BahanBakuEntry.TABLE_BAHANBAKU,selection+" =?",new String[]{args});
+
+        //cursor = db.getRawQuery(query, new String[]{textNama});
 
         while (cursor.moveToNext()){
             int id = cursor.getInt(0);
