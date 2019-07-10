@@ -1,6 +1,6 @@
 package com.stabus.app.Model;
 
-public class MProdukBahan {
+public class MProdukRelasi {
 
     //tabel produk
     private int id_produk;
@@ -15,12 +15,17 @@ public class MProdukBahan {
     private int isi_digunakan;
     private String satuan_digunakan;
 
-    public MProdukBahan(int id_produk, String nama) {
+
+    private boolean isSelected =false;
+    private boolean isHapus =false;
+
+    public MProdukRelasi(int id_produk, String nama) {
         this.id_produk = id_produk;
         this.nama = nama;
     }
 
-    public MProdukBahan(int id_relasi, int fk_id_produk, int jumlah, String satuan, int fk_id_bahan, int isi_digunakan, String satuan_digunakan) {
+    public MProdukRelasi(String nama, int id_relasi, int fk_id_produk, int jumlah, String satuan, int fk_id_bahan, int isi_digunakan, String satuan_digunakan) {
+        this.nama = nama;
         this.id_relasi = id_relasi;
         this.fk_id_produk = fk_id_produk;
         this.jumlah = jumlah;
@@ -100,5 +105,21 @@ public class MProdukBahan {
 
     public void setSatuan_digunakan(String satuan_digunakan) {
         this.satuan_digunakan = satuan_digunakan;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
+    public boolean isHapus() {
+        return isHapus;
+    }
+
+    public void setHapus(boolean hapus) {
+        isHapus = hapus;
     }
 }

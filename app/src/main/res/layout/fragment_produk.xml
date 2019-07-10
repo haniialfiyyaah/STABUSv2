@@ -24,7 +24,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:iconifiedByDefault="false"
-                app:queryHint="CARI PRODUK"/>
+                app:queryHint="CARI PRODUK"
+                android:inputType="textCapCharacters"/>
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:text="@string/BahanBaku"
+                android:textColor="@color/backgroundColor"
+                android:textStyle="bold"
+                android:visibility="gone"/>
         </android.support.v7.widget.Toolbar>
 
         <ScrollView

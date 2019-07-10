@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.stabus.app.Database.DBMBahan;
 import com.stabus.app.Interface.ISetListener;
@@ -46,6 +48,9 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
 
     private ClassDialogTambah dialogTambah;
 
+    Toolbar toolbar;
+    TextView title;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +66,7 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
         initView(view);
         initObject(view);
         initListener();
-
+        toolbar.setVisibility(View.GONE);
         return view;
     }
 
@@ -71,6 +76,8 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
         frameRV =view.findViewById(R.id.frameRVBahan);
         scrollView=view.findViewById(R.id.scrollBahan);
         fabTambah = view.findViewById(R.id.fabBahanBK);
+        toolbar = view.findViewById(R.id.toolbarBK);
+        title = view.findViewById(R.id.tvTitle);
     }
     private void initObject(View view){
         dbmBahan = new DBMBahan(view);

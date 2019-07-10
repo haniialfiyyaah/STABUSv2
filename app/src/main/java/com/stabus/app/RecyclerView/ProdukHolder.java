@@ -1,6 +1,7 @@
 package com.stabus.app.RecyclerView;
 
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -13,12 +14,14 @@ public class ProdukHolder extends RecyclerView.ViewHolder implements View.OnClic
 
     TextView nama_produk;
     TextView jumlah_produksi;
+    CardView cardView;
     private OnListener onListener;
 
     public ProdukHolder(@NonNull View itemView, OnListener onListener) {
         super(itemView);
         this.nama_produk = itemView.findViewById(R.id.tvProduk);
         this.jumlah_produksi = itemView.findViewById(R.id.tvJumlahProduksi);
+        this.cardView = itemView.findViewById(R.id.cardProduk);
         this.onListener = onListener;
         itemView.setOnClickListener(this);
         itemView.setOnLongClickListener(this);

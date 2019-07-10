@@ -13,6 +13,9 @@ public class ClassValidasi {
     private int isi;
     private float harga;
 
+    public ClassValidasi() {
+    }
+
     ClassValidasi(TextInputLayout mENama,
                   TextInputLayout mEMerk, TextInputLayout mEIsi, TextInputLayout mETempat,
                   TextInputLayout mEHarga, Spinner mSpSatuan) {

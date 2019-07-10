@@ -89,13 +89,28 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:layout_marginBottom="20dp"
             android:background="@color/lightgray"/>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvTambahBahan"
+        <ScrollView
+            android:id="@+id/scrollBahan"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent"
+            android:paddingTop="10dp">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvTambahBahan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </ScrollView>
+
+        <FrameLayout
+            android:id="@+id/frameEmpty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+            <include layout="@layout/layout_empty"/>
+        </FrameLayout>
+
+
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton

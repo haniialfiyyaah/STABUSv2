@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements ISetListener {
                     //setmToolbar("Bahan Baku", R.drawable.ic_home_white);
                     fragment = new BahanBaku();
                     mToolbar.setVisibility(View.VISIBLE);
+                    setSupportActionBar(mToolbar);
                     break;
                 case R.id.navProduk:
                     //setmToolbar("Produk", R.drawable.ic_home_white);

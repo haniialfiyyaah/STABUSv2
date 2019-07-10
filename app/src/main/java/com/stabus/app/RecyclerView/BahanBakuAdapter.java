@@ -18,6 +18,7 @@ public class BahanBakuAdapter extends RecyclerView.Adapter<BahanBakuHolder> {
 
     private List<MBahanBaku> bahanBakuList;
     private OnListener mOnListener;
+    private boolean isProduk;
 
     public BahanBakuAdapter(List<MBahanBaku> bahanBakuList, OnListener onListener) {
         this.bahanBakuList = bahanBakuList;

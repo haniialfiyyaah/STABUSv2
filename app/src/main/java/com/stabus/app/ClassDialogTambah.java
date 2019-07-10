@@ -191,6 +191,17 @@ public class ClassDialogTambah implements View.OnClickListener {
     }
 
 
+
+    private void setSatuan(){
+        if (validasi.getSatuan().equals("ml")) {
+            mSpSatuan.setSelection(0);
+        } else if (validasi.getSatuan().equals("gr")) {
+            mSpSatuan.setSelection(1);
+        } else {
+            mSpSatuan.setSelection(2);
+        }
+    }
+
     @Override
     public void onClick(View v) {
         tambahData();

@@ -20,45 +20,43 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.stabus.app.Database.DBMProduk;
 import com.stabus.app.Interface.ISetListener;
 import com.stabus.app.Interface.OnListener;
-import com.stabus.app.Model.MProdukBahan;
+import com.stabus.app.Model.MProdukRelasi;
 import com.stabus.app.RecyclerView.ProdukAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Produk extends Fragment implements OnListener, View.OnClickListener {
+public class Produk extends Fragment implements OnListener, View.OnClickListener, SearchView.OnQueryTextListener {
 
     //class
     private ISetListener mISetListener;
     private ProdukAdapter mAdapter;
     private DBMProduk dbmProduk;
     //list
-    private List<MProdukBahan> produkList;
-    private List<MProdukBahan> produkListFull;
-    private List<MProdukBahan> selectedList;
+    private List<MProdukRelasi> produkList;
+    private List<MProdukRelasi> produkListFull;
+    private List<MProdukRelasi> selectedList;
 
     //widget
-    private SearchView searchView;
     private RecyclerView recyclerView;
     private FloatingActionButton fabTambah;
     //tampilan
     private ScrollView scrollView;
     private FrameLayout frameLayout;
     private Toolbar toolbar;
+    private SearchView searchView;
+    private TextView titleToolbar;
+    int selected=0;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mISetListener.setNavigationIcon(0,false);
-
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         setHasOptionsMenu(true);
-
     }
 
     @Nullable
@@ -66,6 +64,7 @@ public class Produk extends Fragment implements OnListener, View.OnClickListener
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_produk, container, false);
         initView(view);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         initObject(view);
         initListener();
         return view;
@@ -74,6 +73,7 @@ public class Produk extends Fragment implements OnListener, View.OnClickListener
     private void initView(View view){
         toolbar = view.findViewById(R.id.toolbarProduk);
         searchView = view.findViewById(R.id.svProduk);
+        titleToolbar = view.findViewById(R.id.tvTitle);
         recyclerView = view.findViewById(R.id.rvProduk);
         scrollView = view.findViewById(R.id.scrollProduk);
         frameLayout = view.findViewById(R.id.frameEmpty);
@@ -82,9 +82,12 @@ public class Produk extends Fragment implements OnListener, View.OnClickListener
     private void initObject(View view){
         dbmProduk = new DBMProduk(view);
         setRV();
+        produkListFull = new ArrayList<>();
+        dbmProduk.getAllProduk(produkListFull);
     }
     private void initListener(){
         fabTambah.setOnClickListener(this);
+        searchView.setOnQueryTextListener(this);
     }
     private void setRV(){
         produkList = new ArrayList<>();
@@ -95,17 +98,7 @@ public class Produk extends Fragment implements OnListener, View.OnClickListener
         refreshList();
     }
     private void refreshList(){
-        //dbmProduk.getAllProduk(produkList);
-        produkList.add(new MProdukBahan(0, "RESEP KUE BOLU HIGIENIS"));
-        produkList.add(new MProdukBahan(0, "RESEP NIS"));
-        produkList.add(new MProdukBahan(0, "RESEP KUE BOLU HIGIENIS"));
-        produkList.add(new MProdukBahan(0, "RESEP KUE BOLU HIGIENIS"));
-        produkList.add(new MProdukBahan(0, "RESEP KUE BOLGIENIS"));
-        produkList.add(new MProdukBahan(0, "RESEP KUE BOLU HIGIENIS"));
-        produkList.add(new MProdukBahan(0, "RESEP KUE BENIS"));
-        produkList.add(new MProdukBahan(0, "RESEP KUE BOLU HIGIENIS"));
-
-
+        dbmProduk.getAllProduk(produkList);
         mAdapter.notifyDataSetChanged();
         cekEmptyList();
     }
@@ -127,22 +120,114 @@ public class Produk extends Fragment implements OnListener, View.OnClickListener
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_produk, menu);
-        MenuItem menuItem = menu.findItem(R.id.searchProduk);
+        if (selected>0){
+            inflater.inflate(R.menu.menu_produk, menu);
+        }
 
-        SearchView searchView = (SearchView) menuItem.getActionView();
-        searchView.setQueryHint("Cari Produk");
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == R.id.actdelete) {
+            //delete produk
+            delete();
+            clearMenu();
+            mAdapter.delete(selectedList);
+            cekEmptyList();
+            //delete relasi
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void OnClickListener(int position, View view) {
-
+        if (produkList.get(position).isHapus()){
+            produkList.get(position).setSelected(!produkList.get(position).isSelected());
+            selectList(position);
+            titleToolbar.setText(selected +" item terpilih");
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
     public boolean OnLongListener(int position, View view) {
+        if (!produkList.get(position).isHapus()){
+            selected = selected+1;
+            //set toolbar
+            setToolbarHapus();
+            //call All Open
+            openDelete();
+            //click list
+            clickFirstList(position);
+        }
         return false;
+    }
+
+
+    private void delete(){
+        for (MProdukRelasi produkBahan : selectedList){
+            dbmProduk.deleteProduk(produkBahan.getId_produk());
+            //delete relasi where id produk
+        }
+    }
+
+    private void selectList(int position){
+        if (produkList.get(position).isSelected()){
+            selectedList.add(produkList.get(position));
+            selected++;
+        }else {
+            selectedList.remove(produkList.get(position));
+            selected--;
+        }
+    }
+    private void clickFirstList(int position){
+        produkList.get(position).setSelected(!produkList.get(position).isSelected());
+        selectedList = new ArrayList<>();
+        selectedList.add(produkList.get(position));
+    }
+    private void setToolbarHapus(){
+        searchView.setVisibility(View.GONE);
+        titleToolbar.setVisibility(View.VISIBLE);
+        toolbar.setBackground(getResources().getDrawable(R.drawable.shape_cornor_upp));
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white);
+
+        titleToolbar.setText(selected +" item terpilih");
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearMenu();
+            }
+        });
+        callMenu();
+    }
+    private void openDelete(){
+        for (int ind = 0; ind < produkList.size(); ind++){
+            produkList.get(ind).setHapus(true);
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+    private void closeDelete(){
+        for (int ind = 0; ind < produkList.size(); ind++){
+            produkList.get(ind).setHapus(false);
+            produkList.get(ind).setSelected(false);
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+    private void callMenu(){
+        if (getActivity()!=null){
+            getActivity().invalidateOptionsMenu();
+        }
+    }
+    private void clearMenu(){
+        selected=0;
+        searchView.setVisibility(View.VISIBLE);
+        titleToolbar.setVisibility(View.GONE);
+        toolbar.setBackground(getResources().getDrawable(R.drawable.shape_search_view));
+        toolbar.setNavigationIcon(null);
+        callMenu();
+        closeDelete();
     }
 
     @Override
@@ -156,5 +241,17 @@ public class Produk extends Fragment implements OnListener, View.OnClickListener
             fragmentTransaction.commit();
         }
 
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String s) {
+        mAdapter.filter(produkListFull, s);
+        cekEmptyList();
+        return true;
     }
 }
