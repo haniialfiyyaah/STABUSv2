@@ -18,6 +18,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -199,7 +200,7 @@ public class ProdukTambah extends Fragment implements View.OnClickListener, OnLi
         toast.show();
         if (dbmProduk.cekNama(nama)) simpanRelasi();
         else {
-            dbmProduk.saveProduk(nama);
+//            dbmProduk.saveProduk(nama);
             simpanRelasi();
         }
         clearError();
@@ -222,7 +223,8 @@ public class ProdukTambah extends Fragment implements View.OnClickListener, OnLi
     }
 
     private void simpanRelasi(){
-        int fk_id_poduk = dbmProduk.produkBahan(txNama.getEditText().getText().toString(),0).getFk_id_produk();
+//        int fk_id_poduk = dbmProduk.produkBahan(txNama.getEditText().getText().toString(),0).getFk_id_produk();
+        int fk_id_poduk = (int) dbmProduk.saveProduk(nama);
         int jumlah = Integer.parseInt(txJumlah.getEditText().getText().toString());
         String satuan = Spsatuan.getSelectedItem().toString();
         int fk_id_bahan;
@@ -234,6 +236,7 @@ public class ProdukTambah extends Fragment implements View.OnClickListener, OnLi
             satuan_digunakan = crud.getBahanBakuList().get(pos).getSatuan_dg();
             dbmProduk.saveRelasi(fk_id_poduk,jumlah,satuan,fk_id_bahan,jumlah_digunakan,satuan_digunakan);
         }
+        Log.d("fk_id_Produk","FK_ID_PRODUK"+String.valueOf(fk_id_poduk));
     }
 
     @Override

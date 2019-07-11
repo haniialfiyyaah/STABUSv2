@@ -2,6 +2,7 @@ package com.stabus.app.Database;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.View;
 
 import com.stabus.app.Database.DBContract.*;
@@ -86,6 +87,8 @@ public class DBMProduk {
 
     public long saveRelasi(int fk_id_poduk, int jumlah, String satuan, int fk_id_bahan, int jumlah_digunakan, String satuan_digunakan){
         db.openDB();
+
+        Log.d("Value","Nama id_produk "+fk_id_poduk+" jumlah "+jumlah+" satuan "+satuan+" fk_id_bahan "+fk_id_bahan+" jumlah digunakan "+jumlah_digunakan+" satuan digunakan "+satuan_digunakan);
 
         ContentValues cv = new ContentValues();
         cv.put(ProdukBKEntry.COLS_FK_ID_PRODUK, fk_id_poduk);
