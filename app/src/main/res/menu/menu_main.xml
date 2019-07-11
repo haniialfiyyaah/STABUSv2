@@ -2,15 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navBahan"
-        android:title="Bahan Baku"
-        android:icon="@drawable/bahan"
-        />
-    <item
         android:id="@+id/navProduk"
         android:title="Produk"
         android:icon="@drawable/produk"
         />
+    <item
+        android:id="@+id/navBahan"
+        android:title="Bahan Baku"
+        android:icon="@drawable/bahan"
+        />
+
     <item
         android:id="@+id/navKalkulator"
         android:title="Kalkulator"

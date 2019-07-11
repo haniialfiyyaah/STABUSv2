@@ -49,11 +49,12 @@ public class ClassDialogEdit implements View.OnClickListener {
     private ClassValidasi validasi;
     private boolean cekBahan;
 
-    private ISetListener mISetListener;
+//    private ISetListener mISetListener;
+    TextView title;
     private Dialog dialog;
 
-    ClassDialogEdit(ISetListener mISetListener, View view, Activity activity, List<MHargaBahan> hargaBahanList, HargaBahanAdapter mHAdapter, ScrollView scrollView, FrameLayout frameLayout) {
-        this.mISetListener = mISetListener;
+    ClassDialogEdit(TextView title, View view, Activity activity, List<MHargaBahan> hargaBahanList, HargaBahanAdapter mHAdapter, ScrollView scrollView, FrameLayout frameLayout) {
+        this.title = title;
         this.view = view;
         this.activity = activity;
         this.hargaBahanList = hargaBahanList;
@@ -69,7 +70,7 @@ public class ClassDialogEdit implements View.OnClickListener {
         this.tag=tag;
         dialog = new Dialog(view.getContext());
         showDialog(dialog);
-        mTitle.setText(String.format("%s %s", tag, nama));
+        mTitle.setText(tag+" "+nama);
         getData(id, nama);
         setTextView();
         fabsave.setOnClickListener(this);
@@ -180,12 +181,13 @@ public class ClassDialogEdit implements View.OnClickListener {
         if (activity!=null){
             activity.invalidateOptionsMenu();
         }
-        mISetListener.setToolbarTitle(validasi.getNama());
+
     }
 
     @Override
     public void onClick(View v) {
         editData();
-        callMenu();
+        title.setText(validasi.getNama());
+       // callMenu();
     }
 }

@@ -27,7 +27,7 @@ public class DBMProduk {
     public DBMProduk(View view) {
         this.view = view;
         db = new DBAdapter(view.getContext());
-        dbmBahan = new DBMBahan(view);
+
     }
 
     private List<MProdukRelasi> getProduk(){
@@ -93,17 +93,17 @@ public class DBMProduk {
             //int id_relasi = cursor.getInt(0);
             int fk_id_produk = cursor.getInt(1);
             //int jumlah = cursor.getInt(2);
-            String satuan = cursor.getString(3);
+            //String satuan = cursor.getString(3);
             int fk_id_bahan = cursor.getInt(4);
             int jumah_dg = cursor.getInt(5);
-            //String satuan_dg = cursor.getString(6);
-
+            String satuan_dg = cursor.getString(6);
+            dbmBahan = new DBMBahan(view);
             String nama_bahan = dbmBahan.bahanBaku("",fk_id_bahan).getNama_bahan();
 
             MBahanBaku bahanBaku = new MBahanBaku();
             bahanBaku.setId(fk_id_bahan);
             bahanBaku.setJumlah_dg(jumah_dg);
-            bahanBaku.setSatuan_dg(satuan);
+            bahanBaku.setSatuan_dg(satuan_dg);
             bahanBaku.setNama_bahan(nama_bahan);
             //MProdukRelasi bahanBaku = new MProdukRelasi(fk_id_produk,nama_produk,id_relasi,fk_id_produk,jumlah,satuan,fk_id_bahan,jumah_dg,satuan_dg);
             produkRelasiList.add(bahanBaku);

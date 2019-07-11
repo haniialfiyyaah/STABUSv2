@@ -55,15 +55,15 @@
                 android:layout_height="wrap_content"/>
         </ScrollView>
 
-        <FrameLayout
-            android:id="@+id/frameEmpty"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone">
-            <include layout="@layout/layout_empty"/>
-        </FrameLayout>
     </LinearLayout>
 
+    <FrameLayout
+        android:id="@+id/frameEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+        <include layout="@layout/layout_empty"/>
+    </FrameLayout>
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabPilihBahan"
         android:layout_width="wrap_content"
