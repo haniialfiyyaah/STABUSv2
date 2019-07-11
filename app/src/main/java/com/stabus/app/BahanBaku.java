@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -54,8 +55,8 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mISetListener.setToolbarTitle(getTag());
-        mISetListener.setNavigationIcon(R.drawable.ic_home_white, false);
+        //mISetListener.setToolbarTitle(getTag());
+        //mISetListener.setNavigationIcon(R.drawable.ic_home_white, false);
         setHasOptionsMenu(true);
     }
 
@@ -64,9 +65,9 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_bahan, container, false);
         initView(view);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         initObject(view);
         initListener();
-        toolbar.setVisibility(View.GONE);
         return view;
     }
 
@@ -80,6 +81,7 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
         title = view.findViewById(R.id.tvTitle);
     }
     private void initObject(View view){
+        settoolbaron();
         dbmBahan = new DBMBahan(view);
         setRV(view);
         dialogTambah = new ClassDialogTambah(getString(R.string.BahanBaku), getActivity(), view, bahanBakuList, mAdapter, frameRV, scrollView);
@@ -166,7 +168,8 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
         if (bahanBakuList.get(position).isOpen()){
             bahanBakuList.get(position).setSelected(!bahanBakuList.get(position).isSelected());
             selectList(position);
-            mISetListener.setToolbarTitle(selected +" item terpilih");
+            //mISetListener.setToolbarTitle(selected +" item terpilih");
+            title.setText(selected +" item terpilih");
             mAdapter.notifyDataSetChanged();
         }
         else {
@@ -175,6 +178,7 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
             bundle.putString(getString(R.string.selectedNama), sNama);
             bundle.putString(getString(R.string.selectedKategori), sKategori);
             mISetListener.inflateFragment(getString(R.string.HargaBahanBaku), bundle);
+            //title.setText(selected +" item terpilih");
         }
 
     }
@@ -208,13 +212,21 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
         selectedList.add(bahanBakuList.get(position));
     }
     private void setToolbarHapus(){
-        mISetListener.setToolbarTitle(selected +" item terpilih");
-        mISetListener.setNavigationListener(R.drawable.ic_arrow_back_white, new View.OnClickListener() {
+        title.setText(selected +" item terpilih");
+        //mISetListener.setToolbarTitle(selected +" item terpilih");
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 clearMenu();
             }
         });
+/*        mISetListener.setNavigationListener(R.drawable.ic_arrow_back_white, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearMenu();
+            }
+        });*/
         callMenu();
     }
     private void openDelete(){
@@ -238,8 +250,9 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
     private void clearMenu(){
         selected=0;
         callMenu();
-        mISetListener.setToolbarTitle(getTag());
-        mISetListener.setNavigationIcon(R.drawable.ic_home_white, false);
+        settoolbaron();
+        //mISetListener.setToolbarTitle(getTag());
+        //mISetListener.setNavigationIcon(R.drawable.ic_home_white, false);
         closeDelete();
     }
     private void deleteDB(){
@@ -251,8 +264,7 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
 
     @Override
     public void onResume() {
-        mISetListener.setToolbarTitle(getTag());
-        mISetListener.setNavigationIcon(R.drawable.ic_home_white, false);
+        settoolbaron();
         callMenu();
         super.onResume();
 
@@ -267,6 +279,11 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
             cekEmptyList();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void settoolbaron(){
+        title.setText(getTag());
+        toolbar.setNavigationIcon(R.drawable.ic_home_white);
     }
 
 

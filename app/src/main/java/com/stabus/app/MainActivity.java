@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements ISetListener {
         setContentView(R.layout.activity_main);
         //define id
         mToolbar = findViewById(R.id.toolbarBK);
+        mToolbar.setVisibility(View.GONE);
         mTitle = findViewById(R.id.tvTitle);
         //set action bar
         setSupportActionBar(mToolbar);
@@ -55,13 +56,10 @@ public class MainActivity extends AppCompatActivity implements ISetListener {
                 case R.id.navBahan:
                     //setmToolbar("Bahan Baku", R.drawable.ic_home_white);
                     inflateFragment(getString(R.string.BahanBaku),null);
-                    mToolbar.setVisibility(View.VISIBLE);
-                    setSupportActionBar(mToolbar);
                     break;
                 case R.id.navProduk:
                     //setmToolbar("Produk", R.drawable.ic_home_white);
                     inflateFragment(getString(R.string.Produk),null);
-                    mToolbar.setVisibility(View.GONE);
                     break;
                 case R.id.navKalkulator:
                     //setmToolbar("Kalkulator", R.drawable.ic_home_white);
