@@ -1,11 +1,13 @@
 package com.stabus.app;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.stabus.app.Database.DBMBahan;
@@ -47,7 +50,8 @@ public class HargaBahanBaku extends Fragment implements View.OnClickListener, On
     private FrameLayout frameRV;
     private ScrollView scrollView;
     private FloatingActionButton fabTambah;
-    private Toolbar toolbar;
+    Toolbar toolbar;
+    TextView title;
 
     private DBMHarga dbmHarga;
     private DBMBahan dbmBahan;
@@ -71,10 +75,10 @@ public class HargaBahanBaku extends Fragment implements View.OnClickListener, On
             dbmBahan = new DBMBahan(getView());
             this.sNama = dbmBahan.bahanBaku("",sId).getNama_bahan();
         }
-        //set toolbar title
-        mISetListener.setToolbarTitle(sNama);
-        mISetListener.setToolbarTitleListener(true,this);
-        mISetListener.setNavigationIcon(R.drawable.ic_arrow_back_white, true);
+
+        //mISetListener.setToolbarTitle(sNama);
+        //mISetListener.setToolbarTitleListener(true,this);
+        //mISetListener.setNavigationIcon(R.drawable.ic_arrow_back_white, true);
 
     }
 
@@ -84,27 +88,47 @@ public class HargaBahanBaku extends Fragment implements View.OnClickListener, On
         View view = inflater.inflate(R.layout.fragment_bahan, container, false);
 
         initView(view);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        settoolbars(view);
         initObject(view);
         initListener();
-        toolbar.setVisibility(View.GONE);
-
-
         return view;
     }
 
+    private void settoolbars(View v){
+        //set toolbar title
+        title.setText(sNama);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white);
+
+        Drawable drawable = ContextCompat.getDrawable(v.getContext(), R.drawable.ic_edit);
+        drawable.setBounds(0,0,30,30);
+        title.setCompoundDrawables(null,null,drawable,null);
+
+        title.setClickable(true);
+        title.setOnClickListener(this);
+
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
+    }
     private void initView(View view){
         mRecyclerView = view.findViewById(R.id.rvBahanBK);
         frameRV =view.findViewById(R.id.frameRVBahan);
         scrollView=view.findViewById(R.id.scrollBahan);
         fabTambah = view.findViewById(R.id.fabBahanBK);
         toolbar = view.findViewById(R.id.toolbarBK);
+        title = view.findViewById(R.id.tvTitle);
     }
     private void initObject(View view){
         dbmHarga = new DBMHarga(view);
         dbmBahan= new DBMBahan(view);
         setRV(view);
         dialogTambah = new ClassDialogTambah(getString(R.string.HargaBahanBaku), getActivity(), view, hargaBahanList, mAdapter, frameRV, scrollView);
-        dialogEdit = new ClassDialogEdit(mISetListener, view, getActivity(), hargaBahanList, mAdapter, scrollView, frameRV);
+        dialogEdit = new ClassDialogEdit(title, view, getActivity(), hargaBahanList, mAdapter, scrollView, frameRV);
     }
     private void setRV(View view){
         hargaBahanList = new ArrayList<>();
@@ -181,7 +205,7 @@ public class HargaBahanBaku extends Fragment implements View.OnClickListener, On
 
     @Override
     public void onClick(View v) {
-        clearMenu();
+        clearMenu(v);
         if (v==fabTambah){
             dialogTambah.tambahDialog(getString(R.string.TambahHarga)+" "+sNama,sId);
             //dbmHarga.deleteAll();
@@ -200,7 +224,8 @@ public class HargaBahanBaku extends Fragment implements View.OnClickListener, On
         if (hargaBahanList.get(position).isOpen()){
             hargaBahanList.get(position).setSelected(!hargaBahanList.get(position).isSelected());
             selectList(position);
-            mISetListener.setToolbarTitle(selected +" item terpilih");
+            title.setText(selected +" item terpilih");
+            //mISetListener.setToolbarTitle(selected +" item terpilih");
             mAdapter.notifyDataSetChanged();
         }else {
             dialogEdit.editDialog(getString(R.string.UbahHarga), setId,"");
@@ -239,14 +264,23 @@ public class HargaBahanBaku extends Fragment implements View.OnClickListener, On
         selectedList.add(hargaBahanList.get(position));
     }
     private void setToolbarHapus(){
-        mISetListener.setToolbarTitle(selected +" item selected");
-        mISetListener.setToolbarTitleListener(false,null);
+        title.setText(selected +" item terpilih");
+        //mISetListener.setToolbarTitle(selected +" item selected");
+        //mISetListener.setToolbarTitleListener(false,null);
+        title.setOnClickListener(null);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearMenu(v);
+            }
+        });/*
         mISetListener.setNavigationListener(R.drawable.ic_arrow_back_white, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 clearMenu();
             }
-        });
+        });*/
         callMenu();
     }
     private void openDelete(){
@@ -267,13 +301,14 @@ public class HargaBahanBaku extends Fragment implements View.OnClickListener, On
             getActivity().invalidateOptionsMenu();
         }
     }
-    private void clearMenu(){
+    private void clearMenu(View view){
         selected=0;
         sNama = dbmBahan.bahanBaku("",sId).getNama_bahan();
         callMenu();
-        mISetListener.setToolbarTitle(sNama);
-        mISetListener.setToolbarTitleListener(true,this);
-        mISetListener.setNavigationIcon(R.drawable.ic_arrow_back_white, true);
+        settoolbars(view);
+        //mISetListener.setToolbarTitle(sNama);
+        //mISetListener.setToolbarTitleListener(true,this);
+       // mISetListener.setNavigationIcon(R.drawable.ic_arrow_back_white, true);
         closeDelete();
     }
     private void deleteDB(){
@@ -286,7 +321,7 @@ public class HargaBahanBaku extends Fragment implements View.OnClickListener, On
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.actdelete) {
             deleteDB();
-            clearMenu();
+            clearMenu(getView());
             mAdapter.delete(selectedList);
             cekEmptyList();
         }
