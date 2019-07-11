@@ -19,12 +19,16 @@ public class MProdukRelasi {
     private boolean isSelected =false;
     private boolean isHapus =false;
 
+    public MProdukRelasi() {
+    }
+
     public MProdukRelasi(int id_produk, String nama) {
         this.id_produk = id_produk;
         this.nama = nama;
     }
 
-    public MProdukRelasi(String nama, int id_relasi, int fk_id_produk, int jumlah, String satuan, int fk_id_bahan, int isi_digunakan, String satuan_digunakan) {
+    public MProdukRelasi(int id_produk, String nama, int id_relasi, int fk_id_produk, int jumlah, String satuan, int fk_id_bahan, int isi_digunakan, String satuan_digunakan) {
+        this.id_produk = id_produk;
         this.nama = nama;
         this.id_relasi = id_relasi;
         this.fk_id_produk = fk_id_produk;

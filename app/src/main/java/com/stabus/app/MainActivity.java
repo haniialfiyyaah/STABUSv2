@@ -148,6 +148,10 @@ public class MainActivity extends AppCompatActivity implements ISetListener {
             HargaBahanBaku fragment = new HargaBahanBaku();
             setFragment(fragment, fragmentTag, true, bundle);
         }
+        if (fragmentTag.equals(getString(R.string.TambahProduk))){
+            ProdukTambah fragment = new ProdukTambah();
+            setFragment(fragment, fragmentTag, true, bundle);
+        }
     }
 
     @Override
