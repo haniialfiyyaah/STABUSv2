@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements ISetListener {
                     //setmToolbar("Bahan Baku", R.drawable.ic_home_white);
                     fragment = new BahanBaku();
                     mToolbar.setVisibility(View.VISIBLE);
+                    setSupportActionBar(mToolbar);
                     break;
                 case R.id.navProduk:
                     //setmToolbar("Produk", R.drawable.ic_home_white);
@@ -152,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements ISetListener {
     public void setRecyclerView(RecyclerView.LayoutManager layoutManager, RecyclerView recyclerView, RecyclerView.Adapter mAdapter) {
         recyclerView.setHasFixedSize(false);
         //RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getContext());
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(mAdapter);
     }

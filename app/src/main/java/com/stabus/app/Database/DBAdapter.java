@@ -39,6 +39,10 @@ public class DBAdapter {
         return db.query(table,null,selection,selectionArgs,null,null,null);
     }
 
+    public Cursor getQueryColums(String table, String[] columns, String selection,String[] selectionArgs){
+        return db.query(table,columns,selection,selectionArgs,null,null,null);
+    }
+
     public Cursor getAllData(String tableName){
         return db.query(tableName, null, null, null,
                         null, null, null);

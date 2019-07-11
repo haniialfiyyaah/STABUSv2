@@ -94,8 +94,8 @@ public class ClassDialogEdit implements View.OnClickListener {
         //cek isi dan harga tidak boleh kosong jika salah satu ada terisi
         if (cekBahan){
             if (validasi.cekBahan()) return;
-            Toast toast = Toast.makeText(view.getContext(), validasi.getNama(), Toast.LENGTH_SHORT);
-            toast.show();
+            //Toast toast = Toast.makeText(view.getContext(), validasi.getNama(), Toast.LENGTH_SHORT);
+            //toast.show();
             dbmBahan.ubahBahan(dbmBahan.bahanBaku(nama,0).getId(),validasi.getNama(),"Bahan Baku");
             dialog.dismiss();
         }else {

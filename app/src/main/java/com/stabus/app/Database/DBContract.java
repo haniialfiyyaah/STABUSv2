@@ -75,7 +75,7 @@ class DBContract {
             +ProdukBKEntry.COLS_FK_ID_PRODUK+" INTEGER NOT NULL,"
             +ProdukBKEntry.COLS_JUMLAH_PRODUK+" INTEGER NOT NULL,"
             +ProdukBKEntry.COLS_SATUAN_PRODUK+" TEXT NOT NULL,"
-            +ProdukBKEntry.COLS_FK_ID_BAHAN+" TEXT NOT NULL,"
+            +ProdukBKEntry.COLS_FK_ID_BAHAN+" INTEGER NOT NULL,"
             +ProdukBKEntry.COLS_JUMLAH_DIGUNAKAN+" INTEGER NOT NULL,"
             +ProdukBKEntry.COLS_SATUAN_DIGUNAKAN+" TEXT NOT NULL);";
 

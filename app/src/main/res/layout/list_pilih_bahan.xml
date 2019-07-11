@@ -3,47 +3,54 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:padding="5dp"
-    android:background="@color/backgroundColor">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbarProduk"
+            android:id="@+id/toolbarPilihBK"
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
             android:background="@drawable/shape_search_view"
             app:contentInsetStartWithNavigation="0dp"
             app:contentInsetStart="0dp"
             app:contentInsetLeft="0dp">
-            <android.support.v7.widget.SearchView
-                android:id="@+id/svProduk"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:iconifiedByDefault="false"
-                app:queryHint="CARI PRODUK"
-                android:inputType="textCapCharacters"/>
-            <TextView
-                android:id="@+id/tvTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="22sp"
-                android:text="@string/BahanBaku"
-                android:textColor="@color/backgroundColor"
-                android:textStyle="bold"
-                android:visibility="gone"/>
+                android:orientation="horizontal">
+                <android.support.v7.widget.SearchView
+                    android:id="@+id/svPilihBK"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:iconifiedByDefault="false"
+                    app:queryHint="CARI BAHAN"
+                    android:inputType="textCapCharacters"/>
+                <ImageButton
+                    android:id="@+id/pilihTambah"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_playlist_add"
+                    android:layout_marginEnd="10dp"
+                    android:layout_gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="" />
+            </LinearLayout>
+
         </android.support.v7.widget.Toolbar>
 
         <ScrollView
-            android:id="@+id/scrollProduk"
+            android:id="@+id/scrollRV"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingTop="10dp">
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/rvProduk"
+                android:id="@+id/rvPilihBahan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </ScrollView>
@@ -58,13 +65,14 @@
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabProduk"
+        android:id="@+id/fabPilihBahan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:layout_gravity="center|bottom"
         android:backgroundTint="#DB5A31"
-        android:src="@drawable/ic_tombol_tambah"
+        android:src="@drawable/ic_tombol_done"
         app:fabSize="auto"/>
+
 
 </android.support.design.widget.CoordinatorLayout>

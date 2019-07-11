@@ -7,6 +7,13 @@ public class MBahanBaku {
     //untuk penambahan model cardlist
     private int jumlah;
 
+    //penyimpanan produk
+    int jumlah_dg;
+    String satuan_dg;
+
+    //helper
+    int pos;
+
     boolean isSelected = false;
     boolean isOpen = false;
 
@@ -15,6 +22,33 @@ public class MBahanBaku {
         this.kategori = kategori;
         this.nama_bahan = nama_bahan;
         this.jumlah = jumlah;
+    }
+
+    public MBahanBaku() {
+    }
+
+    public int getPos() {
+        return pos;
+    }
+
+    public void setPos(int pos) {
+        this.pos = pos;
+    }
+
+    public int getJumlah_dg() {
+        return jumlah_dg;
+    }
+
+    public void setJumlah_dg(int jumlah_dg) {
+        this.jumlah_dg = jumlah_dg;
+    }
+
+    public String getSatuan_dg() {
+        return satuan_dg;
+    }
+
+    public void setSatuan_dg(String satuan_dg) {
+        this.satuan_dg = satuan_dg;
     }
 
     public int getId() {
