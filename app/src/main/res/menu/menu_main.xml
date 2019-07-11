@@ -4,22 +4,22 @@
     <item
         android:id="@+id/navBahan"
         android:title="Bahan Baku"
-        android:icon="@drawable/ic_home_white"
+        android:icon="@drawable/bahan"
         />
     <item
         android:id="@+id/navProduk"
         android:title="Produk"
-        android:icon="@drawable/ic_home_white"
+        android:icon="@drawable/produk"
         />
     <item
         android:id="@+id/navKalkulator"
         android:title="Kalkulator"
-        android:icon="@drawable/ic_home_white"
+        android:icon="@drawable/kalkulator"
         />
     <item
         android:id="@+id/navRiwayat"
         android:title="Riwayat"
-        android:icon="@drawable/ic_home_white"
+        android:icon="@drawable/riwayat"
         />
 
 

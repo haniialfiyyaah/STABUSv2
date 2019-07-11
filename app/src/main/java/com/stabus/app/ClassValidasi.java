@@ -4,6 +4,7 @@ import android.support.design.widget.TextInputLayout;
 import android.widget.Spinner;
 
 import com.stabus.app.Database.DBMBahan;
+import com.stabus.app.Database.DBMHarga;
 
 public class ClassValidasi {
 
@@ -112,7 +113,7 @@ public class ClassValidasi {
     }
     boolean cekIsi(){
         if (getIsi() == 0){
-            setErrorMessage(mEIsi,"");
+            setErrorMessage(mEIsi,"Tidak Boleh Kosong");
             return true;
         }
         return false;
@@ -131,14 +132,44 @@ public class ClassValidasi {
         }
         return false;
     }
-    boolean cekSame(DBMBahan dbmBahan){
-        if (dbmBahan.cekNama(getNama()) && (getMerk().trim().length() == 0&&getIsi() <= 0&&getTempat().trim().length() == 0&&getHarga() <= 0)){
-            setErrorMessage(mENama, "Data Sudah Ada");
+    boolean cekSame(String s,DBMBahan dbmBahan, DBMHarga dbmHarga){
+        if (dbmBahan.cekNama(s)){
+            int id = dbmBahan.bahanBaku(s,0).getId();
+            String satuan = dbmHarga.hargaBahan(0,id).getSatuan();
+            if (satuan.equals("ml")) {
+                mSpSatuan.setSelection(0);
+            } else if (satuan.equals("gr")) {
+                mSpSatuan.setSelection(1);
+            } else {
+                mSpSatuan.setSelection(2);
+            }
+            mSpSatuan.setClickable(false);
+            return true;
+        }else {
+            mSpSatuan.setClickable(true);
             return true;
         }
-        return false;
     }
+    /*
+    */
 
-
+    public boolean cekData(DBMBahan dbmBahan){
+        if (dbmBahan.cekNama(getNama())){
+            setErrorMessage(mENama, "Tersedia");
+            return true;
+        }else {
+            clearError();
+            return false;
+        }
+    }
+    private void setSatuan(){
+        if (getSatuan().equals("ml")) {
+            mSpSatuan.setSelection(0);
+        } else if (getSatuan().equals("gr")) {
+            mSpSatuan.setSelection(1);
+        } else {
+            mSpSatuan.setSelection(2);
+        }
+    }
 
 }

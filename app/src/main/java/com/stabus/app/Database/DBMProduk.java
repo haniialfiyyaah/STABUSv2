@@ -43,14 +43,17 @@ public class DBMProduk {
 
         db.closeDB();
     }
+
     private String namaProduk(int fk_id_produk){
         db.openDB();
         String query = "SELECT "+ProdukEntry.COLS_NAMA_PRODUK+" FROM "+ProdukEntry.TABLE_PRODUK+" WHERE "
                 +ProdukEntry.COLS_ID_PRODUK+" = "+fk_id_produk;
 
         Cursor cursor = db.getRawQuery(query,null);
-        cursor.moveToNext();
-        String namaProduk = cursor.getString(0);
+        String namaProduk = "";
+        if (cursor.moveToNext()){
+            namaProduk = cursor.getString(0);
+        }
         db.closeDB();
 
         return namaProduk;
@@ -80,11 +83,12 @@ public class DBMProduk {
         db.closeDB();
         return result;
     }
+
     public long saveRelasi(int fk_id_poduk, int jumlah, String satuan, int fk_id_bahan, int jumlah_digunakan, String satuan_digunakan){
         db.openDB();
 
         ContentValues cv = new ContentValues();
-        cv.put(ProdukBKEntry.COLS_FK_ID_BAHAN, fk_id_poduk);
+        cv.put(ProdukBKEntry.COLS_FK_ID_PRODUK, fk_id_poduk);
         cv.put(ProdukBKEntry.COLS_JUMLAH_PRODUK, jumlah);
         cv.put(ProdukBKEntry.COLS_SATUAN_PRODUK, satuan);
         cv.put(ProdukBKEntry.COLS_FK_ID_BAHAN, fk_id_bahan);
@@ -106,7 +110,7 @@ public class DBMProduk {
         return result;
     }
 
-    public MProdukRelasi bahanBaku(String textNama, int idBahan){
+    public MProdukRelasi produkBahan(String textNama, int idBahan){
 
         MProdukRelasi produkBahan = null;
         db.openDB();
@@ -135,6 +139,20 @@ public class DBMProduk {
         db.closeDB();
 
         return produkBahan;
+
+    }
+
+    //cek produk udah ada belum
+    public boolean cekNama(String textNama){
+        db.openDB();
+        String query = "SELECT "+ProdukEntry.COLS_NAMA_PRODUK+" FROM "
+                +ProdukEntry.TABLE_PRODUK+" WHERE "
+                +ProdukEntry.COLS_NAMA_PRODUK+" =?";
+        boolean cek = db.cekSameData(query, new String[]{textNama});
+
+        db.closeDB();
+
+        return cek;
 
     }
 

@@ -25,6 +25,8 @@ import android.widget.TextView;
 import com.stabus.app.Database.DBMProduk;
 import com.stabus.app.Interface.ISetListener;
 import com.stabus.app.Interface.OnListener;
+import com.stabus.app.Model.CollectBahanBaku;
+import com.stabus.app.Model.CollectBahanCRUD;
 import com.stabus.app.Model.MProdukRelasi;
 import com.stabus.app.RecyclerView.ProdukAdapter;
 
@@ -52,6 +54,8 @@ public class Produk extends Fragment implements OnListener, View.OnClickListener
     private SearchView searchView;
     private TextView titleToolbar;
     int selected=0;
+    //tempList
+    CollectBahanCRUD crud;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,9 +85,9 @@ public class Produk extends Fragment implements OnListener, View.OnClickListener
     }
     private void initObject(View view){
         dbmProduk = new DBMProduk(view);
-        setRV();
         produkListFull = new ArrayList<>();
-        dbmProduk.getAllProduk(produkListFull);
+        dbmProduk.getAllRelasi(produkListFull);
+        setRV();
     }
     private void initListener(){
         fabTambah.setOnClickListener(this);
@@ -98,7 +102,7 @@ public class Produk extends Fragment implements OnListener, View.OnClickListener
         refreshList();
     }
     private void refreshList(){
-        dbmProduk.getAllProduk(produkList);
+        dbmProduk.getAllRelasi(produkList);
         mAdapter.notifyDataSetChanged();
         cekEmptyList();
     }
@@ -233,6 +237,8 @@ public class Produk extends Fragment implements OnListener, View.OnClickListener
     @Override
     public void onClick(View v) {
         if (v==fabTambah){
+            crud = new CollectBahanCRUD(CollectBahanBaku.getBahanBakuList());
+            crud.getBahanBakuList().clear();
             FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
             //AMBIL DATA DARI FRAGMENT BAHAN BAKU
             ProdukTambah fragment = new ProdukTambah();

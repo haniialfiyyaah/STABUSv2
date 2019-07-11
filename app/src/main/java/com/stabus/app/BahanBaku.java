@@ -86,7 +86,7 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
     }
     private void setRV(View view){
         bahanBakuList = new ArrayList<>();
-        mAdapter = new BahanBakuAdapter(bahanBakuList,this);
+        mAdapter = new BahanBakuAdapter(bahanBakuList,this,false);
         mISetListener.setRecyclerView(new LinearLayoutManager(view.getContext()), mRecyclerView, mAdapter);
         mAdapter.notifyDataSetChanged();
         refreshList();

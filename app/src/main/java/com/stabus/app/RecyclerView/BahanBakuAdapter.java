@@ -1,5 +1,6 @@
 package com.stabus.app.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -20,9 +21,10 @@ public class BahanBakuAdapter extends RecyclerView.Adapter<BahanBakuHolder> {
     private OnListener mOnListener;
     private boolean isProduk;
 
-    public BahanBakuAdapter(List<MBahanBaku> bahanBakuList, OnListener onListener) {
+    public BahanBakuAdapter(List<MBahanBaku> bahanBakuList, OnListener onListener, boolean isProduk) {
         this.bahanBakuList = bahanBakuList;
         this.mOnListener = onListener;
+        this.isProduk = isProduk;
     }
 
     @NonNull
@@ -33,12 +35,12 @@ public class BahanBakuAdapter extends RecyclerView.Adapter<BahanBakuHolder> {
         return new BahanBakuHolder(view, mOnListener);
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void onBindViewHolder(@NonNull BahanBakuHolder bahanBakuHolder, int i) {
         final MBahanBaku bahanBaku = bahanBakuList.get(i);
         String nama = bahanBaku.getNama_bahan();
         String jumlah;
-
         if (bahanBaku.getJumlah()>99){
             jumlah = "99+ harga";
         }else if (bahanBaku.getJumlah()<=0){
@@ -48,19 +50,30 @@ public class BahanBakuAdapter extends RecyclerView.Adapter<BahanBakuHolder> {
         }
 
         bahanBakuHolder.nameText.setText(nama);
-        bahanBakuHolder.jumlahText.setText(jumlah);
+        if (bahanBaku.getJumlah_dg()!=0){
+            bahanBakuHolder.jumlahText.setText(String.format("%d %s", bahanBaku.getJumlah_dg(), bahanBaku.getSatuan_dg()));
+        }else {
+            bahanBakuHolder.jumlahText.setText(jumlah);
+        }
 
+
+        if (isProduk){
+            bahanBakuHolder.checkBox.setVisibility(View.VISIBLE);
+            bahanBakuHolder.jumlahText.setVisibility(View.GONE);
+        }else {
+            bahanBakuHolder.checkBox.setVisibility(View.GONE);
+            bahanBakuHolder.jumlahText.setVisibility(View.VISIBLE);
+            if (!bahanBaku.isOpen()){
+                bahanBakuHolder.checkBox.setVisibility(View.GONE);
+                bahanBakuHolder.checkBox.setChecked(false);
+            }else {
+                bahanBakuHolder.checkBox.setVisibility(View.VISIBLE);
+            }
+        }
         if (bahanBaku.isSelected()){
             bahanBakuHolder.checkBox.setChecked(true);
         }else {
             bahanBakuHolder.checkBox.setChecked(false);
-        }
-
-        if (!bahanBaku.isOpen()){
-            bahanBakuHolder.checkBox.setVisibility(View.GONE);
-            bahanBakuHolder.checkBox.setChecked(false);
-        }else {
-            bahanBakuHolder.checkBox.setVisibility(View.VISIBLE);
         }
 
     }

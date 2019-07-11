@@ -2,11 +2,11 @@ package com.stabus.app.Model;
 
 import java.util.List;
 
-public class CollectAdd {
+public class CollectBahanCRUD {
 
     List<MBahanBaku> bahanBakuList;
 
-    public CollectAdd(List<MBahanBaku> bahanBakuList) {
+    public CollectBahanCRUD(List<MBahanBaku> bahanBakuList) {
         this.bahanBakuList = bahanBakuList;
     }
     //Add

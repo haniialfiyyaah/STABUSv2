@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
+import android.text.Editable;
 import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
 import android.widget.FrameLayout;
@@ -72,11 +74,12 @@ public class ClassDialogTambah implements View.OnClickListener {
     void tambahDialog(String title, int sId){
         dbmBahan = new DBMBahan(view);
         dbmHarga = new DBMHarga(view);
+        this.sId = sId;
         Dialog dialog = new Dialog(view.getContext());
         showDialog(dialog);
         mTitle.setText(title);
-        this.sId = sId;
         fabsave.setOnClickListener(this);
+        setSatuan();
         //clearMenu();
     }
     void showDialog(Dialog dialog){
@@ -89,6 +92,7 @@ public class ClassDialogTambah implements View.OnClickListener {
         mEHarga = dialog.findViewById(R.id.textHarga);
         mSpSatuan = dialog.findViewById(R.id.spSatuan);
         fabsave = dialog.findViewById(R.id.fabTambahBK);
+
         mTitle = dialog.findViewById(R.id.titleHarga);
 
         cekHarga = tag.matches(activity.getString(R.string.HargaBahanBaku));
@@ -96,6 +100,15 @@ public class ClassDialogTambah implements View.OnClickListener {
 
         if (cekHarga){
             mENama.setVisibility(View.GONE);
+            String satuan = dbmHarga.hargaBahan(0, sId).getSatuan();
+            if (satuan.equals("ml")) {
+                mSpSatuan.setSelection(0);
+            } else if (satuan.equals("gr")) {
+                mSpSatuan.setSelection(1);
+            } else {
+                mSpSatuan.setSelection(2);
+            }
+            mSpSatuan.setEnabled(false);
         }
         InputFilter[] inputFilter = new InputFilter[]{new InputFilter.AllCaps()};
         if (mENama.getEditText()!=null && mEMerk.getEditText()!=null&& mETempat.getEditText()!=null){
@@ -109,7 +122,7 @@ public class ClassDialogTambah implements View.OnClickListener {
         //cek nama kosong atau spasi
         boolean cekIsiHarga = false;
         if (!cekHarga) {
-            if (validasi.cekBahan()||validasi.cekSame(dbmBahan)) return;
+            if (validasi.cekBahan()||validasi.cekIsi()||validasi.cekHarga()) return;
             //cek isi dan harga tidak boleh kosong jika salah satu ada terisi
             if (validasi.getMerk().trim().length() != 0||validasi.getIsi() > 0||validasi.getTempat().trim().length() != 0||validasi.getHarga() > 0){
                 if (validasi.cekIsi() || validasi.cekHarga()) return;
@@ -190,17 +203,44 @@ public class ClassDialogTambah implements View.OnClickListener {
         }
     }
 
-
-
     private void setSatuan(){
-        if (validasi.getSatuan().equals("ml")) {
-            mSpSatuan.setSelection(0);
-        } else if (validasi.getSatuan().equals("gr")) {
-            mSpSatuan.setSelection(1);
-        } else {
-            mSpSatuan.setSelection(2);
-        }
+        mENama.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                MBahanBaku bahanBaku = dbmBahan.bahanBaku(String.valueOf(s), 0);
+                if (bahanBaku!=null){
+                    int id = bahanBaku.getId();
+                    String satuan = dbmHarga.hargaBahan(0,id).getSatuan();
+                    if (satuan.equals("ml")) {
+                        mSpSatuan.setSelection(0);
+                    } else if (satuan.equals("gr")) {
+                        mSpSatuan.setSelection(1);
+                    } else {
+                        mSpSatuan.setSelection(2);
+                    }
+                    mSpSatuan.setClickable(false);
+                    mSpSatuan.setEnabled(false);
+                    validasi.cekData(dbmBahan);
+                }else {
+                    mSpSatuan.setSelection(0);
+                    mSpSatuan.setClickable(true);
+                    mSpSatuan.setEnabled(true);
+                    validasi.cekData(dbmBahan);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
+
 
     @Override
     public void onClick(View v) {

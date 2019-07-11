@@ -6,9 +6,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -45,6 +47,7 @@ public class HargaBahanBaku extends Fragment implements View.OnClickListener, On
     private FrameLayout frameRV;
     private ScrollView scrollView;
     private FloatingActionButton fabTambah;
+    private Toolbar toolbar;
 
     private DBMHarga dbmHarga;
     private DBMBahan dbmBahan;
@@ -83,6 +86,8 @@ public class HargaBahanBaku extends Fragment implements View.OnClickListener, On
         initView(view);
         initObject(view);
         initListener();
+        toolbar.setVisibility(View.GONE);
+
 
         return view;
     }
@@ -92,6 +97,7 @@ public class HargaBahanBaku extends Fragment implements View.OnClickListener, On
         frameRV =view.findViewById(R.id.frameRVBahan);
         scrollView=view.findViewById(R.id.scrollBahan);
         fabTambah = view.findViewById(R.id.fabBahanBK);
+        toolbar = view.findViewById(R.id.toolbarBK);
     }
     private void initObject(View view){
         dbmHarga = new DBMHarga(view);
@@ -147,6 +153,13 @@ public class HargaBahanBaku extends Fragment implements View.OnClickListener, On
         }else{
             menu.findItem(R.id.actsearch).setVisible(false);
             menu.findItem(R.id.actdelete).setVisible(true);
+            if (hargaBahanList.size()==selected){
+                menu.findItem(R.id.actdelete).setEnabled(false);
+                menu.findItem(R.id.actdelete).setIcon(R.drawable.ic_delete_gray);
+            }else {
+                menu.findItem(R.id.actdelete).setEnabled(true);
+                menu.findItem(R.id.actdelete).setIcon(R.drawable.ic_delete);
+            }
         }
 
         hargaBahanListFull = new ArrayList<>(hargaBahanList);
@@ -208,7 +221,9 @@ public class HargaBahanBaku extends Fragment implements View.OnClickListener, On
         return false;
     }
 
+
     private void selectList(int position){
+        callMenu();
         if (hargaBahanList.get(position).isSelected()){
             selectedList.add(hargaBahanList.get(position));
             selected++;
@@ -218,6 +233,7 @@ public class HargaBahanBaku extends Fragment implements View.OnClickListener, On
         }
     }
     private void clickFirstList(int position){
+        callMenu();
         hargaBahanList.get(position).setSelected(!hargaBahanList.get(position).isSelected());
         selectedList = new ArrayList<>();
         selectedList.add(hargaBahanList.get(position));
