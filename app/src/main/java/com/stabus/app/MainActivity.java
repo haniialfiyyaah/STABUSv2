@@ -50,31 +50,29 @@ public class MainActivity extends AppCompatActivity implements ISetListener {
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-            Fragment fragment=null ;
-            Drawable drawable ;
             int color;
             switch (menuItem.getItemId()){
                 case R.id.navBahan:
                     //setmToolbar("Bahan Baku", R.drawable.ic_home_white);
-                    fragment = new BahanBaku();
+                    inflateFragment(getString(R.string.BahanBaku),null);
                     mToolbar.setVisibility(View.VISIBLE);
                     setSupportActionBar(mToolbar);
                     break;
                 case R.id.navProduk:
                     //setmToolbar("Produk", R.drawable.ic_home_white);
-                    fragment = new Produk();
+                    inflateFragment(getString(R.string.Produk),null);
                     mToolbar.setVisibility(View.GONE);
                     break;
                 case R.id.navKalkulator:
                     //setmToolbar("Kalkulator", R.drawable.ic_home_white);
-                    fragment = new BahanBaku();
+
                     break;
                 case R.id.navRiwayat:
                     //setmToolbar("Riwayat", R.drawable.ic_home_white);
-                    fragment = new BahanBaku();
+
                     break;
             }
-            setFragment(fragment,getString(R.string.BahanBaku),false,null);
+            //setFragment(fragment,getString(R.string.BahanBaku),false,null);
 
             return true;
         }
@@ -144,6 +142,14 @@ public class MainActivity extends AppCompatActivity implements ISetListener {
 
     @Override
     public void inflateFragment(String fragmentTag, Bundle bundle) {
+        if (fragmentTag.equals(getString(R.string.BahanBaku))){
+            BahanBaku fragment = new BahanBaku();
+            setFragment(fragment, fragmentTag, false, null);
+        }
+        if (fragmentTag.equals(getString(R.string.Produk))){
+            Produk fragment = new Produk();
+            setFragment(fragment, fragmentTag, false, null);
+        }
         if (fragmentTag.equals(getString(R.string.HargaBahanBaku))){
             HargaBahanBaku fragment = new HargaBahanBaku();
             setFragment(fragment, fragmentTag, true, bundle);
