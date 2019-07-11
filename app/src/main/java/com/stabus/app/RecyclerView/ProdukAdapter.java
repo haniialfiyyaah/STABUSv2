@@ -38,11 +38,11 @@ public class ProdukAdapter extends RecyclerView.Adapter<ProdukHolder> {
     public void onBindViewHolder(@NonNull ProdukHolder produkHolder, int i) {
         MProdukRelasi item = produkList.get(i);
         String nama = item.getNama();
-        //int jumlah = item.getJumlah();
-        //String satuan = item.getSatuan();
+        int jumlah = item.getJumlah();
+        String satuan = item.getSatuan();
 
         produkHolder.nama_produk.setText(nama);
-        //produkHolder.jumlah_produksi.setText(String.format("Untuk %d %s", jumlah, satuan));
+        produkHolder.jumlah_produksi.setText(String.format("Untuk %d %s", jumlah, satuan));
 
         if (item.isSelected()){
             produkHolder.cardView.setBackgroundColor(Color.GRAY);

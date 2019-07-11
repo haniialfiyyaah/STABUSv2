@@ -21,7 +21,9 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.stabus.app.Database.DBMHarga;
 import com.stabus.app.Database.DBMProduk;
 import com.stabus.app.Interface.ISetListener;
 import com.stabus.app.Interface.OnListener;
@@ -86,7 +88,7 @@ public class Produk extends Fragment implements OnListener, View.OnClickListener
     private void initObject(View view){
         dbmProduk = new DBMProduk(view);
         produkListFull = new ArrayList<>();
-        dbmProduk.getAllRelasi(produkListFull);
+        dbmProduk.getAllProduk(produkListFull);
         setRV();
     }
     private void initListener(){
@@ -102,7 +104,7 @@ public class Produk extends Fragment implements OnListener, View.OnClickListener
         refreshList();
     }
     private void refreshList(){
-        dbmProduk.getAllRelasi(produkList);
+        dbmProduk.getAllProduk(produkList);
         mAdapter.notifyDataSetChanged();
         cekEmptyList();
     }
@@ -152,6 +154,14 @@ public class Produk extends Fragment implements OnListener, View.OnClickListener
             selectList(position);
             titleToolbar.setText(selected +" item terpilih");
             mAdapter.notifyDataSetChanged();
+        }else {
+            MProdukRelasi produkRelasi = new MProdukRelasi();
+            Bundle bundle = new Bundle();
+            bundle.putInt("ID_PRODUK",produkList.get(position).getId_produk());
+            bundle.putString("NAMA_PRODUK",produkList.get(position).getNama());
+            bundle.putInt("JUMLAH_PRODUK",produkList.get(position).getJumlah());
+            bundle.putString("SATUAN_PRODUK", produkList.get(position).getSatuan());
+            mISetListener.inflateFragment(getString(R.string.TambahProduk),bundle);
         }
     }
 
@@ -169,12 +179,21 @@ public class Produk extends Fragment implements OnListener, View.OnClickListener
         return false;
     }
 
-
     private void delete(){
         for (MProdukRelasi produkBahan : selectedList){
-            dbmProduk.deleteProduk(produkBahan.getId_produk());
+            //dbmProduk.deleteProduk(produkBahan.getId_produk());
             //delete relasi where id produk
+            int fk_id_produk = produkBahan.getId_produk();
+            int jumlah = produkBahan.getJumlah();
+            dbmProduk.deleteRelasi(fk_id_produk,jumlah);
+            if (!dbmProduk.cekFKProduk(fk_id_produk)){
+                dbmProduk.deleteProduk(fk_id_produk);
+                Toast toast = Toast.makeText(getContext(), "Delete produk!", Toast.LENGTH_SHORT);
+                toast.show();
+            }
         }
+        //search id produk  di relasi
+        //jika tidak ada produk makna delete
     }
 
     private void selectList(int position){
@@ -239,14 +258,8 @@ public class Produk extends Fragment implements OnListener, View.OnClickListener
         if (v==fabTambah){
             crud = new CollectBahanCRUD(CollectBahanBaku.getBahanBakuList());
             crud.getBahanBakuList().clear();
-            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-            //AMBIL DATA DARI FRAGMENT BAHAN BAKU
-            ProdukTambah fragment = new ProdukTambah();
-            fragmentTransaction.replace(R.id.frameContainer, fragment,"");
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
+            mISetListener.inflateFragment(getString(R.string.TambahProduk),null);
         }
-
     }
 
     @Override
