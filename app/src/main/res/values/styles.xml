@@ -6,6 +6,9 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:fontFamily">@font/rancho_regular</item>
+        <!-- for toolbar -->
+        <item name="android:textSize">22sp</item>
     </style>
 
 
