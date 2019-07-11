@@ -55,16 +55,11 @@ public class ProdukPilihBahan extends Fragment implements OnListener, View.OnCli
     BahanBakuAdapter mAdapter;
     ClassDialogTambah dialogTambah;
     CollectBahanCRUD crud;
+    ProdukDialogTambah produkdialogTambah;
 
     //list
     List<MBahanBaku> bahanBakuList;
     List<MBahanBaku> bahanBakuListFull;
-
-    //widget dialog
-    TextView nmBahan;
-    TextInputLayout mJumlah;
-    Spinner mSatuan;
-    ImageButton mOk;
 
     @Nullable
     @Override
@@ -94,7 +89,7 @@ public class ProdukPilihBahan extends Fragment implements OnListener, View.OnCli
         dialogTambah = new ClassDialogTambah(getString(R.string.BahanBaku), getActivity(), view, bahanBakuList, mAdapter, frameLayout, scrollView);
         //selected list
         crud=new CollectBahanCRUD(CollectBahanBaku.getBahanBakuList());
-
+        produkdialogTambah = new ProdukDialogTambah(bahanBakuList,mAdapter,dbmHarga,crud);
         setSelected();
     }
     private void initListener(){
@@ -123,7 +118,6 @@ public class ProdukPilihBahan extends Fragment implements OnListener, View.OnCli
             frameLayout.setVisibility(View.GONE);
         }
     }
-
     private void setSelected(){
         for (int x = 0 ; x < bahanBakuList.size() ; x++){
             MBahanBaku bahanBaku = bahanBakuList.get(x);
@@ -140,77 +134,6 @@ public class ProdukPilihBahan extends Fragment implements OnListener, View.OnCli
         mAdapter.notifyDataSetChanged();
     }
 
-    private void showDialog(View view, final int pos){
-        final Dialog d = new Dialog(view.getContext());
-        d.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        d.setContentView(R.layout.list_pilih_jumlahdg);
-
-        nmBahan = d.findViewById(R.id.tvNmBahan);
-        mJumlah = d.findViewById(R.id.textJumlahdg);
-        mSatuan = d.findViewById(R.id.spSatuan);
-        mOk = d.findViewById(R.id.fabOk);
-
-        MBahanBaku bahanBaku = bahanBakuList.get(pos);
-        String satuan = dbmHarga.hargaBahan(0,bahanBaku.getId()).getSatuan();
-        String nama = bahanBaku.getNama_bahan();
-        if (satuan.equals("ml")) {
-            mSatuan.setSelection(0);
-        } else if (satuan.equals("gr")) {
-            mSatuan.setSelection(1);
-        } else {
-            mSatuan.setSelection(2);
-        }
-        mSatuan.setEnabled(false);
-        nmBahan.setText(nama);
-
-        //set jumlah on edit
-        if (bahanBaku.isSelected()){
-            int poscrud = bahanBaku.getPos();
-            mJumlah.getEditText().setText(String.valueOf(crud.getBahanBakuList().get(poscrud).getJumlah_dg()));
-        }
-        d.show();
-
-        mOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pilihBahan(pos,d);
-            }
-        });
-
-    }
-
-    private void pilihBahan(int pos, Dialog dialog){
-        MBahanBaku bahanBaku = new MBahanBaku();
-
-        if (!(mJumlah.getEditText().getText().toString().trim().length() >0)){
-            mJumlah.setError("Tidak Boleh Kosong");
-            return;
-        }
-
-        //set id_bahan to crud
-        int id_bahan = bahanBakuList.get(pos).getId();
-        bahanBaku.setId(id_bahan);
-        //set jumlahdg to crud
-        int jumlah_dg = Integer.parseInt(mJumlah.getEditText().getText().toString());
-        bahanBaku.setJumlah_dg(jumlah_dg);
-        //set satuan to crud
-        String satuan = mSatuan.getSelectedItem().toString();
-        bahanBaku.setSatuan_dg(satuan);
-        //set nama bahan to crud
-        String nama = bahanBakuList.get(pos).getNama_bahan();
-        bahanBaku.setNama_bahan(nama);
-
-        //add to crud
-        if (crud.addNew(bahanBaku)){
-            dialog.dismiss();
-
-            //set selected true to bahan baku list
-            bahanBakuList.get(pos).setSelected(true);
-            mAdapter.notifyDataSetChanged();
-        }
-        //set pos to bahan baku list
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -219,7 +142,8 @@ public class ProdukPilihBahan extends Fragment implements OnListener, View.OnCli
 
     @Override
     public void OnClickListener(int position, View view) {
-        showDialog(view,position);
+        //showDialog(view,position);
+        produkdialogTambah.showDialog(view,position);
     }
 
     @Override

@@ -5,16 +5,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -36,16 +33,9 @@ import com.stabus.app.Interface.ISetListener;
 import com.stabus.app.Interface.OnListener;
 import com.stabus.app.Model.CollectBahanBaku;
 import com.stabus.app.Model.CollectBahanCRUD;
-import com.stabus.app.Model.MBahanBaku;
-import com.stabus.app.Model.MHargaBahan;
 import com.stabus.app.RecyclerView.BahanBakuAdapter;
-import com.stabus.app.RecyclerView.HargaBahanAdapter;
-import com.stabus.app.RecyclerView.ProdukAdapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class ProdukTambah extends Fragment implements View.OnClickListener, OnListener {
+public class ProdukTambah extends Fragment implements View.OnClickListener, OnListener,TextWatcher {
 
     //widget
     Toolbar toolbar;
@@ -63,7 +53,8 @@ public class ProdukTambah extends Fragment implements View.OnClickListener, OnLi
     String nama;
     String satuan;
     int jumlah;
-
+    int jumlah_lama;
+    int id_produk;
     //class
     DBMProduk dbmProduk;
     DBMBahan dbmBahan;
@@ -71,17 +62,29 @@ public class ProdukTambah extends Fragment implements View.OnClickListener, OnLi
 
     //tempList
     CollectBahanCRUD crud;
+    ProdukDialogTambah dialogTambah;
 
     //list
     //List<MHargaBahan> bahanBakuList;
     BahanBakuAdapter mAdapter;
+    Bundle bundle;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        bundle = this.getArguments();
+        if (bundle!=null){
+            this.jumlah_lama = bundle.getInt("JUMLAH_PRODUK");
+            this.nama = bundle.getString("NAMA_PRODUK");
+            this.satuan = bundle.getString("SATUAN_PRODUK");
+            this.id_produk = bundle.getInt("ID_PRODUK");
+        }
+
         setHasOptionsMenu(true);
     }
+
 
     @Nullable
     @Override
@@ -111,8 +114,26 @@ public class ProdukTambah extends Fragment implements View.OnClickListener, OnLi
         dbmProduk = new DBMProduk(view);
         dbmBahan = new DBMBahan(view);
         crud = new CollectBahanCRUD(CollectBahanBaku.getBahanBakuList());
+        if (bundle!=null){
+            dbmProduk.getAllRelasi(crud.getBahanBakuList(),id_produk,jumlah_lama);
+            txNama.getEditText().setText(nama);
+            txJumlah.getEditText().setText(String.valueOf(jumlah_lama));
+            if (satuan.equals("porsi")) {
+                Spsatuan.setSelection(0);
+            } else if (satuan.equals("pcs")) {
+                Spsatuan.setSelection(1);
+            } else if (satuan.equals("buah")) {
+                Spsatuan.setSelection(2);
+            }
+            else {
+                Spsatuan.setSelection(3);
+            }
+        }
+        txNama.getEditText().addTextChangedListener(this);
+        txJumlah.getEditText().addTextChangedListener(this);
         setRV(view);
 
+        dialogTambah = new ProdukDialogTambah(crud,mAdapter);
     }
     private void initListener(){
         fabAddBahan.setOnClickListener(this);
@@ -195,13 +216,20 @@ public class ProdukTambah extends Fragment implements View.OnClickListener, OnLi
         getTextInput();
         //jika sudah ada hanya input relasi bahan terpilih
 
-        Toast toast = Toast.makeText(getContext(), String.valueOf(dbmProduk.cekNama(nama)), Toast.LENGTH_SHORT);
-        toast.show();
-        if (dbmProduk.cekNama(nama)) simpanRelasi();
-        else {
-            dbmProduk.saveProduk(nama);
+        if (bundle!=null){
+            dbmProduk.ubahProduk(id_produk,nama);
+            dbmProduk.deleteRelasi(id_produk,jumlah_lama);
             simpanRelasi();
+        }else {
+
+            if (dbmProduk.cekNama(nama)) simpanRelasi();
+            else {
+                dbmProduk.saveProduk(nama);
+                simpanRelasi();
+            }
         }
+
+
         clearError();
         clearText();
         getActivity().onBackPressed();
@@ -222,7 +250,12 @@ public class ProdukTambah extends Fragment implements View.OnClickListener, OnLi
     }
 
     private void simpanRelasi(){
-        int fk_id_poduk = dbmProduk.produkBahan(txNama.getEditText().getText().toString(),0).getFk_id_produk();
+        int fk_id_poduk;
+        if (bundle==null) {
+             fk_id_poduk= dbmProduk.produk(nama, 0).getId_produk();
+        }else {
+            fk_id_poduk=id_produk;
+        }
         int jumlah = Integer.parseInt(txJumlah.getEditText().getText().toString());
         String satuan = Spsatuan.getSelectedItem().toString();
         int fk_id_bahan;
@@ -277,11 +310,26 @@ public class ProdukTambah extends Fragment implements View.OnClickListener, OnLi
 
     @Override
     public void OnClickListener(int position, View view) {
+        dialogTambah.showDialog(view,position);
 
     }
 
     @Override
     public boolean OnLongListener(int position, View view) {
         return false;
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
     }
 }
