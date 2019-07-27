@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements ISetListener {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         if (savedInstanceState==null){
-            setFragment(new BahanBaku(),getString(R.string.BahanBaku),false,null);
+            setFragment(new BahanBaku(),getString(R.string.Produk),false,null);
         }
     }
 
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements ISetListener {
                     break;
                 case R.id.navKalkulator:
                     //setmToolbar("Kalkulator", R.drawable.ic_home_white);
-
+                    inflateFragment(getString(R.string.Kalkulator), null);
                     break;
                 case R.id.navRiwayat:
                     //setmToolbar("Riwayat", R.drawable.ic_home_white);
@@ -155,6 +155,14 @@ public class MainActivity extends AppCompatActivity implements ISetListener {
         if (fragmentTag.equals(getString(R.string.TambahProduk))){
             ProdukTambah fragment = new ProdukTambah();
             setFragment(fragment, fragmentTag, true, bundle);
+        }
+        if (fragmentTag.equals(getString(R.string.Kalkulator))){
+            Kalkulator fragment = new Kalkulator();
+            setFragment(fragment, fragmentTag, true, null);
+        }
+        if (fragmentTag.equals(getString(R.string.KalkulatorPilihProduk))){
+            KalkulatorPilihProduk fragment = new KalkulatorPilihProduk();
+            setFragment(fragment, fragmentTag, true, null);
         }
     }
 

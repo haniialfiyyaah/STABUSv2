@@ -13,6 +13,10 @@
     <string name="Produk">PRODUK</string>
     <string name="TambahProduk">TAMBAH PRODUK</string>
 
+    <string name="Kalkulator">KALKULATOR</string>
+    <string name="KalkulatorPilihProduk">KALKULATOR PILIH PRODUK</string>
+    <string name="KalkulatorPilihBahan">KALKULATOR PILIH BAHAN</string>
+
 
     <!-- Bundle tags BK-->
     <string name="selectedId">selected_id</string>

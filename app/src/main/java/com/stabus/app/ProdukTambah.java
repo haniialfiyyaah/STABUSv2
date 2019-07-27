@@ -217,17 +217,11 @@ public class ProdukTambah extends Fragment implements View.OnClickListener, OnLi
         getTextInput();
         //jika sudah ada hanya input relasi bahan terpilih
 
-<<<<<<< HEAD
-        Toast toast = Toast.makeText(getContext(), String.valueOf(dbmProduk.cekNama(nama)), Toast.LENGTH_SHORT);
-        toast.show();
-        if (dbmProduk.cekNama(nama)) simpanRelasi();
-        else {
-//            dbmProduk.saveProduk(nama);
-=======
+
         if (bundle!=null){
             dbmProduk.ubahProduk(id_produk,nama);
             dbmProduk.deleteRelasi(id_produk,jumlah_lama);
->>>>>>> origin/master
+
             simpanRelasi();
         }else {
 
@@ -259,17 +253,13 @@ public class ProdukTambah extends Fragment implements View.OnClickListener, OnLi
     }
 
     private void simpanRelasi(){
-<<<<<<< HEAD
-//        int fk_id_poduk = dbmProduk.produkBahan(txNama.getEditText().getText().toString(),0).getFk_id_produk();
-        int fk_id_poduk = (int) dbmProduk.saveProduk(nama);
-=======
+
         int fk_id_poduk;
         if (bundle==null) {
              fk_id_poduk= dbmProduk.produk(nama, 0).getId_produk();
         }else {
             fk_id_poduk=id_produk;
         }
->>>>>>> origin/master
         int jumlah = Integer.parseInt(txJumlah.getEditText().getText().toString());
         String satuan = Spsatuan.getSelectedItem().toString();
         int fk_id_bahan;
