@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,10 @@ import android.widget.ScrollView;
 import com.stabus.app.Database.DBMProduk;
 import com.stabus.app.Interface.ISetListener;
 import com.stabus.app.Interface.OnListener;
+import com.stabus.app.Model.CollectBahanBaku;
+import com.stabus.app.Model.CollectBahanCRUD;
 import com.stabus.app.Model.MProdukRelasi;
+import com.stabus.app.RecyclerView.BahanBakuAdapter;
 import com.stabus.app.RecyclerView.KalkulatorProdukAdapter;
 import com.stabus.app.RecyclerView.ProdukAdapter;
 
@@ -35,6 +39,7 @@ public class KalkulatorPilihProduk extends Fragment implements OnListener {
     private DBMProduk dbmProduk;
     private ProdukAdapter produkAdapter;
     private KalkulatorProdukAdapter mAdapter;
+    BahanBakuAdapter bhAdapter;
     //list
     private List<MProdukRelasi> produkList;
     private List<MProdukRelasi> produkListFull;
@@ -46,6 +51,12 @@ public class KalkulatorPilihProduk extends Fragment implements OnListener {
     private FrameLayout frameLayout;
     private FloatingActionButton fab;
 
+    int id_produk;
+    int jumlah_lama;
+    String nama;
+
+    CollectBahanCRUD crud;
+
 
     @Nullable
     @Override
@@ -54,6 +65,7 @@ public class KalkulatorPilihProduk extends Fragment implements OnListener {
         initView(view);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         initObject(view);
+        disableNested();
         return view;
     }
 
@@ -67,8 +79,14 @@ public class KalkulatorPilihProduk extends Fragment implements OnListener {
         fab = view.findViewById(R.id.fabPilihKalkPro);
     }
 
+    private void disableNested(){
+        recyclerViewPro.setNestedScrollingEnabled(false);
+        recyclerViewBah.setNestedScrollingEnabled(false);
+    }
+
     private void initObject(View view){
         dbmProduk = new DBMProduk(view);
+        crud = new CollectBahanCRUD(CollectBahanBaku.getBahanBakuList());
         produkListFull = new ArrayList<>();
         dbmProduk.getAllProduk(produkListFull);
         setRV(view);
@@ -79,6 +97,7 @@ public class KalkulatorPilihProduk extends Fragment implements OnListener {
         mAdapter = new KalkulatorProdukAdapter(produkList, this);
         mISetListener.setRecyclerView(new LinearLayoutManager(view.getContext()), recyclerViewPro, mAdapter);
         mAdapter.notifyDataSetChanged();
+
         refreshList();
     }
     private void refreshList(){
@@ -101,7 +120,17 @@ public class KalkulatorPilihProduk extends Fragment implements OnListener {
 
     @Override
     public void OnClickListener(int position, View view) {
+        id_produk = produkList.get(position).getId_produk();
+        nama = produkList.get(position).getNama();
+        jumlah_lama = produkList.get(position).getJumlah();
 
+        dbmProduk.getAllRelasi(crud.getBahanBakuList(),id_produk,jumlah_lama);
+
+        recyclerViewBah.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        bhAdapter = new BahanBakuAdapter(crud.getBahanBakuList(),this, false);
+        mISetListener.setRecyclerView(new LinearLayoutManager(view.getContext()), recyclerViewBah, bhAdapter);
+
+        bhAdapter.notifyDataSetChanged();
     }
 
     @Override
