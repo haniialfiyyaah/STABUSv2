@@ -44,7 +44,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </ScrollView>
+        <View android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#bbb"/>
 
+        <ScrollView
+            android:id="@+id/scrollRVBahan"
+            android:layout_width="match_parent"
+            android:layout_height="256dp"
+            android:paddingTop="10dp"
+            android:visibility="visible">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvPilihBah"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </ScrollView>
     </LinearLayout>
 
     <FrameLayout

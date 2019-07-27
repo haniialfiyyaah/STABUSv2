@@ -1,5 +1,6 @@
 package com.stabus.app;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -112,6 +113,12 @@ public class Kalkulator extends Fragment implements SeekBar.OnSeekBarChangeListe
         mHasil.setText(String.valueOf(setHasil));
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mISetListener = (ISetListener)getActivity();
+    }
+
     private void settoolbaron(){
         title.setText(getTag());
         toolbar.setNavigationIcon((R.drawable.ic_home_white));
@@ -119,7 +126,6 @@ public class Kalkulator extends Fragment implements SeekBar.OnSeekBarChangeListe
 
     @Override
     public void onClick(View v) {
-        Log.d("AA", "Test");
         mISetListener.inflateFragment(getString(R.string.KalkulatorPilihProduk), null);
     }
 }
