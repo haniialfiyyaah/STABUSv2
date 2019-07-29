@@ -8,6 +8,7 @@ import com.stabus.app.Model.MHargaBahan;
 
 import com.stabus.app.Database.DBContract.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DBMHarga {
@@ -99,6 +100,8 @@ public class DBMHarga {
         return false;
 
     }
+
+
     public MHargaBahan hargaBahan(int idH,int idBK){
 
         MHargaBahan hargaBahan = null;

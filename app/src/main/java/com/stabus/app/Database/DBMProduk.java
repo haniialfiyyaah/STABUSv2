@@ -6,11 +6,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.stabus.app.BahanBaku;
 import com.stabus.app.Database.DBContract.*;
 import com.stabus.app.Model.CollectBahanCRUD;
 import com.stabus.app.Model.MBahanBaku;
 import com.stabus.app.Model.MProdukRelasi;
 import com.stabus.app.Produk;
+import com.stabus.app.RecyclerView.ProdukAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,6 +127,41 @@ public class DBMProduk {
         }
 
         db.closeDB();
+    }
+
+    public ArrayList<String> getIdBahan(int id_produk){
+        ArrayList<String> nama = new ArrayList<>();
+        db.openDB();
+        String name = "SELECT "+ProdukBKEntry.TABLE_PRODUK_BAHAN+"."+ProdukBKEntry.COLS_FK_ID_BAHAN+" FROM "
+                +ProdukEntry.TABLE_PRODUK+" INNER JOIN "+ProdukBKEntry.TABLE_PRODUK_BAHAN+" ON "
+                +ProdukEntry.TABLE_PRODUK+"."+ProdukEntry.COLS_ID_PRODUK+" = "
+                +ProdukBKEntry.TABLE_PRODUK_BAHAN+"."+ProdukBKEntry.COLS_FK_ID_PRODUK
+                +" WHERE "+ProdukEntry.TABLE_PRODUK+"."+ ProdukEntry.COLS_ID_PRODUK+" =?";
+        Cursor cek = db.getRawQuery(name,new String[]{String.valueOf(id_produk)});
+        while (cek.moveToNext()){
+            int nama_bahan = cek.getInt(0);
+            nama.add(String.valueOf(nama_bahan));
+        }
+        return nama;
+    }
+
+    public ArrayList<String> getNameBahan(int id_produk){
+        db.openDB();
+        ArrayList IdBahan = getIdBahan(id_produk);
+        ArrayList<String> nama_bahan = new ArrayList<>();
+        Log.d("Size", ""+IdBahan.size());
+        for (int i = 0; i < IdBahan.size(); i++){
+            String query = "SELECT "+BahanBakuEntry.COLS_NAMA_BAHAN+" FROM "
+                    +BahanBakuEntry.TABLE_BAHANBAKU+" WHERE "+BahanBakuEntry.COLS_ID_BAHAN+" =?";
+            Cursor cek = db.getRawQuery(query,new String[]{String.valueOf(IdBahan.get(i))});
+            while (cek.moveToNext()){
+                String aa = cek.getString(0);
+                nama_bahan.add(aa);
+            }
+        }
+
+        db.closeDB();
+        return nama_bahan;
     }
 
     private String namaProduk(int fk_id_produk){

@@ -23,11 +23,13 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.stabus.app.Database.DBMBahan;
 import com.stabus.app.Database.DBMProduk;
 import com.stabus.app.Interface.ISetListener;
 import com.stabus.app.Interface.OnListener;
 import com.stabus.app.Model.CollectBahanBaku;
 import com.stabus.app.Model.CollectBahanCRUD;
+import com.stabus.app.Model.MBahanBaku;
 import com.stabus.app.Model.MProdukRelasi;
 import com.stabus.app.RecyclerView.BahanBakuAdapter;
 import com.stabus.app.RecyclerView.KalkulatorProdukAdapter;
@@ -42,9 +44,7 @@ public class KalkulatorPilihProduk extends Fragment implements OnListener, Adapt
 
     private ISetListener mISetListener;
     private DBMProduk dbmProduk;
-    private ProdukAdapter produkAdapter;
-    private KalkulatorProdukAdapter mAdapter;
-    BahanBakuAdapter bhAdapter;
+    private BahanBakuAdapter bhAdapter;
     //list
     private List<MProdukRelasi> produkList;
     private List<MProdukRelasi> produkListFull;
@@ -74,7 +74,6 @@ public class KalkulatorPilihProduk extends Fragment implements OnListener, Adapt
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         initObject(view);
         disableNested();
-        callSpinner(view);
         return view;
     }
 
@@ -102,6 +101,8 @@ public class KalkulatorPilihProduk extends Fragment implements OnListener, Adapt
 
     private void setRV(View view){
         produkList = new ArrayList<>();
+
+        callSpinner(view);
         refreshList();
     }
     private void refreshList(){
@@ -130,6 +131,11 @@ public class KalkulatorPilihProduk extends Fragment implements OnListener, Adapt
 
     @Override
     public void OnClickListener(int position, View view) {
+        Log.d("Posisi",""+position);
+        Log.d("Nama",nama);
+        Log.d("namaaaa",view.toString());
+
+
     }
 
     @Override
