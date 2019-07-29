@@ -32,17 +32,12 @@
 
         </android.support.v7.widget.Toolbar>
 
-        <ScrollView
-            android:id="@+id/scrollRVPro"
+        <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+            android:id="@+id/spinnerPro"
             android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:paddingTop="10dp"
-            android:padding="5dp">
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rvPilihProduk"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </ScrollView>
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            />
         <View android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="#bbb"/>

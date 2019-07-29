@@ -76,8 +76,23 @@ public class DBMProduk {
             }
 
         }
+        db.closeDB();
+    }
+
+    public ArrayList<String> getAllNamaProduk(){
+        db.openDB();
+        ArrayList<String> daftarProduk = new ArrayList<>();
+
+        String query = "SELECT "+ProdukEntry.COLS_NAMA_PRODUK +" FROM "+ProdukEntry.TABLE_PRODUK+" ORDER BY "
+                +ProdukEntry.COLS_ID_PRODUK+" DESC";
+        cursor = db.getRawQuery(query,null);
+        while (cursor.moveToNext()){
+            String nama_produk = cursor.getString(0); //porsi
+            daftarProduk.add(nama_produk);
+        }
 
         db.closeDB();
+        return daftarProduk;
     }
 
     public void getAllRelasi(List<MBahanBaku> produkRelasiList, int id_produk, int jumlah_produk){

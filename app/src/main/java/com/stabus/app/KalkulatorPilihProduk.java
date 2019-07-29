@@ -16,8 +16,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.stabus.app.Database.DBMProduk;
 import com.stabus.app.Interface.ISetListener;
@@ -30,10 +34,11 @@ import com.stabus.app.RecyclerView.KalkulatorProdukAdapter;
 import com.stabus.app.RecyclerView.ProdukAdapter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
-public class KalkulatorPilihProduk extends Fragment implements OnListener {
+public class KalkulatorPilihProduk extends Fragment implements OnListener, AdapterView.OnItemSelectedListener {
 
     private ISetListener mISetListener;
     private DBMProduk dbmProduk;
@@ -46,14 +51,17 @@ public class KalkulatorPilihProduk extends Fragment implements OnListener {
     private List<MProdukRelasi> selectedList;
 
     private Toolbar toolbar;
-    private ScrollView scrollViewPro, scrollViewBah;
-    private RecyclerView recyclerViewPro, recyclerViewBah;
+    private ScrollView scrollViewBah;
+    private RecyclerView recyclerViewBah;
     private FrameLayout frameLayout;
     private FloatingActionButton fab;
+    private Spinner spinner;
+    ArrayList arraycountries;
 
     int id_produk;
     int jumlah_lama;
     String nama;
+    String[] options;
 
     CollectBahanCRUD crud;
 
@@ -66,21 +74,20 @@ public class KalkulatorPilihProduk extends Fragment implements OnListener {
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         initObject(view);
         disableNested();
+        callSpinner(view);
         return view;
     }
 
     private void initView(View view){
         toolbar = view.findViewById(R.id.toolbarPilihProduk);
-        scrollViewPro = view.findViewById(R.id.scrollRVPro);
         scrollViewBah = view.findViewById(R.id.scrollRVBahan);
-        recyclerViewPro = view.findViewById(R.id.rvPilihProduk);
         recyclerViewBah = view.findViewById(R.id.rvPilihBah);
         frameLayout = view.findViewById(R.id.frameEmptyPro);
         fab = view.findViewById(R.id.fabPilihKalkPro);
+        spinner = view.findViewById(R.id.spinnerPro);
     }
 
     private void disableNested(){
-        recyclerViewPro.setNestedScrollingEnabled(false);
         recyclerViewBah.setNestedScrollingEnabled(false);
     }
 
@@ -89,48 +96,40 @@ public class KalkulatorPilihProduk extends Fragment implements OnListener {
         crud = new CollectBahanCRUD(CollectBahanBaku.getBahanBakuList());
         produkListFull = new ArrayList<>();
         dbmProduk.getAllProduk(produkListFull);
+
         setRV(view);
     }
 
     private void setRV(View view){
         produkList = new ArrayList<>();
-        mAdapter = new KalkulatorProdukAdapter(produkList, this);
-        mISetListener.setRecyclerView(new LinearLayoutManager(view.getContext()), recyclerViewPro, mAdapter);
-        mAdapter.notifyDataSetChanged();
-
         refreshList();
     }
     private void refreshList(){
         dbmProduk.getAllProduk(produkList);
-        mAdapter.notifyDataSetChanged();
         cekEmptyList();
     }
     private void cekEmptyList(){
         if (produkList.size()==0){
-            scrollViewPro.setVisibility(View.GONE);
             scrollViewBah.setVisibility(View.GONE);
             frameLayout.setVisibility(View.VISIBLE);
         }else {
-            scrollViewPro.setVisibility(View.VISIBLE);
             scrollViewBah.setVisibility(View.VISIBLE);
             frameLayout.setVisibility(View.GONE);
         }
     }
 
+    private void callSpinner(View view){
+        arraycountries= dbmProduk.getAllNamaProduk();
+        ArrayAdapter adapter = new ArrayAdapter(view.getContext(), android.R.layout.simple_list_item_1, arraycountries);
+        // Specify layout to be used when list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Applying the adapter to our spinner
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
+    }
 
     @Override
     public void OnClickListener(int position, View view) {
-        id_produk = produkList.get(position).getId_produk();
-        nama = produkList.get(position).getNama();
-        jumlah_lama = produkList.get(position).getJumlah();
-
-        dbmProduk.getAllRelasi(crud.getBahanBakuList(),id_produk,jumlah_lama);
-
-        recyclerViewBah.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        bhAdapter = new BahanBakuAdapter(crud.getBahanBakuList(),this, false);
-        mISetListener.setRecyclerView(new LinearLayoutManager(view.getContext()), recyclerViewBah, bhAdapter);
-
-        bhAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -144,4 +143,21 @@ public class KalkulatorPilihProduk extends Fragment implements OnListener {
         mISetListener = (ISetListener)getActivity();
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        id_produk = produkList.get(position).getId_produk();
+        nama = produkList.get(position).getNama();
+        jumlah_lama = produkList.get(position).getJumlah();
+
+        dbmProduk.getAllRelasi(crud.getBahanBakuList(),id_produk,jumlah_lama);
+        recyclerViewBah.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        bhAdapter = new BahanBakuAdapter(crud.getBahanBakuList(),this, false);
+        mISetListener.setRecyclerView(new LinearLayoutManager(view.getContext()), recyclerViewBah, bhAdapter);
+        bhAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }
