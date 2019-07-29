@@ -107,6 +107,7 @@ public class DBMBahan {
         return cek;
 
     }
+
     public MBahanBaku bahanBaku(String textNama, int idBahan){
 
         MBahanBaku bahanBaku = null;

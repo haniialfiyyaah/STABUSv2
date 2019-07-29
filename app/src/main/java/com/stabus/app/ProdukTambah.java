@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -216,9 +217,11 @@ public class ProdukTambah extends Fragment implements View.OnClickListener, OnLi
         getTextInput();
         //jika sudah ada hanya input relasi bahan terpilih
 
+
         if (bundle!=null){
             dbmProduk.ubahProduk(id_produk,nama);
             dbmProduk.deleteRelasi(id_produk,jumlah_lama);
+
             simpanRelasi();
         }else {
 
@@ -250,6 +253,7 @@ public class ProdukTambah extends Fragment implements View.OnClickListener, OnLi
     }
 
     private void simpanRelasi(){
+
         int fk_id_poduk;
         if (bundle==null) {
              fk_id_poduk= dbmProduk.produk(nama, 0).getId_produk();
@@ -267,6 +271,7 @@ public class ProdukTambah extends Fragment implements View.OnClickListener, OnLi
             satuan_digunakan = crud.getBahanBakuList().get(pos).getSatuan_dg();
             dbmProduk.saveRelasi(fk_id_poduk,jumlah,satuan,fk_id_bahan,jumlah_digunakan,satuan_digunakan);
         }
+        Log.d("fk_id_Produk","FK_ID_PRODUK"+String.valueOf(fk_id_poduk));
     }
 
     @Override
