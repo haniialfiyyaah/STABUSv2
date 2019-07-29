@@ -179,6 +179,4 @@ public class MainActivity extends AppCompatActivity implements ISetListener {
         mTitle.setCompoundDrawables(null,null,null,null);
     }
 
-
-
 }
