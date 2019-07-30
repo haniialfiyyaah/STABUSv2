@@ -148,7 +148,7 @@ public class Produk extends Fragment implements OnListener, View.OnClickListener
     }
 
     @Override
-    public void OnClickListener(int position, View view) {
+    public void OnClickListener(int position, String str, View view) {
         if (produkList.get(position).isHapus()){
             produkList.get(position).setSelected(!produkList.get(position).isSelected());
             selectList(position);
@@ -178,6 +178,7 @@ public class Produk extends Fragment implements OnListener, View.OnClickListener
         }
         return false;
     }
+
 
     private void delete(){
         for (MProdukRelasi produkBahan : selectedList){

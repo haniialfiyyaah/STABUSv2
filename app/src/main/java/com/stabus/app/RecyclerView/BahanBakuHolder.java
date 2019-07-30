@@ -29,10 +29,10 @@ class BahanBakuHolder extends RecyclerView.ViewHolder implements View.OnClickLis
     @Override
     public void onClick(View v) {
         int pos = getAdapterPosition();
+        String c = nameText.getText().toString();
         if (pos!= RecyclerView.NO_POSITION){
-            onListener.OnClickListener(pos,itemView);
+            onListener.OnClickListener(pos,c,itemView);
         }
-        String aa = nameText.getText().toString();
     }
 
     @Override

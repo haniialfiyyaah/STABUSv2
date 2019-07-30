@@ -30,8 +30,9 @@ public class ProdukHolder extends RecyclerView.ViewHolder implements View.OnClic
     @Override
     public void onClick(View v) {
         int pos = getAdapterPosition();
+        String c = nama_produk.getText().toString();
         if (pos!= RecyclerView.NO_POSITION){
-            onListener.OnClickListener(pos,itemView);
+            onListener.OnClickListener(pos,c,itemView);
         }
     }
 

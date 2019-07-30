@@ -314,7 +314,7 @@ public class ProdukTambah extends Fragment implements View.OnClickListener, OnLi
 
 
     @Override
-    public void OnClickListener(int position, View view) {
+    public void OnClickListener(int position, String str, View view) {
         dialogTambah.showDialog(view,position);
 
     }
@@ -323,6 +323,8 @@ public class ProdukTambah extends Fragment implements View.OnClickListener, OnLi
     public boolean OnLongListener(int position, View view) {
         return false;
     }
+
+
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {

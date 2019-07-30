@@ -32,8 +32,9 @@ public class HargaBahanHolder extends RecyclerView.ViewHolder implements View.On
     @Override
     public void onClick(View v) {
         int pos = getAdapterPosition();
+        String c = merkText.getText().toString();
         if (pos!= RecyclerView.NO_POSITION){
-            onListener.OnClickListener(pos, itemView);
+            onListener.OnClickListener(pos,c, itemView);
         }
     }
 

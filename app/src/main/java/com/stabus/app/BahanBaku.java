@@ -161,7 +161,7 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
     }
 
     @Override
-    public void OnClickListener(int position, View view) {
+    public void OnClickListener(int position, String str, View view) {
         int sId = bahanBakuList.get(position).getId();
         String sNama = bahanBakuList.get(position).getNama_bahan();
         String sKategori = bahanBakuList.get(position).getKategori();
@@ -196,6 +196,7 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
         }
         return false;
     }
+
 
     private void selectList(int position){
         if (bahanBakuList.get(position).isSelected()){

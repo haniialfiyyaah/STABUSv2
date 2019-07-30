@@ -218,7 +218,7 @@ public class HargaBahanBaku extends Fragment implements View.OnClickListener, On
     }
 
     @Override
-    public void OnClickListener(int position, View view) {
+    public void OnClickListener(int position, String str, View view) {
         int setId = hargaBahanList.get(position).getId();
 
         if (hargaBahanList.get(position).isOpen()){
@@ -245,6 +245,8 @@ public class HargaBahanBaku extends Fragment implements View.OnClickListener, On
         }
         return false;
     }
+
+
 
 
     private void selectList(int position){

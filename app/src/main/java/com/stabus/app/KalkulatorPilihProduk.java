@@ -1,6 +1,7 @@
 package com.stabus.app;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,9 +10,8 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,20 +23,19 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.stabus.app.Database.DBMBahan;
+
+import com.stabus.app.Database.DBMHarga;
 import com.stabus.app.Database.DBMProduk;
 import com.stabus.app.Interface.ISetListener;
 import com.stabus.app.Interface.OnListener;
 import com.stabus.app.Model.CollectBahanBaku;
 import com.stabus.app.Model.CollectBahanCRUD;
-import com.stabus.app.Model.MBahanBaku;
+import com.stabus.app.Model.MHargaBahan;
 import com.stabus.app.Model.MProdukRelasi;
 import com.stabus.app.RecyclerView.BahanBakuAdapter;
-import com.stabus.app.RecyclerView.KalkulatorProdukAdapter;
-import com.stabus.app.RecyclerView.ProdukAdapter;
+
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -44,6 +43,7 @@ public class KalkulatorPilihProduk extends Fragment implements OnListener, Adapt
 
     private ISetListener mISetListener;
     private DBMProduk dbmProduk;
+    private DBMHarga dbmHarga;
     private BahanBakuAdapter bhAdapter;
     //list
     private List<MProdukRelasi> produkList;
@@ -56,12 +56,13 @@ public class KalkulatorPilihProduk extends Fragment implements OnListener, Adapt
     private FrameLayout frameLayout;
     private FloatingActionButton fab;
     private Spinner spinner;
-    ArrayList arraycountries;
+    private ArrayList arrayProduk;
+    private ArrayList arrayHarga;
 
     int id_produk;
     int jumlah_lama;
     String nama;
-    String[] options;
+
 
     CollectBahanCRUD crud;
 
@@ -93,6 +94,7 @@ public class KalkulatorPilihProduk extends Fragment implements OnListener, Adapt
     private void initObject(View view){
         dbmProduk = new DBMProduk(view);
         crud = new CollectBahanCRUD(CollectBahanBaku.getBahanBakuList());
+        dbmHarga = new DBMHarga(view);
         produkListFull = new ArrayList<>();
         dbmProduk.getAllProduk(produkListFull);
 
@@ -120,8 +122,8 @@ public class KalkulatorPilihProduk extends Fragment implements OnListener, Adapt
     }
 
     private void callSpinner(View view){
-        arraycountries= dbmProduk.getAllNamaProduk();
-        ArrayAdapter adapter = new ArrayAdapter(view.getContext(), android.R.layout.simple_list_item_1, arraycountries);
+        arrayProduk= dbmProduk.getAllNamaProduk();
+        ArrayAdapter adapter = new ArrayAdapter(view.getContext(), android.R.layout.simple_list_item_1, arrayProduk);
         // Specify layout to be used when list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Applying the adapter to our spinner
@@ -130,18 +132,51 @@ public class KalkulatorPilihProduk extends Fragment implements OnListener, Adapt
     }
 
     @Override
-    public void OnClickListener(int position, View view) {
-        Log.d("Posisi",""+position);
-        Log.d("Nama",nama);
-        Log.d("namaaaa",view.toString());
+    public void OnClickListener(int position, String str, final View view) {
+        List<MHargaBahan> aa = dbmHarga.getSelectedHarga(str);
+        arrayHarga = new ArrayList();
+        for (MHargaBahan list : aa){
+            String harga = "Harga : "+list.getHarga()+" Satuan :"+list.getIsi()+" "+list.getSatuan();
+            arrayHarga.add(harga);
+        }
+        
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(view.getContext());
+        View aas = getLayoutInflater().inflate(R.layout.dialog_spinner,null);
+        mBuilder.setTitle("Pilih Harga Bahan");
+        final Spinner mSpinner = (Spinner) aas.findViewById(R.id.spinnerHarga);
+        ArrayAdapter adapter1 = new ArrayAdapter(view.getContext(),android.R.layout.simple_list_item_1,arrayHarga);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSpinner.setAdapter(adapter1);
+
+        mBuilder.setPositiveButton("Simpan", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(view.getContext(),mSpinner.getSelectedItem().toString(),Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
+
+        mBuilder.setNegativeButton("Batal", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        mBuilder.setView(aas);
+
+        AlertDialog dialog = mBuilder.create();
+        dialog.show();
 
 
     }
+
 
     @Override
     public boolean OnLongListener(int position, View view) {
         return false;
     }
+
 
     @Override
     public void onAttach(Context context) {

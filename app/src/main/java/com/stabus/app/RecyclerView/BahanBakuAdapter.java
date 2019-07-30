@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,8 @@ public class BahanBakuAdapter extends RecyclerView.Adapter<BahanBakuHolder> {
     private List<MBahanBaku> bahanBakuList;
     private OnListener mOnListener;
     private boolean isProduk;
+
+
 
     public BahanBakuAdapter(List<MBahanBaku> bahanBakuList, OnListener onListener, boolean isProduk) {
         this.bahanBakuList = bahanBakuList;
@@ -39,7 +42,7 @@ public class BahanBakuAdapter extends RecyclerView.Adapter<BahanBakuHolder> {
     @Override
     public void onBindViewHolder(@NonNull BahanBakuHolder bahanBakuHolder, int i) {
         final MBahanBaku bahanBaku = bahanBakuList.get(i);
-        String nama = bahanBaku.getNama_bahan();
+        final String nama = bahanBaku.getNama_bahan();
         String jumlah;
         if (bahanBaku.getJumlah()>99){
             jumlah = "99+ harga";

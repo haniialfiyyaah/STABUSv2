@@ -108,6 +108,8 @@ public class DBMBahan {
 
     }
 
+
+
     public MBahanBaku bahanBaku(String textNama, int idBahan){
 
         MBahanBaku bahanBaku = null;

@@ -141,7 +141,7 @@ public class ProdukPilihBahan extends Fragment implements OnListener, View.OnCli
     }
 
     @Override
-    public void OnClickListener(int position, View view) {
+    public void OnClickListener(int position, String str, View view) {
         //showDialog(view,position);
         produkdialogTambah.showDialog(view,position);
     }
@@ -150,6 +150,7 @@ public class ProdukPilihBahan extends Fragment implements OnListener, View.OnCli
     public boolean OnLongListener(int position, View view) {
         return false;
     }
+
 
     @Override
     public void onClick(View v) {
