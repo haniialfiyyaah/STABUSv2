@@ -1,4 +1,4 @@
-package com.stabus.app;
+package com.stabus.app.TProduk;
 
 import android.app.Dialog;
 import android.support.design.widget.TextInputLayout;
@@ -15,6 +15,7 @@ import com.stabus.app.Database.DBMHarga;
 import com.stabus.app.Model.CollectBahanCRUD;
 import com.stabus.app.Model.MBahanBaku;
 import com.stabus.app.Model.MProdukRelasi;
+import com.stabus.app.R;
 import com.stabus.app.RecyclerView.BahanBakuAdapter;
 import com.stabus.app.RecyclerView.RelasiAdapter;
 

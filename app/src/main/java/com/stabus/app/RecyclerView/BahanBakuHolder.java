@@ -2,7 +2,6 @@ package com.stabus.app.RecyclerView;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -32,7 +31,6 @@ class BahanBakuHolder extends RecyclerView.ViewHolder implements View.OnClickLis
         if (pos!= RecyclerView.NO_POSITION){
             onListener.OnClickListener(pos,itemView);
         }
-        String aa = nameText.getText().toString();
     }
 
     @Override

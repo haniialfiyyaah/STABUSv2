@@ -1,4 +1,4 @@
-package com.stabus.app;
+package com.stabus.app.TProduk;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -38,6 +38,7 @@ import com.stabus.app.Model.CollectBahanCRUD;
 import com.stabus.app.Model.CollectString;
 import com.stabus.app.Model.CollectStringCRUD;
 import com.stabus.app.Model.MString;
+import com.stabus.app.R;
 import com.stabus.app.RecyclerView.RelasiAdapter;
 
 public class ProdukTambah extends Fragment implements View.OnClickListener, OnListener {

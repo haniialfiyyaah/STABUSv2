@@ -1,4 +1,4 @@
-package com.stabus.app;
+package com.stabus.app.TProduk;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -31,6 +31,7 @@ import com.stabus.app.Model.CollectString;
 import com.stabus.app.Model.CollectStringCRUD;
 import com.stabus.app.Model.MProdukRelasi;
 import com.stabus.app.Model.MString;
+import com.stabus.app.R;
 import com.stabus.app.RecyclerView.ProdukAdapter;
 
 import java.util.ArrayList;
@@ -193,6 +194,7 @@ public class Produk extends Fragment implements OnListener, View.OnClickListener
         }
         return false;
     }
+
 
     private void delete(){
         for (MProdukRelasi produkBahan : selectedList){

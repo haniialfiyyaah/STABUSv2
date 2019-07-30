@@ -1,4 +1,4 @@
-package com.stabus.app;
+package com.stabus.app.TProduk;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -17,6 +17,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
 
+import com.stabus.app.Class.ClassDialogTambah;
 import com.stabus.app.Database.DBMBahan;
 import com.stabus.app.Database.DBMHarga;
 import com.stabus.app.Interface.ISetListener;
@@ -25,6 +26,7 @@ import com.stabus.app.Model.CollectBahanBaku;
 import com.stabus.app.Model.CollectBahanCRUD;
 import com.stabus.app.Model.MBahanBaku;
 import com.stabus.app.Model.MProdukRelasi;
+import com.stabus.app.R;
 import com.stabus.app.RecyclerView.BahanBakuAdapter;
 
 import java.util.ArrayList;
@@ -143,6 +145,7 @@ public class ProdukPilihBahan extends Fragment implements OnListener, View.OnCli
     public boolean OnLongListener(int position, View view) {
         return false;
     }
+
 
     @Override
     public void onClick(View v) {

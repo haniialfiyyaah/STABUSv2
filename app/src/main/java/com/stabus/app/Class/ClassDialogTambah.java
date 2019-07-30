@@ -1,4 +1,4 @@
-package com.stabus.app;
+package com.stabus.app.Class;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -18,6 +18,7 @@ import com.stabus.app.Database.DBMBahan;
 import com.stabus.app.Database.DBMHarga;
 import com.stabus.app.Model.MBahanBaku;
 import com.stabus.app.Model.MHargaBahan;
+import com.stabus.app.R;
 import com.stabus.app.RecyclerView.BahanBakuAdapter;
 import com.stabus.app.RecyclerView.HargaBahanAdapter;
 
@@ -49,7 +50,7 @@ public class ClassDialogTambah implements View.OnClickListener {
     private DBMHarga dbmHarga;
 
     //bahan
-    ClassDialogTambah(String tag, Activity activity, View view, List<MBahanBaku> bahanBakuList, BahanBakuAdapter mAdapter, FrameLayout frameRV, ScrollView scrollView) {
+    public ClassDialogTambah(String tag, Activity activity, View view, List<MBahanBaku> bahanBakuList, BahanBakuAdapter mAdapter, FrameLayout frameRV, ScrollView scrollView) {
         this.tag = tag;
         this.activity = activity;
         this.view = view;
@@ -57,11 +58,10 @@ public class ClassDialogTambah implements View.OnClickListener {
         this.mAdapter = mAdapter;
         this.frameRV = frameRV;
         this.scrollView = scrollView;
-
     }
 
     //harga
-    ClassDialogTambah(String tag, Activity activity, View view, List<MHargaBahan> hargaBahanList, HargaBahanAdapter mHAdapter, FrameLayout frameRV, ScrollView scrollView) {
+    public ClassDialogTambah(String tag, Activity activity, View view, List<MHargaBahan> hargaBahanList, HargaBahanAdapter mHAdapter, FrameLayout frameRV, ScrollView scrollView) {
         this.tag = tag;
         this.view = view;
         this.frameRV = frameRV;
@@ -71,7 +71,7 @@ public class ClassDialogTambah implements View.OnClickListener {
         this.activity = activity;
     }
 
-    void tambahDialog(String title, int sId){
+    public void tambahDialog(String title, int sId){
         dbmBahan = new DBMBahan(view);
         dbmHarga = new DBMHarga(view);
         this.sId = sId;
@@ -82,7 +82,7 @@ public class ClassDialogTambah implements View.OnClickListener {
         setSatuan();
         //clearMenu();
     }
-    void showDialog(Dialog dialog){
+    private void showDialog(Dialog dialog){
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_tambah_bahan);
         mENama = dialog.findViewById(R.id.textNama);
@@ -204,6 +204,7 @@ public class ClassDialogTambah implements View.OnClickListener {
     }
 
     private void setSatuan(){
+        if (mENama.getEditText()!=null)
         mENama.getEditText().addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

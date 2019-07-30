@@ -1,4 +1,4 @@
-package com.stabus.app;
+package com.stabus.app.TBahanBaku;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -21,10 +21,12 @@ import android.widget.FrameLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.stabus.app.Class.ClassDialogTambah;
 import com.stabus.app.Database.DBMBahan;
 import com.stabus.app.Interface.ISetListener;
 import com.stabus.app.Interface.OnListener;
 import com.stabus.app.Model.MBahanBaku;
+import com.stabus.app.R;
 import com.stabus.app.RecyclerView.BahanBakuAdapter;
 
 import java.util.ArrayList;
@@ -65,6 +67,7 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_bahan, container, false);
         initView(view);
+        assert getActivity()!=null;
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         initObject(view);
         initListener();
@@ -180,7 +183,6 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
             mISetListener.inflateFragment(getString(R.string.HargaBahanBaku), bundle);
             //title.setText(selected +" item terpilih");
         }
-
     }
 
     @Override
@@ -196,6 +198,7 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
         }
         return false;
     }
+
 
     private void selectList(int position){
         if (bahanBakuList.get(position).isSelected()){
@@ -283,7 +286,7 @@ public class BahanBaku extends Fragment implements View.OnClickListener , OnList
 
     private void settoolbaron(){
         title.setText(getTag());
-        toolbar.setNavigationIcon(R.drawable.ic_home_white);
+        toolbar.setNavigationIcon(null);
     }
 
 

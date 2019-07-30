@@ -22,11 +22,20 @@ public class MHargaBahan {
     boolean isSelected = false;
     boolean isOpen = false;
 
+    public MHargaBahan() {
+    }
+
     //constructor tabel bahan
     public MHargaBahan(int id_bahan, String kategori_bahan, String nama_bahan) {
         this.id_bahan = id_bahan;
         this.kategori_bahan = kategori_bahan;
         this.nama_bahan = nama_bahan;
+    }
+
+    public MHargaBahan(int isi, String satuan, float harga) {
+        this.isi = isi;
+        this.satuan = satuan;
+        this.harga = harga;
     }
 
     //constructor tabel harga + nama bahan

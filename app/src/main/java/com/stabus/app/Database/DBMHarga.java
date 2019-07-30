@@ -101,7 +101,39 @@ public class DBMHarga {
 
     }
 
+    public int getIDBahan(String nama){
+        db.openDB();
+        int aa = 0;
+        String query = "SELECT "+BahanBakuEntry.COLS_ID_BAHAN
+                +" FROM "+BahanBakuEntry.TABLE_BAHANBAKU+" WHERE "+ BahanBakuEntry.COLS_NAMA_BAHAN+" =?";
+        Cursor cek = db.getRawQuery(query, new String[]{nama});
 
+        while (cek.moveToNext()){
+            aa = cek.getInt(0);
+        }
+        return aa;
+    }
+
+    public ArrayList<MHargaBahan> getSelectedHarga(String nama){
+        MHargaBahan hargaBahan;
+        db.openDB();
+        int c = getIDBahan(nama);
+        ArrayList<MHargaBahan> hargabahans = new ArrayList<MHargaBahan>();
+        String query = "SELECT "+HargaBKEntry.COLS_HARGA_HARGA+","
+                +HargaBKEntry.COLS_JUMLAH_HARGA+","
+                +HargaBKEntry.COLS_SATUAN_HARGA+" FROM "+HargaBKEntry.TABLE_HARGA
+                +" WHERE "+HargaBKEntry.COLS_ID_BAHAN_HARGA+" =?";
+        Cursor cek = db.getRawQuery(query,new  String[]{String.valueOf(c)});
+        while (cek.moveToNext()){
+            float harga = cek.getFloat(0);
+            int jumlah = cek.getInt(1);
+            String satuan = cek.getString(2);
+            hargaBahan = new MHargaBahan(jumlah,satuan,harga);
+            hargabahans.add(hargaBahan);
+        }
+        db.closeDB();
+        return hargabahans;
+    }
     public MHargaBahan hargaBahan(int idH,int idBK){
 
         MHargaBahan hargaBahan = null;

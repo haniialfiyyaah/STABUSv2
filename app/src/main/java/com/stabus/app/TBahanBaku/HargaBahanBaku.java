@@ -1,4 +1,4 @@
-package com.stabus.app;
+package com.stabus.app.TBahanBaku;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -24,11 +24,14 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.stabus.app.Class.ClassDialogEdit;
+import com.stabus.app.Class.ClassDialogTambah;
 import com.stabus.app.Database.DBMBahan;
 import com.stabus.app.Database.DBMHarga;
 import com.stabus.app.Interface.ISetListener;
 import com.stabus.app.Interface.OnListener;
 import com.stabus.app.Model.MHargaBahan;
+import com.stabus.app.R;
 import com.stabus.app.RecyclerView.HargaBahanAdapter;
 
 import java.util.ArrayList;
@@ -245,6 +248,8 @@ public class HargaBahanBaku extends Fragment implements View.OnClickListener, On
         }
         return false;
     }
+
+
 
 
     private void selectList(int position){

@@ -1,25 +1,26 @@
 package com.stabus.app;
 
 import android.graphics.drawable.Drawable;
-import android.support.annotation.MenuRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.ActionMode;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
 import com.stabus.app.Interface.ISetListener;
+import com.stabus.app.TBahanBaku.BahanBaku;
+import com.stabus.app.TBahanBaku.HargaBahanBaku;
+import com.stabus.app.TProduk.Produk;
+import com.stabus.app.TProduk.ProdukTambah;
+import com.stabus.app.TKalkulator.Kalkulator;
 
 public class MainActivity extends AppCompatActivity implements ISetListener {
 
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements ISetListener {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         if (savedInstanceState==null){
-            setFragment(new Produk(),getString(R.string.Produk),false,null);
+            setFragment(new Produk(), getString(R.string.Produk), false, null);
         }
     }
 
