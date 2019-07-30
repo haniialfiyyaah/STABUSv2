@@ -3,8 +3,8 @@ package com.stabus.app.Model;
 public class MProdukRelasi {
 
     //tabel produk
-    private int id_produk;
-    private String nama;
+//    private int id_produk;
+//    private String nama;
 
     //tabel relasi
     private int id_relasi;
@@ -15,44 +15,23 @@ public class MProdukRelasi {
     private int isi_digunakan;
     private String satuan_digunakan;
 
-
     private boolean isSelected =false;
     private boolean isHapus =false;
+
+    private String nama_produk;
+    private String nama_bahan;
+    private float harga_pilih;
+
+
+    //helper
+    private int pos;
 
     public MProdukRelasi() {
     }
 
-    public MProdukRelasi(int id_produk, String nama) {
-        this.id_produk = id_produk;
-        this.nama = nama;
-    }
-
-    public MProdukRelasi(int id_produk, String nama, int id_relasi, int fk_id_produk, int jumlah, String satuan, int fk_id_bahan, int isi_digunakan, String satuan_digunakan) {
-        this.id_produk = id_produk;
-        this.nama = nama;
-        this.id_relasi = id_relasi;
+    public MProdukRelasi(int fk_id_produk, String nama_produk) {
         this.fk_id_produk = fk_id_produk;
-        this.jumlah = jumlah;
-        this.satuan = satuan;
-        this.fk_id_bahan = fk_id_bahan;
-        this.isi_digunakan = isi_digunakan;
-        this.satuan_digunakan = satuan_digunakan;
-    }
-
-    public int getId_produk() {
-        return id_produk;
-    }
-
-    public void setId_produk(int id_produk) {
-        this.id_produk = id_produk;
-    }
-
-    public String getNama() {
-        return nama;
-    }
-
-    public void setNama(String nama) {
-        this.nama = nama;
+        this.nama_produk = nama_produk;
     }
 
     public int getId_relasi() {
@@ -126,4 +105,29 @@ public class MProdukRelasi {
     public void setHapus(boolean hapus) {
         isHapus = hapus;
     }
+
+    public String getNama_produk() {
+        return nama_produk;
+    }
+
+    public void setNama_produk(String nama_produk) {
+        this.nama_produk = nama_produk;
+    }
+
+    public String getNama_bahan() {
+        return nama_bahan;
+    }
+
+    public void setNama_bahan(String nama_bahan) {
+        this.nama_bahan = nama_bahan;
+    }
+
+    public float getHarga_pilih() {
+        return harga_pilih;
+    }
+
+    public void setHarga_pilih(float harga_pilih) {
+        this.harga_pilih = harga_pilih;
+    }
+
 }

@@ -4,15 +4,9 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
-import com.stabus.app.BahanBaku;
 import com.stabus.app.Database.DBContract.*;
-import com.stabus.app.Model.CollectBahanCRUD;
-import com.stabus.app.Model.MBahanBaku;
 import com.stabus.app.Model.MProdukRelasi;
-import com.stabus.app.Produk;
-import com.stabus.app.RecyclerView.ProdukAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +16,7 @@ public class DBMProduk {
     private View view;
     private DBAdapter db;
     private Cursor cursor;
-
-    CollectBahanCRUD crud;
-    DBMBahan dbmBahan;
+    private DBMBahan dbmBahan;
 
     public DBMProduk(View view) {
         this.view = view;
@@ -32,6 +24,69 @@ public class DBMProduk {
 
     }
 
+    public void getAllProduk(List<MProdukRelasi> produkRelasiList){
+        db.openDB();
+        produkRelasiList.clear();
+        //get produk
+        for (int i = 0; i < getProduk().size(); i++){
+            MProdukRelasi produkRelasi = getProduk().get(i);
+            int id_produk = produkRelasi.getFk_id_produk();
+            String nama_produk = produkRelasi.getNama_produk();
+            //get porsi of product
+            String query = "SELECT DISTINCT "+ProdukBKEntry.COLS_JUMLAH_PRODUK+","+ProdukBKEntry.COLS_SATUAN_PRODUK
+                    +" FROM "+ProdukBKEntry.TABLE_PRODUK_BAHAN+" WHERE "
+                    +ProdukBKEntry.COLS_FK_ID_PRODUK+" = "+id_produk;
+            cursor = db.getRawQuery(query,null);
+            while (cursor.moveToNext()){
+                int jumlah = cursor.getInt(0); //porsi
+                String satuan = cursor.getString(1); //satuan porsi
+                produkRelasi.setFk_id_produk(id_produk);
+                produkRelasi.setNama_produk(nama_produk);
+                produkRelasi.setJumlah(jumlah);
+                produkRelasi.setSatuan(satuan);
+                produkRelasiList.add(0,produkRelasi);
+            }
+        }
+        db.closeDB();
+    }
+    public void getAllRelasi(List<MProdukRelasi> produkRelasiList, int id_produk, int jumlah_produk){
+        db.openDB();
+        produkRelasiList.clear();
+//        "SELECT * FROM ProdukBahan WHERE fk_id_produk = 9 AND jumlah = 575";
+        String s = "SELECT * FROM "+ProdukBKEntry.TABLE_PRODUK_BAHAN+" WHERE "+ProdukBKEntry.COLS_FK_ID_PRODUK+" =? AND "+
+                ProdukBKEntry.COLS_JUMLAH_PRODUK+" =?";
+        cursor = db.getRawQuery(s,new String[]{String.valueOf(id_produk),String.valueOf(jumlah_produk)});
+
+        while (cursor.moveToNext()){
+            int id_relasi = cursor.getInt(0);
+            int fk_id_produk = cursor.getInt(1);
+            int jumlah = cursor.getInt(2);
+            String satuan = cursor.getString(3);
+            int fk_id_bahan = cursor.getInt(4);
+            int jumah_dg = cursor.getInt(5);
+            String satuan_dg = cursor.getString(6);
+
+            dbmBahan = new DBMBahan(view);
+            String nama_bahan = dbmBahan.bahanBaku("",fk_id_bahan).getNama_bahan();
+//            String nama_produk = produk("",fk_id_produk).getNama_produk();
+
+            MProdukRelasi produkRelasi = new MProdukRelasi();
+            produkRelasi.setId_relasi(id_relasi);
+            produkRelasi.setFk_id_produk(fk_id_produk);
+            produkRelasi.setJumlah(jumlah);
+            produkRelasi.setSatuan(satuan);
+            produkRelasi.setFk_id_bahan(fk_id_bahan);
+            produkRelasi.setIsi_digunakan(jumah_dg);
+            produkRelasi.setSatuan_digunakan(satuan_dg);
+
+//            produkRelasi.setNama_produk(nama_produk);
+            produkRelasi.setNama_bahan(nama_bahan);
+
+            produkRelasiList.add(produkRelasi);
+        }
+
+        db.closeDB();
+    }
     private List<MProdukRelasi> getProduk(){
         db.openDB();
         List<MProdukRelasi> getProduk = new ArrayList<>();
@@ -42,45 +97,14 @@ public class DBMProduk {
             int id = cursor.getInt(0);
             String nama = cursor.getString(1);
 
-            MProdukRelasi bahanBaku = new MProdukRelasi();
-            bahanBaku.setId_produk(id);
-            bahanBaku.setNama(nama);
-            getProduk.add(bahanBaku);
+            MProdukRelasi produkRelasi = new MProdukRelasi();
+            produkRelasi.setFk_id_produk(id);
+            produkRelasi.setNama_produk(nama);
+            getProduk.add(produkRelasi);
         }
 
         return  getProduk;
     }
-    public void getAllProduk(List<MProdukRelasi> produkRelasiList){
-        db.openDB();
-        produkRelasiList.clear();
-
-        //get produk
-        for (int i = 0; i < getProduk().size(); i++){
-            MProdukRelasi produk = getProduk().get(i);
-            int id_produk = produk.getId_produk();
-            String nama_produk = produk.getNama();
-            //get porsi of product
-            String query = "SELECT DISTINCT "+ProdukBKEntry.COLS_JUMLAH_PRODUK+","+ProdukBKEntry.COLS_SATUAN_PRODUK
-                    +" FROM "+ProdukBKEntry.TABLE_PRODUK_BAHAN+" WHERE "
-                    +ProdukBKEntry.COLS_FK_ID_PRODUK+" = "+id_produk;
-            cursor = db.getRawQuery(query,null);
-            while (cursor.moveToNext()){
-                int jumlah = cursor.getInt(0); //porsi
-                String satuan = cursor.getString(1); //satuan porsi
-
-                MProdukRelasi bahanBaku = new MProdukRelasi();
-                bahanBaku.setId_produk(id_produk);
-                bahanBaku.setNama(nama_produk);
-                bahanBaku.setJumlah(jumlah);
-                bahanBaku.setSatuan(satuan);
-
-                produkRelasiList.add(0,bahanBaku);
-            }
-
-        }
-        db.closeDB();
-    }
-
     public ArrayList<String> getAllNamaProduk(){
         db.openDB();
         ArrayList<String> daftarProduk = new ArrayList<>();
@@ -96,39 +120,6 @@ public class DBMProduk {
         db.closeDB();
         return daftarProduk;
     }
-
-    public void getAllRelasi(List<MBahanBaku> produkRelasiList, int id_produk, int jumlah_produk){
-        db.openDB();
-
-        produkRelasiList.clear();
-//        "SELECT * FROM ProdukBahan WHERE fk_id_produk = 9 AND jumlah = 575";
-        String s = "SELECT * FROM "+ProdukBKEntry.TABLE_PRODUK_BAHAN+" WHERE "+ProdukBKEntry.COLS_FK_ID_PRODUK+" =? AND "+
-        ProdukBKEntry.COLS_JUMLAH_PRODUK+" =?";
-        cursor = db.getRawQuery(s,new String[]{String.valueOf(id_produk),String.valueOf(jumlah_produk)});
-
-        while (cursor.moveToNext()){
-            //int id_relasi = cursor.getInt(0);
-            int fk_id_produk = cursor.getInt(1);
-            //int jumlah = cursor.getInt(2);
-            //String satuan = cursor.getString(3);
-            int fk_id_bahan = cursor.getInt(4);
-            int jumah_dg = cursor.getInt(5);
-            String satuan_dg = cursor.getString(6);
-            dbmBahan = new DBMBahan(view);
-            String nama_bahan = dbmBahan.bahanBaku("",fk_id_bahan).getNama_bahan();
-
-            MBahanBaku bahanBaku = new MBahanBaku();
-            bahanBaku.setId(fk_id_bahan);
-            bahanBaku.setJumlah_dg(jumah_dg);
-            bahanBaku.setSatuan_dg(satuan_dg);
-            bahanBaku.setNama_bahan(nama_bahan);
-            //MProdukRelasi bahanBaku = new MProdukRelasi(fk_id_produk,nama_produk,id_relasi,fk_id_produk,jumlah,satuan,fk_id_bahan,jumah_dg,satuan_dg);
-            produkRelasiList.add(bahanBaku);
-        }
-
-        db.closeDB();
-    }
-
     public ArrayList<String> getIdBahan(int id_produk){
         ArrayList<String> nama = new ArrayList<>();
         db.openDB();
@@ -144,7 +135,6 @@ public class DBMProduk {
         }
         return nama;
     }
-
     public ArrayList<String> getNameBahan(int id_produk){
         db.openDB();
         ArrayList IdBahan = getIdBahan(id_produk);
@@ -163,7 +153,6 @@ public class DBMProduk {
         db.closeDB();
         return nama_bahan;
     }
-
     private String namaProduk(int fk_id_produk){
         db.openDB();
         String query = "SELECT "+ProdukEntry.COLS_NAMA_PRODUK+" FROM "+ProdukEntry.TABLE_PRODUK+" WHERE "
@@ -240,10 +229,8 @@ public class DBMProduk {
     }
 
     public MProdukRelasi produk(String textNama, int idBahan){
-
-        MProdukRelasi produkBahan = null;
+        MProdukRelasi produkRelasi = null;
         db.openDB();
-
         String selection;
         String args ;
         if (textNama.trim().length()>0){
@@ -261,45 +248,13 @@ public class DBMProduk {
         while (cursor.moveToNext()){
             int id = cursor.getInt(0);
             String nama = cursor.getString(1);
-
-            produkBahan = new MProdukRelasi(id, nama) ;
+            produkRelasi = new MProdukRelasi(id, nama) ;
         }
 
         db.closeDB();
-
-        return produkBahan;
-
-    }
-    public MProdukRelasi relasi(int id_produk){
-
-        MProdukRelasi produkBahan = null;
-        db.openDB();
-
-        cursor=db.getQuery(ProdukBKEntry.TABLE_PRODUK_BAHAN,ProdukBKEntry.COLS_FK_ID_PRODUK+" =?",new String[]{String.valueOf(id_produk)});
-
-        //cursor = db.getRawQuery(query, new String[]{textNama});
-
-        while (cursor.moveToNext()){
-            int id_relasi = cursor.getInt(0);
-            int fk_id_produk = cursor.getInt(1);
-            int jumlah = cursor.getInt(2);
-            String satuan = cursor.getString(3);
-            int fk_id_bahan = cursor.getInt(4);
-            int jumah_dg = cursor.getInt(5);
-            String satuan_dg = cursor.getString(6);
-
-            String nama_produk = produk("",fk_id_produk).getNama();
-
-            produkBahan = new MProdukRelasi(id_produk,nama_produk,id_relasi,fk_id_produk,jumlah,satuan,fk_id_bahan,jumah_dg,satuan_dg);
-
-        }
-
-        db.closeDB();
-
-        return produkBahan;
+        return produkRelasi;
 
     }
-
     //cek produk udah ada belum
     public boolean cekNama(String textNama){
         db.openDB();
@@ -307,6 +262,22 @@ public class DBMProduk {
                 +ProdukEntry.TABLE_PRODUK+" WHERE "
                 +ProdukEntry.COLS_NAMA_PRODUK+" =?";
         boolean cek = db.cekSameData(query, new String[]{textNama});
+
+        db.closeDB();
+
+        return cek;
+
+    }
+    public boolean cekJumlah(String textNama, int jumlah, String satuan){
+        db.openDB();
+        String query = "SELECT "+ProdukBKEntry.COLS_JUMLAH_PRODUK+" , "+ProdukBKEntry.COLS_SATUAN_PRODUK+" FROM "
+                +ProdukBKEntry.TABLE_PRODUK_BAHAN+" WHERE "
+                +ProdukBKEntry.COLS_FK_ID_PRODUK+" = " +
+                "(SELECT "+ProdukEntry.COLS_ID_PRODUK+" FROM "+ProdukEntry.TABLE_PRODUK+" WHERE " +
+                ProdukEntry.COLS_NAMA_PRODUK+" =? ) AND "
+                +ProdukBKEntry.COLS_JUMLAH_PRODUK+" =? AND "
+                +ProdukBKEntry.COLS_SATUAN_PRODUK+" =?";
+        boolean cek = db.cekSameData(query, new String[]{textNama, String.valueOf(jumlah), satuan});
 
         db.closeDB();
 

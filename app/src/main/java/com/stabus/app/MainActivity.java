@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements ISetListener {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         if (savedInstanceState==null){
-            setFragment(new BahanBaku(),getString(R.string.Produk),false,null);
+            setFragment(new Produk(),getString(R.string.Produk),false,null);
         }
     }
 

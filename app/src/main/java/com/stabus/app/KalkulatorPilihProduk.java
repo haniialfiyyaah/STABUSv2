@@ -92,7 +92,7 @@ public class KalkulatorPilihProduk extends Fragment implements OnListener, Adapt
 
     private void initObject(View view){
         dbmProduk = new DBMProduk(view);
-        crud = new CollectBahanCRUD(CollectBahanBaku.getBahanBakuList());
+        //crud = new CollectBahanCRUD(CollectBahanBaku.getBahanBakuList());
         produkListFull = new ArrayList<>();
         dbmProduk.getAllProduk(produkListFull);
 
@@ -151,13 +151,13 @@ public class KalkulatorPilihProduk extends Fragment implements OnListener, Adapt
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        id_produk = produkList.get(position).getId_produk();
-        nama = produkList.get(position).getNama();
+        id_produk = produkList.get(position).getFk_id_produk();
+        nama = produkList.get(position).getNama_produk();
         jumlah_lama = produkList.get(position).getJumlah();
 
-        dbmProduk.getAllRelasi(crud.getBahanBakuList(),id_produk,jumlah_lama);
+        //dbmProduk.getAllRelasi(crud.getBahanBakuList(),id_produk,jumlah_lama);
         recyclerViewBah.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        bhAdapter = new BahanBakuAdapter(crud.getBahanBakuList(),this, false);
+        //bhAdapter = new BahanBakuAdapter(crud.getBahanBakuList(),this, false);
         mISetListener.setRecyclerView(new LinearLayoutManager(view.getContext()), recyclerViewBah, bhAdapter);
         bhAdapter.notifyDataSetChanged();
     }
