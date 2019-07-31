@@ -9,7 +9,6 @@ import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.stabus.app.Database.DBMHarga;
 import com.stabus.app.Model.CollectBahanCRUD;
@@ -65,7 +64,7 @@ public class ProdukDialogTambah implements View.OnClickListener {
         this.pos = pos;
         d = new Dialog(view.getContext());
         d.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        d.setContentView(R.layout.list_pilih_jumlahdg);
+        d.setContentView(R.layout.dialog_pilih_jumlahdg);
         nmBahan = d.findViewById(R.id.tvNmBahan);
         mJumlah = d.findViewById(R.id.textJumlahdg);
         mSatuan = d.findViewById(R.id.spSatuan);

@@ -1,6 +1,7 @@
 package com.stabus.app.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -34,7 +35,7 @@ public class RelasiAdapter extends RecyclerView.Adapter<RelasiHolder> {
         return new RelasiHolder(view, mOnListener);
     }
 
-    @SuppressLint("DefaultLocale")
+    @SuppressLint({"DefaultLocale", "ResourceAsColor"})
     @Override
     public void onBindViewHolder(@NonNull RelasiHolder relasiHolder, int i) {
         MProdukRelasi produkRelasi = produkRelasiList.get(i);
@@ -44,8 +45,12 @@ public class RelasiAdapter extends RecyclerView.Adapter<RelasiHolder> {
             relasiHolder.jumlahText.setText(String.format("%d %s", produkRelasi.getIsi_digunakan(), produkRelasi.getSatuan_digunakan()));
             if (produkRelasi.getHarga_pilih()==0){
                 relasiHolder.hargaText.setText("PILIH HARGA");
+                relasiHolder.hargaText.setTextColor(Color.RED);
             }else {
-                relasiHolder.hargaText.setText(String.format("Rp. %,.0f ", produkRelasi.getHarga_pilih()));
+                relasiHolder.hargaText.setText(String.format("Rp. %,.0f / %d %s"
+                        , produkRelasi.getHarga_pilih(), produkRelasi.getIsi_pilih(), produkRelasi.getSatuan_pilih()));
+                //relasiHolder.hargaText.setText(String.format("Rp. %,.0f /  ", produkRelasi.getHarga_pilih()));
+                relasiHolder.hargaText.setTextColor(Color.BLACK);
             }
         }else {
             relasiHolder.hargaText.setText(String.format("%d %s", produkRelasi.getIsi_digunakan(), produkRelasi.getSatuan_digunakan()));

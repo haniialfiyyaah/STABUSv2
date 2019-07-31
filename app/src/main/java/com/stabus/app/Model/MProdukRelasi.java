@@ -21,10 +21,11 @@ public class MProdukRelasi {
     private String nama_produk;
     private String nama_bahan;
     private float harga_pilih;
+    private int isi_pilih;
+    private String satuan_pilih;
 
+    private boolean isPilihHarga = false;
 
-    //helper
-    private int pos;
 
     public MProdukRelasi() {
     }
@@ -130,4 +131,27 @@ public class MProdukRelasi {
         this.harga_pilih = harga_pilih;
     }
 
+    public boolean isPilihHarga() {
+        return isPilihHarga;
+    }
+
+    public void setPilihHarga(boolean pilihHarga) {
+        isPilihHarga = pilihHarga;
+    }
+
+    public int getIsi_pilih() {
+        return isi_pilih;
+    }
+
+    public void setIsi_pilih(int isi_pilih) {
+        this.isi_pilih = isi_pilih;
+    }
+
+    public String getSatuan_pilih() {
+        return satuan_pilih;
+    }
+
+    public void setSatuan_pilih(String satuan_pilih) {
+        this.satuan_pilih = satuan_pilih;
+    }
 }

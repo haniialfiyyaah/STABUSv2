@@ -160,6 +160,9 @@ public class Produk extends Fragment implements OnListener, View.OnClickListener
             selectList(position);
             titleToolbar.setText(selected +" item terpilih");
             mAdapter.notifyDataSetChanged();
+            if (selected==0){
+                clearMenu();
+            }
         }else {
             //inisiialize
             int id_produk = produkList.get(position).getFk_id_produk();

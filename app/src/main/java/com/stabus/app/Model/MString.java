@@ -10,6 +10,9 @@ public class MString {
 
     private boolean isEdit = false;
 
+    private boolean isSelectAll = false;
+    private float harga_total;
+
     public MString() {
     }
 
@@ -51,5 +54,21 @@ public class MString {
 
     public void setJumlah(int jumlah) {
         this.jumlah = jumlah;
+    }
+
+    public float getHarga_total() {
+        return harga_total;
+    }
+
+    public void setHarga_total(float harga_total) {
+        this.harga_total = harga_total;
+    }
+
+    public boolean isSelectAll() {
+        return isSelectAll;
+    }
+
+    public void setSelectAll(boolean selectAll) {
+        isSelectAll = selectAll;
     }
 }

@@ -6,7 +6,7 @@ import java.util.List;
 public class CollectStringCRUD {
 
     //List<MBahanBaku> bahanBakuList;
-    List<MString> stringList;
+    private List<MString> stringList;
 
     public CollectStringCRUD(List<MString> stringList) {
         this.stringList = stringList;

@@ -15,7 +15,8 @@
 
     <string name="Kalkulator">KALKULATOR</string>
     <string name="KalkulatorPilihProduk">KALKULATOR PILIH PRODUK</string>
-    <string name="KalkulatorPilihBahan">KALKULATOR PILIH BAHAN</string>
+    <string name="KalkulatorSetHarga">KALKULATOR SET HARGA</string>
+    <string name="KalkulatorSetKemasan">KALKULATOR SET KEMASAN</string>
 
 
     <!-- Bundle tags BK-->
