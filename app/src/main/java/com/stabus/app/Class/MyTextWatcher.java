@@ -21,6 +21,11 @@ public class MyTextWatcher implements TextWatcher {
         this.stringCRUD = stringCRUD;
     }
 
+    public MyTextWatcher(TextInputLayout txInput, String text) {
+        this.txInput = txInput;
+        this.text = text;
+    }
+
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -35,6 +40,13 @@ public class MyTextWatcher implements TextWatcher {
                 txInput.setError(null);
             }
         }
+        if (text.equals("SetNull")){
+            if (txInput.getEditText()!=null) {
+                if (txInput.getEditText().getText().toString().trim().length() > 0) {
+                    txInput.setError(null);
+                }
+            }
+        }
     }
 
     @Override
@@ -42,7 +54,7 @@ public class MyTextWatcher implements TextWatcher {
         if (text.equals("Nama")){
             stringCRUD.getString().get(0).setNama(String.valueOf(s));
         }
-        else{
+        if (text.equals("Jumlah")){
             if (s.toString().trim().length()>0)
                 stringCRUD.getString().get(0).setJumlah(Integer.valueOf(String.valueOf(s)));
         }

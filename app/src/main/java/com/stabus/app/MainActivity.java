@@ -17,8 +17,11 @@ import android.widget.TextView;
 import com.stabus.app.Interface.ISetListener;
 import com.stabus.app.TBahanBaku.BahanBaku;
 import com.stabus.app.TBahanBaku.HargaBahanBaku;
+import com.stabus.app.TKalkulator.KalkulatorGetHarga;
 import com.stabus.app.TKalkulator.KalkulatorSetHarga;
+import com.stabus.app.TKalkulator.KalkulatorSetKebutuhan;
 import com.stabus.app.TKalkulator.KalkulatorSetKemasan;
+import com.stabus.app.TKalkulator.KalkulatorSetMargin;
 import com.stabus.app.TProduk.Produk;
 import com.stabus.app.TProduk.ProdukTambah;
 import com.stabus.app.TKalkulator.Kalkulator;
@@ -127,6 +130,18 @@ public class MainActivity extends AppCompatActivity implements ISetListener {
         }
         if (fragmentTag.equals(getString(R.string.KalkulatorSetKemasan))){
             KalkulatorSetKemasan fragment = new KalkulatorSetKemasan();
+            setFragment(fragment, fragmentTag, true, null);
+        }
+        if (fragmentTag.equals(getString(R.string.KalkulatorSetKebutuhan))){
+            KalkulatorSetKebutuhan fragment = new KalkulatorSetKebutuhan();
+            setFragment(fragment, fragmentTag, true, null);
+        }
+        if (fragmentTag.equals(getString(R.string.KalkulatorSetMargin))){
+            KalkulatorSetMargin fragment = new KalkulatorSetMargin();
+            setFragment(fragment, fragmentTag, true, null);
+        }
+        if (fragmentTag.equals(getString(R.string.KalkulatorGetHarga))){
+            KalkulatorGetHarga fragment = new KalkulatorGetHarga();
             setFragment(fragment, fragmentTag, true, null);
         }
     }
