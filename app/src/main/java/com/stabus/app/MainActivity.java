@@ -26,6 +26,7 @@ import com.stabus.app.TProduk.Produk;
 import com.stabus.app.TProduk.ProdukTambah;
 import com.stabus.app.TKalkulator.Kalkulator;
 import com.stabus.app.TKalkulator.KalkulatorPilihProduk;
+import com.stabus.app.TRiwayat.Riwayat;
 
 public class MainActivity extends AppCompatActivity implements ISetListener {
 
@@ -58,24 +59,18 @@ public class MainActivity extends AppCompatActivity implements ISetListener {
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
             switch (menuItem.getItemId()){
                 case R.id.navBahan:
-                    //setmToolbar("Bahan Baku", R.drawable.ic_home_white);
                     inflateFragment(getString(R.string.BahanBaku),null);
                     break;
                 case R.id.navProduk:
-                    //setmToolbar("Produk", R.drawable.ic_home_white);
                     inflateFragment(getString(R.string.Produk),null);
                     break;
                 case R.id.navKalkulator:
-                    //setmToolbar("Kalkulator", R.drawable.ic_home_white);
                     inflateFragment(getString(R.string.Kalkulator), null);
                     break;
                 case R.id.navRiwayat:
-                    //setmToolbar("Riwayat", R.drawable.ic_home_white);
-
+                    inflateFragment(getString(R.string.Riwayat),null);
                     break;
             }
-            //setFragment(fragment,getString(R.string.BahanBaku),false,null);
-
             return true;
         }
     };
@@ -144,12 +139,15 @@ public class MainActivity extends AppCompatActivity implements ISetListener {
             KalkulatorGetHarga fragment = new KalkulatorGetHarga();
             setFragment(fragment, fragmentTag, true, null);
         }
+        if (fragmentTag.equals(getString(R.string.Riwayat))){
+            Riwayat fragment = new Riwayat();
+            setFragment(fragment, fragmentTag, false, null);
+        }
     }
 
     @Override
     public void setRecyclerView(RecyclerView.LayoutManager layoutManager, RecyclerView recyclerView, RecyclerView.Adapter mAdapter) {
         recyclerView.setHasFixedSize(false);
-        //RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(mAdapter);
