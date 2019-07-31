@@ -139,7 +139,6 @@ public class KalkulatorPilihProduk extends Fragment implements OnListener, Adapt
             String harga = "Harga : "+list.getHarga()+" Satuan :"+list.getIsi()+" "+list.getSatuan();
             arrayHarga.add(harga);
         }
-        
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(view.getContext());
         View aas = getLayoutInflater().inflate(R.layout.dialog_spinner,null);
         mBuilder.setTitle("Pilih Harga Bahan");
