@@ -87,13 +87,11 @@ public class KalkulatorSetKemasan extends Fragment implements View.OnClickListen
         mAdapter.notifyDataSetChanged();
     }
 
-    @SuppressLint("DefaultLocale")
     private void setNamaProduk(){
         mTvProdukName.setText(stringCRUD.getString().get(0).getNama());
         mTvJmlProduk.setText(String.format(Locale.US,"%d %s", stringCRUD.getString().get(0).getJumlah(), stringCRUD.getString().get(0).getSatuan()));
         mTvJmlHarga.setText(String.format(Locale.US,"Rp. %,.0f", stringCRUD.getString().get(0).getHarga_total()));
     }
-
 
     @Override
     public void onClick(View v) {
