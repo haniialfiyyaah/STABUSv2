@@ -164,7 +164,8 @@ public class MainActivity extends AppCompatActivity implements ISetListener {
         if (f instanceof BahanBaku || f instanceof Produk|| f instanceof Riwayat){
             navigation.setSelectedItemId(R.id.navKalkulator);
         }else if (f instanceof Kalkulator){
-            ((Kalkulator)f).onBackPressed();
+            finish();
+            //((Kalkulator)f).onBackPressed();
         }
         else super.onBackPressed();
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {

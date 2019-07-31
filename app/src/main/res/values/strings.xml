@@ -17,7 +17,7 @@
     <string name="KalkulatorPilihProduk">KALKULATOR PILIH PRODUK</string>
     <string name="KalkulatorSetHarga">PILIH HARGA</string>
     <string name="KalkulatorSetKemasan">MASUKAN KEMASAN</string>
-    <string name="KalkulatorSetKebutuhan">MASUKAN KEBUTUHAN LAIN</string>
+    <string name="KalkulatorSetKebutuhan">MASUKAN KEBUTUHAN OPERASIONAL</string>
     <string name="KalkulatorSetMargin">TENTUKAN MARGIN HARGA</string>
     <string name="KalkulatorGetHarga">HARGA JUAL</string>
 
