@@ -83,6 +83,7 @@ public class KalkulatorDialogKemasan implements View.OnClickListener {
             mHarga = Float.valueOf(mTxHarga.getEditText().getText().toString());
         }
     }
+
     private void validasi(){
         if (mTxNama.getEditText().getText().toString().trim().length()<=0){
             setErrorMessage(mTxNama,"Tidak Boleh Kosong");
