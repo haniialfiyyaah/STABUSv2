@@ -102,11 +102,11 @@ class DBContract {
             +RiwayatEntry.COLS_NAMA_PRODUK+" TEXT NOT NULL,"
             +RiwayatEntry.COLS_JUMLAH_SATUAN_PRODUK+" TEXT NOT NULL,"
             +RiwayatEntry.COLS_HARGA_JUAL+" BIGINT NOT NULL,"
-            +RiwayatEntry.COLS_TENAGA_KERJA+" TEXT NOT NULL,"
-            +RiwayatEntry.COLS_BIAYA_OPERASIONAL+" TEXT NOT NULL,"
-            +RiwayatEntry.COLS_RESIKO+" TEXT NOT NULL,"
-            +RiwayatEntry.COLS_KEUNTUNGAN+" TEXT NOT NULL,"
-            +RiwayatEntry.COLS_MARKETING+" TEXT NOT NULL,"
+            +RiwayatEntry.COLS_TENAGA_KERJA+" INTEGER NOT NULL,"
+            +RiwayatEntry.COLS_BIAYA_OPERASIONAL+" INTEGER NOT NULL,"
+            +RiwayatEntry.COLS_RESIKO+" INTEGER NOT NULL,"
+            +RiwayatEntry.COLS_KEUNTUNGAN+" INTEGER NOT NULL,"
+            +RiwayatEntry.COLS_MARKETING+" INTEGER NOT NULL,"
             +RiwayatEntry.COLS_MARGIN_HARGA+" BIGINT NOT NULL);";
 
     /*kalkulator
