@@ -4,14 +4,17 @@
     <string-array name="satuanBerat">
         <item>ml</item>
         <item>gr</item>
-        <item>pcs</item>
+        <item>buah</item>
     </string-array>
 
     <string-array name="satuanProduk">
-        <item>porsi</item>
-        <item>pcs</item>
         <item>buah</item>
-        <item>dus</item>
+        <item>porsi</item>
+    </string-array>
+
+    <string-array name="satuanKemasan">
+        <item>buah</item>
+        <item>lembar</item>
     </string-array>
 
 </resources>

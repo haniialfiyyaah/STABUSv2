@@ -79,5 +79,9 @@ class DBContract {
             +ProdukBKEntry.COLS_JUMLAH_DIGUNAKAN+" INTEGER NOT NULL,"
             +ProdukBKEntry.COLS_SATUAN_DIGUNAKAN+" TEXT NOT NULL);";
 
+    /*kalkulator
+    harga
+    komponen 5
 
+    */
 }

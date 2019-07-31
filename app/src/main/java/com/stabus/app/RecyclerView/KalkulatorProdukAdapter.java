@@ -34,7 +34,7 @@ public class KalkulatorProdukAdapter extends RecyclerView.Adapter<KalkulatorProd
     @Override
     public void onBindViewHolder(@NonNull final KalkulatorProdukHolder kalkulatorProdukHolder, int i) {
         MProdukRelasi item = produklist.get(i);
-        String nama = item.getNama();
+        String nama = item.getNama_produk();
 
         kalkulatorProdukHolder.nameText.setText(nama);
 

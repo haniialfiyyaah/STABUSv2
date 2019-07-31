@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--
+    >>>Kemasan<<<
+    Nama Kemasan
+    Jumlah Dibutuhkan
+    Satuan Dibutuhkan (pcs/lembar/dll)
+    Harga Satuan
+    -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:text="MASUKAN KEMASAN"
+            android:gravity="center"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/shape_outside_line"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/tvProdukName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PRODUK A"
+                android:textSize="18sp"/>
+            <TextView
+                android:id="@+id/tvJmlProduk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="X PORSI"
+                android:textSize="15sp"/>
+        </LinearLayout>
+        <android.support.design.button.MaterialButton
+            android:id="@+id/addKemasan"
+            android:layout_margin="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TAMBAH (+)"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvPilihHarga"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_marginBottom="?android:attr/actionBarSize"/>
+        <FrameLayout
+            android:id="@+id/frameEmpty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+            <include layout="@layout/layout_empty"/>
+        </FrameLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/next"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:gravity="center"
+        android:padding="5dp"
+        android:orientation="vertical"
+        android:layout_gravity="bottom"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/selector_rec">
+        <TextView
+            android:id="@+id/tvJumlahHarga"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rp. - "
+            android:textStyle="bold"
+            android:textColor="@color/backgroundColor"
+            android:textSize="18sp"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:background="@color/lightgray"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Selanjutnya"
+            android:textColor="@color/backgroundColor"
+            android:textSize="10sp"/>
+    </LinearLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>

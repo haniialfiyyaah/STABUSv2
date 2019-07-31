@@ -5,9 +5,9 @@ import java.util.List;
 
 public class CollectBahanBaku {
 
-    static List<MBahanBaku> bahanBakuList = new ArrayList<>();
+    static List<MProdukRelasi> produkRelasiList = new ArrayList<>();
 
-    public static List<MBahanBaku> getBahanBakuList() {
-        return bahanBakuList;
+    public static List<MProdukRelasi> getRelasi() {
+        return produkRelasiList;
     }
 }

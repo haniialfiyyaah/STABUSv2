@@ -22,9 +22,8 @@ public class KalkulatorProdukHolder extends RecyclerView.ViewHolder implements V
     @Override
     public void onClick(View v) {
         int pos = getAdapterPosition();
-        String c = nameText.getText().toString();
         if (pos!= RecyclerView.NO_POSITION){
-            onListener.OnClickListener(pos,c,itemView);
+            onListener.OnClickListener(pos,itemView);
         }
     }
 }

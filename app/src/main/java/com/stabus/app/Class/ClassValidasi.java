@@ -1,4 +1,4 @@
-package com.stabus.app;
+package com.stabus.app.Class;
 
 import android.support.design.widget.TextInputLayout;
 import android.widget.Spinner;
@@ -17,7 +17,7 @@ public class ClassValidasi {
     public ClassValidasi() {
     }
 
-    ClassValidasi(TextInputLayout mENama,
+    public ClassValidasi(TextInputLayout mENama,
                   TextInputLayout mEMerk, TextInputLayout mEIsi, TextInputLayout mETempat,
                   TextInputLayout mEHarga, Spinner mSpSatuan) {
         this.mENama = mENama;

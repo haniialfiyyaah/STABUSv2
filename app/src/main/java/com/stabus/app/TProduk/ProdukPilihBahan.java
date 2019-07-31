@@ -1,12 +1,10 @@
-package com.stabus.app;
+package com.stabus.app.TProduk;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,15 +13,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import com.stabus.app.Class.ClassDialogTambah;
 import com.stabus.app.Database.DBMBahan;
 import com.stabus.app.Database.DBMHarga;
 import com.stabus.app.Interface.ISetListener;
@@ -31,8 +25,9 @@ import com.stabus.app.Interface.OnListener;
 import com.stabus.app.Model.CollectBahanBaku;
 import com.stabus.app.Model.CollectBahanCRUD;
 import com.stabus.app.Model.MBahanBaku;
+import com.stabus.app.Model.MProdukRelasi;
+import com.stabus.app.R;
 import com.stabus.app.RecyclerView.BahanBakuAdapter;
-import com.stabus.app.RecyclerView.HargaBahanAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,8 +83,8 @@ public class ProdukPilihBahan extends Fragment implements OnListener, View.OnCli
         dbmBahan.getAllBahan(bahanBakuListFull);
         dialogTambah = new ClassDialogTambah(getString(R.string.BahanBaku), getActivity(), view, bahanBakuList, mAdapter, frameLayout, scrollView);
         //selected list
-        crud=new CollectBahanCRUD(CollectBahanBaku.getBahanBakuList());
-        produkdialogTambah = new ProdukDialogTambah(bahanBakuList,mAdapter,dbmHarga,crud);
+        crud=new CollectBahanCRUD(CollectBahanBaku.getRelasi());
+        produkdialogTambah = new ProdukDialogTambah(dbmHarga,bahanBakuList,mAdapter,crud);
         setSelected();
     }
     private void initListener(){
@@ -122,8 +117,8 @@ public class ProdukPilihBahan extends Fragment implements OnListener, View.OnCli
         for (int x = 0 ; x < bahanBakuList.size() ; x++){
             MBahanBaku bahanBaku = bahanBakuList.get(x);
             String nama_bahan = bahanBaku.getNama_bahan();
-            for (int pos=0; pos< crud.getBahanBakuList().size();pos++){
-                MBahanBaku selected = crud.getBahanBakuList().get(pos);
+            for (int pos=0; pos< crud.getRelasi().size();pos++){
+                MProdukRelasi selected = crud.getRelasi().get(pos);
                 String nama_select = selected.getNama_bahan();
                 if (nama_bahan.matches(nama_select)){
                     bahanBaku.setSelected(true);
@@ -141,7 +136,7 @@ public class ProdukPilihBahan extends Fragment implements OnListener, View.OnCli
     }
 
     @Override
-    public void OnClickListener(int position, String str, View view) {
+    public void OnClickListener(int position, View view) {
         //showDialog(view,position);
         produkdialogTambah.showDialog(view,position);
     }

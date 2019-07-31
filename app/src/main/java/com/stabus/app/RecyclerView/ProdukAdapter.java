@@ -37,7 +37,7 @@ public class ProdukAdapter extends RecyclerView.Adapter<ProdukHolder> {
     @Override
     public void onBindViewHolder(@NonNull ProdukHolder produkHolder, int i) {
         MProdukRelasi item = produkList.get(i);
-        String nama = item.getNama();
+        String nama = item.getNama_produk();
         int jumlah = item.getJumlah();
         String satuan = item.getSatuan();
 
@@ -66,7 +66,7 @@ public class ProdukAdapter extends RecyclerView.Adapter<ProdukHolder> {
         }else {
             String filterPattern = s.toString().toLowerCase().trim();
             for (MProdukRelasi item : produkListFull){
-                if (item.getNama().toLowerCase().contains(filterPattern)){
+                if (item.getNama_produk().toLowerCase().contains(filterPattern)){
                     filteredList.add(item);
                 }
             }

@@ -1,5 +1,6 @@
-package com.stabus.app;
+package com.stabus.app.TProduk;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,9 +14,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,20 +21,27 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.stabus.app.Class.MyTextWatcher;
 import com.stabus.app.Database.DBMBahan;
 import com.stabus.app.Database.DBMProduk;
 import com.stabus.app.Interface.ISetListener;
 import com.stabus.app.Interface.OnListener;
 import com.stabus.app.Model.CollectBahanBaku;
 import com.stabus.app.Model.CollectBahanCRUD;
-import com.stabus.app.RecyclerView.BahanBakuAdapter;
+import com.stabus.app.Model.CollectString;
+import com.stabus.app.Model.CollectStringCRUD;
+import com.stabus.app.Model.MString;
+import com.stabus.app.R;
+import com.stabus.app.RecyclerView.RelasiAdapter;
 
-public class ProdukTambah extends Fragment implements View.OnClickListener, OnListener,TextWatcher {
+public class ProdukTambah extends Fragment implements View.OnClickListener, OnListener {
 
     //widget
     Toolbar toolbar;
@@ -44,7 +49,7 @@ public class ProdukTambah extends Fragment implements View.OnClickListener, OnLi
     FrameLayout frameLayout;
     FloatingActionButton fabAddBahan;
     RecyclerView mRecyclerView;
-
+    TextView tvTitle;
     //inputan
     TextInputLayout txNama;
     TextInputLayout txJumlah;
@@ -52,51 +57,37 @@ public class ProdukTambah extends Fragment implements View.OnClickListener, OnLi
 
     //gettext string
     String nama;
-    String satuan;
     int jumlah;
-    int jumlah_lama;
+    String satuan;
     int id_produk;
+    int jumlah_lama;
+
     //class
     DBMProduk dbmProduk;
     DBMBahan dbmBahan;
     ISetListener mISetListener;
-
     //tempList
     CollectBahanCRUD crud;
+    CollectStringCRUD stringCRUD;
     ProdukDialogTambah dialogTambah;
-
     //list
-    //List<MHargaBahan> bahanBakuList;
-    BahanBakuAdapter mAdapter;
-    Bundle bundle;
-
+    RelasiAdapter mAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        bundle = this.getArguments();
-        if (bundle!=null){
-            this.jumlah_lama = bundle.getInt("JUMLAH_PRODUK");
-            this.nama = bundle.getString("NAMA_PRODUK");
-            this.satuan = bundle.getString("SATUAN_PRODUK");
-            this.id_produk = bundle.getInt("ID_PRODUK");
-        }
-
         setHasOptionsMenu(true);
     }
-
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_produk_tambah, container, false);
         initView(view);
+        if (getActivity() !=null)
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         initObject(view);
         initListener();
-
-
         return view;
     }
 
@@ -109,61 +100,77 @@ public class ProdukTambah extends Fragment implements View.OnClickListener, OnLi
         mRecyclerView = view.findViewById(R.id.rvTambahBahan);
         scrollView = view.findViewById(R.id.scrollBahan);
         frameLayout = view.findViewById(R.id.frameEmpty);
+        tvTitle = view.findViewById(R.id.tvTitle);
     }
     private void initObject(View view){
         txNama.requestFocus();
         dbmProduk = new DBMProduk(view);
         dbmBahan = new DBMBahan(view);
-        crud = new CollectBahanCRUD(CollectBahanBaku.getBahanBakuList());
-        if (bundle!=null){
-            dbmProduk.getAllRelasi(crud.getBahanBakuList(),id_produk,jumlah_lama);
+        //dll
+        crud = new CollectBahanCRUD(CollectBahanBaku.getRelasi());
+        stringCRUD = new CollectStringCRUD(CollectString.getString());
+        setStringCRUD();
+        setRV(view);
+        dialogTambah = new ProdukDialogTambah(mAdapter,crud,scrollView,frameLayout);
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void setStringCRUD(){
+        if (stringCRUD.getString().size()>0){
+            if (stringCRUD.getString().get(0).isEdit()) tvTitle.setText("EDIT PRODUK");
+            id_produk = stringCRUD.getString().get(0).getId();
+            nama = stringCRUD.getString().get(0).getNama();
+            jumlah = stringCRUD.getString().get(0).getJumlah();
+            satuan = stringCRUD.getString().get(0).getSatuan();
+            jumlah_lama = stringCRUD.getString().get(0).getJumlah();
+            //setrelasiifedit
+
+            if (txNama.getEditText()!=null)
             txNama.getEditText().setText(nama);
-            txJumlah.getEditText().setText(String.valueOf(jumlah_lama));
-            if (satuan.equals("porsi")) {
-                Spsatuan.setSelection(0);
-            } else if (satuan.equals("pcs")) {
-                Spsatuan.setSelection(1);
-            } else if (satuan.equals("buah")) {
-                Spsatuan.setSelection(2);
-            }
-            else {
-                Spsatuan.setSelection(3);
+            if (jumlah>0)
+                if (txJumlah.getEditText()!=null)
+                    txJumlah.getEditText().setText(String.valueOf(jumlah));
+            switch (satuan) {
+                case "porsi":
+                    Spsatuan.setSelection(0);
+                    break;
+                case "pcs":
+                    Spsatuan.setSelection(1);
+                    break;
+                case "buah":
+                    Spsatuan.setSelection(2);
+                    break;
+                default:
+                    Spsatuan.setSelection(3);
+                    break;
             }
         }
-        txNama.getEditText().addTextChangedListener(this);
-        txJumlah.getEditText().addTextChangedListener(this);
-        setRV(view);
-
-        dialogTambah = new ProdukDialogTambah(crud,mAdapter);
     }
     private void initListener(){
         fabAddBahan.setOnClickListener(this);
         toolbar.setNavigationOnClickListener(this);
-        txNama.getEditText().addTextChangedListener(new TextWatcher() {
+        if (txNama.getEditText()!=null)
+            txNama.getEditText().addTextChangedListener(new MyTextWatcher(txNama,dbmProduk,"Nama", stringCRUD));
+        if (txJumlah.getEditText()!=null)
+            txJumlah.getEditText().addTextChangedListener(new MyTextWatcher(txJumlah,dbmProduk,"Jumlah", stringCRUD));
+        Spsatuan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (dbmProduk.cekNama(String.valueOf(s))){
-                    txNama.setError("Tersedia");
-                }else {
-                    txNama.setError(null);
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                MString string = new MString();
+                string.setSatuan(String.valueOf(Spsatuan.getSelectedItem()));
+                if (!(stringCRUD.getString().size() >0)){
+                    stringCRUD.getString().add(0,string);
                 }
+                else stringCRUD.getString().get(0).setSatuan(Spsatuan.getSelectedItem().toString());
             }
-
             @Override
-            public void afterTextChanged(Editable s) {
-
-            }
+            public void onNothingSelected(AdapterView<?> parent) {}
         });
     }
     private void setRV(View view){
         mRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new BahanBakuAdapter(crud.getBahanBakuList(),this,false);
+        mAdapter = new RelasiAdapter(crud.getRelasi(), this, false);
         mISetListener.setRecyclerView(new LinearLayoutManager(view.getContext()), mRecyclerView, mAdapter);
         //mAdapter.notifyDataSetChanged();
         refreshList();
@@ -173,7 +180,7 @@ public class ProdukTambah extends Fragment implements View.OnClickListener, OnLi
         cekEmptyList();
     }
     private void cekEmptyList(){
-        if (crud.getBahanBakuList().size()==0){
+        if (crud.getRelasi().size()==0){
             scrollView.setVisibility(View.GONE);
             frameLayout.setVisibility(View.VISIBLE);
         }else {
@@ -181,60 +188,62 @@ public class ProdukTambah extends Fragment implements View.OnClickListener, OnLi
             frameLayout.setVisibility(View.GONE);
         }
     }
-
     /*
     HAPUS DATA METHOD
      */
     private void getTextInput(){
-        if (txNama!=null&&txJumlah!=null) {
+        if (txNama.getEditText()!=null&&txJumlah.getEditText()!=null) {
             nama = txNama.getEditText().getText().toString();
             jumlah = Integer.parseInt(txJumlah.getEditText().getText().toString());
             satuan = Spsatuan.getSelectedItem().toString();
         }
     }
     private void tambahData(View v){
+        if (txNama.getEditText()!=null)
         if (txNama.getEditText().getText().toString().trim().length() <=0){
             setErrorMessage(txNama,"Tidak Boleh Kosong");
             return;
         }
+        if (txJumlah.getEditText()!=null)
         if (txJumlah.getEditText().getText().toString().length() <=0){
             setErrorMessage(txJumlah,"Tidak Boleh Kosong");
             return;
         }
         setErrorMessage(txNama,"");
         setErrorMessage(txJumlah,"");
-        //cek produk udah ada belum
-        boolean cekProduk = crud.getBahanBakuList().size() >0;
-        if (!cekProduk){
+        //cek bahanbaku added
+        boolean cekBahanBaku = crud.getRelasi().size() >0;
+        if (!cekBahanBaku){
             Toast toast = Toast.makeText(getContext(), "Pilih Bahan Baku!", Toast.LENGTH_SHORT);
             toast.show();
-            InputMethodManager imm = ((InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE));
-            imm.hideSoftInputFromWindow(v.getWindowToken(),0);
-            v.clearFocus();
-            return;
+            if (getActivity()!=null){
+                InputMethodManager imm = ((InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE));
+                imm.hideSoftInputFromWindow(v.getWindowToken(),0);
+                v.clearFocus();
+                return;
+            }
         }
-
         getTextInput();
         //jika sudah ada hanya input relasi bahan terpilih
-
-
-        if (bundle!=null){
+        if (stringCRUD.getString().get(0).isEdit()){
             dbmProduk.ubahProduk(id_produk,nama);
             dbmProduk.deleteRelasi(id_produk,jumlah_lama);
-
             simpanRelasi();
         }else {
-
+            if (dbmProduk.cekJumlah(nama,jumlah,satuan)){
+                txJumlah.setError("Jumlah ini sudah ada!");
+                txJumlah.requestFocus();
+                return;
+            }
             if (dbmProduk.cekNama(nama)) simpanRelasi();
             else {
                 dbmProduk.saveProduk(nama);
                 simpanRelasi();
             }
         }
-
-
         clearError();
         clearText();
+        if (getActivity()!=null)
         getActivity().onBackPressed();
 
     }
@@ -248,30 +257,34 @@ public class ProdukTambah extends Fragment implements View.OnClickListener, OnLi
         txJumlah.setError(null);
     }
     private void clearText(){
-        txNama.getEditText().setText(null);
-        txJumlah.getEditText().setText(null);
+        if (txNama.getEditText()!=null&&txJumlah.getEditText()!=null) {
+            txNama.getEditText().setText(null);
+            txJumlah.getEditText().setText(null);
+        }
     }
 
     private void simpanRelasi(){
-
+        //produk
         int fk_id_poduk;
-        if (bundle==null) {
-             fk_id_poduk= dbmProduk.produk(nama, 0).getId_produk();
+        if (!stringCRUD.getString().get(0).isEdit()) {
+            fk_id_poduk= dbmProduk.produk(nama, 0).getFk_id_produk();
         }else {
             fk_id_poduk=id_produk;
         }
-        int jumlah = Integer.parseInt(txJumlah.getEditText().getText().toString());
+        int jumlah = 0;
+        if (txJumlah.getEditText()!=null)
+            jumlah = Integer.parseInt(txJumlah.getEditText().getText().toString());
         String satuan = Spsatuan.getSelectedItem().toString();
+        //bahanbaku
         int fk_id_bahan;
         int jumlah_digunakan;
         String satuan_digunakan;
-        for (int pos = 0;pos<crud.getBahanBakuList().size();pos++){
-            fk_id_bahan = crud.getBahanBakuList().get(pos).getId();
-            jumlah_digunakan = crud.getBahanBakuList().get(pos).getJumlah_dg();
-            satuan_digunakan = crud.getBahanBakuList().get(pos).getSatuan_dg();
+        for (int pos = 0;pos<crud.getRelasi().size();pos++){
+            fk_id_bahan = crud.getRelasi().get(pos).getFk_id_bahan();
+            jumlah_digunakan = crud.getRelasi().get(pos).getIsi_digunakan();
+            satuan_digunakan = crud.getRelasi().get(pos).getSatuan_digunakan();
             dbmProduk.saveRelasi(fk_id_poduk,jumlah,satuan,fk_id_bahan,jumlah_digunakan,satuan_digunakan);
         }
-        Log.d("fk_id_Produk","FK_ID_PRODUK"+String.valueOf(fk_id_poduk));
     }
 
     @Override
@@ -298,6 +311,7 @@ public class ProdukTambah extends Fragment implements View.OnClickListener, OnLi
 
     @Override
     public void onClick(View v) {
+        assert getActivity()!=null;
         if (v==fabAddBahan){
             //bahanBakuList.add(new MHargaBahan(0,"Bahan Baku","Merk",0));
             FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -311,12 +325,9 @@ public class ProdukTambah extends Fragment implements View.OnClickListener, OnLi
         }
     }
 
-
-
     @Override
-    public void OnClickListener(int position, String str, View view) {
+    public void OnClickListener(int position, View view) {
         dialogTambah.showDialog(view,position);
-
     }
 
     @Override
@@ -324,19 +335,4 @@ public class ProdukTambah extends Fragment implements View.OnClickListener, OnLi
         return false;
     }
 
-
-
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-    }
 }
