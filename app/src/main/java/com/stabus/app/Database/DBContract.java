@@ -47,6 +47,23 @@ class DBContract {
         static final String COLS_SATUAN_DIGUNAKAN = "satuan_dg";
     }
 
+    static final class RiwayatEntry implements BaseColumns{
+        static final String TABLE_RIWAYAT = "Riwayat";
+        static final String COLS_ID_RIWAYAT = "id_riwayat";
+        static final String COLS_NAMA_PRODUK = "nama_produk";
+        static final String COLS_JUMLAH_SATUAN_PRODUK ="jumsat_produk";
+        static final String COLS_HARGA_JUAL ="harga_jual";
+        static final String COLS_TENAGA_KERJA ="tenaga_kerja";
+        static final String COLS_BIAYA_OPERASIONAL ="biaya_op";
+        static final String COLS_RESIKO = "resiko";
+        static final String COLS_KEUNTUNGAN ="keuntungan";
+        static final String COLS_MARKETING ="marketing";
+        static final String COLS_MARGIN_HARGA ="margin_harga";
+
+    }
+
+
+
     //Create Table in database
     static final String CREATE_TABLE_BAHANBAKU = "CREATE TABLE "
             +BahanBakuEntry.TABLE_BAHANBAKU +"("
@@ -78,6 +95,19 @@ class DBContract {
             +ProdukBKEntry.COLS_FK_ID_BAHAN+" INTEGER NOT NULL,"
             +ProdukBKEntry.COLS_JUMLAH_DIGUNAKAN+" INTEGER NOT NULL,"
             +ProdukBKEntry.COLS_SATUAN_DIGUNAKAN+" TEXT NOT NULL);";
+
+    static final String CREATE_TABLE_RIWAYAT = "CREATE TABLE "
+            +RiwayatEntry.TABLE_RIWAYAT+"("
+            +RiwayatEntry.COLS_ID_RIWAYAT+" INTEGER PRIMARY KEY AUTOINCREMENT,"
+            +RiwayatEntry.COLS_NAMA_PRODUK+" TEXT NOT NULL,"
+            +RiwayatEntry.COLS_JUMLAH_SATUAN_PRODUK+" TEXT NOT NULL,"
+            +RiwayatEntry.COLS_HARGA_JUAL+" BIGINT NOT NULL,"
+            +RiwayatEntry.COLS_TENAGA_KERJA+" TEXT NOT NULL,"
+            +RiwayatEntry.COLS_BIAYA_OPERASIONAL+" TEXT NOT NULL,"
+            +RiwayatEntry.COLS_RESIKO+" TEXT NOT NULL,"
+            +RiwayatEntry.COLS_KEUNTUNGAN+" TEXT NOT NULL,"
+            +RiwayatEntry.COLS_MARKETING+" TEXT NOT NULL,"
+            +RiwayatEntry.COLS_MARGIN_HARGA+" BIGINT NOT NULL);";
 
     /*kalkulator
     harga
