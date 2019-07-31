@@ -1,4 +1,4 @@
-package com.stabus.app;
+package com.stabus.app.Class;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -12,12 +12,11 @@ import android.widget.FrameLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.stabus.app.Database.DBMBahan;
 import com.stabus.app.Database.DBMHarga;
-import com.stabus.app.Interface.ISetListener;
 import com.stabus.app.Model.MHargaBahan;
+import com.stabus.app.R;
 import com.stabus.app.RecyclerView.HargaBahanAdapter;
 
 import java.util.List;
@@ -53,7 +52,7 @@ public class ClassDialogEdit implements View.OnClickListener {
     TextView title;
     private Dialog dialog;
 
-    ClassDialogEdit(TextView title, View view, Activity activity, List<MHargaBahan> hargaBahanList, HargaBahanAdapter mHAdapter, ScrollView scrollView, FrameLayout frameLayout) {
+    public ClassDialogEdit(TextView title, View view, Activity activity, List<MHargaBahan> hargaBahanList, HargaBahanAdapter mHAdapter, ScrollView scrollView, FrameLayout frameLayout) {
         this.title = title;
         this.view = view;
         this.activity = activity;
@@ -64,7 +63,7 @@ public class ClassDialogEdit implements View.OnClickListener {
     }
 
 
-    void editDialog(String tag,int id, String nama){
+    public void editDialog(String tag,int id, String nama){
         dbmBahan = new DBMBahan(view);
         dbmHarga = new DBMHarga(view);
         this.tag=tag;

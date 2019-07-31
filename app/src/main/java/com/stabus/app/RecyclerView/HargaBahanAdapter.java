@@ -19,9 +19,12 @@ public class HargaBahanAdapter extends RecyclerView.Adapter<HargaBahanHolder> {
     private List<MHargaBahan> hargaBahanList;
     private OnListener mOnListener;
 
-    public HargaBahanAdapter(List<MHargaBahan> hargaBahanList, OnListener mOnListener) {
+    private boolean isKalkulator;
+
+    public HargaBahanAdapter(List<MHargaBahan> hargaBahanList, OnListener mOnListener, boolean isKalkulator) {
         this.hargaBahanList = hargaBahanList;
         this.mOnListener = mOnListener;
+        this.isKalkulator = isKalkulator;
     }
 
     @NonNull
@@ -39,20 +42,26 @@ public class HargaBahanAdapter extends RecyclerView.Adapter<HargaBahanHolder> {
         String isi = String.valueOf(hargaBahan.getIsi());
         String satuan = hargaBahan.getSatuan();
         String tempat=hargaBahan.getTempat_beli();
+
         if (merk.trim().length()==0) merk = "Tidak Ada Merk";
         if (merk.trim().length()==0) tempat = "Tidak Ada Tempat";
+
         @SuppressLint("DefaultLocale")
         String harga = String.format("Rp. %,.0f / %s %s ", hargaBahan.getHarga(), isi, satuan);
         hargaBahanHolder.merkText.setText(merk);
         hargaBahanHolder.tempatText.setText(tempat);
         hargaBahanHolder.hargaText.setText(harga);
 
+        if (isKalkulator){
+            hargaBahanHolder.merkText.setVisibility(View.GONE);
+            hargaBahanHolder.tempatText.setText(merk);
+        }
+
         if (hargaBahan.isSelected()){
             hargaBahanHolder.checkBox.setChecked(true);
         }else {
             hargaBahanHolder.checkBox.setChecked(false);
         }
-
         if (!hargaBahan.isOpen()){
             hargaBahanHolder.checkBox.setVisibility(View.GONE);
             hargaBahanHolder.checkBox.setChecked(false);

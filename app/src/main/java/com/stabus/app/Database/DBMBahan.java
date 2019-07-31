@@ -64,7 +64,6 @@ public class DBMBahan {
         db.closeDB();
         return result;
     }
-
     public long delete(int id){
         db.openDB();
 
@@ -81,7 +80,6 @@ public class DBMBahan {
         db.closeDB();
         return result;
     }
-
     public long ubahBahan(int id,String nama, String kategori){
         db.openDB();
         ContentValues cv = new ContentValues();
@@ -107,6 +105,18 @@ public class DBMBahan {
         return cek;
 
     }
+    public boolean cekUsed(int id_bahan){
+        db.openDB();
+        String query = "SELECT * FROM "
+                +ProdukBKEntry.TABLE_PRODUK_BAHAN+" WHERE "
+                +ProdukBKEntry.COLS_FK_ID_BAHAN+" =? ";
+        boolean cek = db.cekSameData(query, new String[]{String.valueOf(id_bahan)});
+        db.closeDB();
+
+        return cek;
+
+    }
+
     public MBahanBaku bahanBaku(String textNama, int idBahan){
 
         MBahanBaku bahanBaku = null;
@@ -139,6 +149,4 @@ public class DBMBahan {
         return bahanBaku;
 
     }
-
-
 }

@@ -4,44 +4,42 @@ import java.util.List;
 
 public class CollectBahanCRUD {
 
-    List<MBahanBaku> bahanBakuList;
+    //List<MBahanBaku> bahanBakuList;
+    List<MProdukRelasi> produkRelasiList;
 
-    public CollectBahanCRUD(List<MBahanBaku> bahanBakuList) {
-        this.bahanBakuList = bahanBakuList;
+    public CollectBahanCRUD(List<MProdukRelasi> produkRelasiList) {
+        this.produkRelasiList = produkRelasiList;
     }
+
     //Add
-    public boolean addNew(MBahanBaku bahanBaku){
+    public boolean addNew(MProdukRelasi produkRelasi){
         try {
-            bahanBakuList.add(bahanBaku);
+            produkRelasiList.add(produkRelasi);
             return true;
         }catch (Exception e){
             e.printStackTrace();
         }
         return false;
     }
-
     //retrive
-
-    public List<MBahanBaku> getBahanBakuList() {
-        return bahanBakuList;
+    public List<MProdukRelasi> getRelasi() {
+        return produkRelasiList;
     }
-
     //update
-    public boolean update(int position, MBahanBaku newBahanBaku){
+    public boolean update(int position, MProdukRelasi newRelasi){
         try {
-            bahanBakuList.remove(position);
-            bahanBakuList.add(position, newBahanBaku);
+            produkRelasiList.remove(position);
+            produkRelasiList.add(position, newRelasi);
             return true;
         }catch (Exception e){
             e.printStackTrace();
         }
         return false;
     }
-
     //delete
     public boolean delete(int position){
         try {
-            bahanBakuList.remove(position);
+            produkRelasiList.remove(position);
             return true;
         }catch (Exception e){
             e.printStackTrace();
