@@ -62,7 +62,7 @@ public class KalkulatorGetHarga extends Fragment {
         mOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mISetListener.inflateFragment(getString(R.string.Riwayat),null);
+                mISetListener.navigationClikc(R.id.navRiwayat);
             }
         });
     }

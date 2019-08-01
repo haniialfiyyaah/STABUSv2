@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 public interface ISetListener {
 
+    void navigationClikc(int id);
+
     void inflateFragment(String fragmentTag, Bundle bundle);
 
     void setRecyclerView(RecyclerView.LayoutManager layoutManager, RecyclerView recyclerView, RecyclerView.Adapter mAdapter);

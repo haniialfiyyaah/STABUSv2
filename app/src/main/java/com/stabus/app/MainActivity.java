@@ -91,6 +91,11 @@ public class MainActivity extends AppCompatActivity implements ISetListener {
     }
 
     @Override
+    public void navigationClikc(int id) {
+        navigation.setSelectedItemId(id);
+    }
+
+    @Override
     public void inflateFragment(String fragmentTag, Bundle bundle) {
         //main
         if (fragmentTag.equals(getString(R.string.BahanBaku))){
