@@ -96,6 +96,11 @@ public class KalkulatorSetKebutuhan extends Fragment implements View.OnClickList
         mTvProdukName.setText(stringCRUD.getString().get(0).getNama());
         mTvJmlProduk.setText(String.format(Locale.US, "%d %s", stringCRUD.getString().get(0).getJumlah(), stringCRUD.getString().get(0).getSatuan()));
         mTvJmlHarga.setText(String.format(Locale.US,"Rp. %,.0f", stringCRUD.getString().get(0).getHarga_total()));
+    @SuppressLint("DefaultLocale")
+    private void setNamaProduk(){
+        mTvProdukName.setText(stringCRUD.getString().get(0).getNama());
+        mTvJmlProduk.setText(String.format("%d %s", stringCRUD.getString().get(0).getJumlah(), stringCRUD.getString().get(0).getSatuan()));
+        mTvJmlHarga.setText(String.format("Rp. %,.0f", stringCRUD.getString().get(0).getHarga_total()));
         mTvTitle.setText(getString(R.string.KalkulatorSetKebutuhan));
     }
 

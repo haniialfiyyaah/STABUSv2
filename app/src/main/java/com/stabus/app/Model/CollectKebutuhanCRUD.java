@@ -24,7 +24,6 @@ public class CollectKebutuhanCRUD {
     public List<MKebutuhan> getKebutuhanList() {
         return kebutuhanList;
     }
-
     //delete
     public boolean delete(int position){
         try {

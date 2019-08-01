@@ -87,6 +87,7 @@ public class KalkulatorSetKemasan extends Fragment implements View.OnClickListen
         mAdapter.notifyDataSetChanged();
     }
 
+    @SuppressLint("DefaultLocale")
     private void setNamaProduk(){
         mTvProdukName.setText(stringCRUD.getString().get(0).getNama());
         mTvJmlProduk.setText(String.format(Locale.US,"%d %s", stringCRUD.getString().get(0).getJumlah(), stringCRUD.getString().get(0).getSatuan()));
@@ -118,7 +119,6 @@ public class KalkulatorSetKemasan extends Fragment implements View.OnClickListen
     public boolean OnLongListener(int position, View view) {
         return false;
     }
-
     ItemTouchHelper.SimpleCallback callback =
             new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT|ItemTouchHelper.LEFT) {
                 @Override

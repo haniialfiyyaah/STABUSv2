@@ -136,6 +136,8 @@ public class ProdukTambah extends Fragment implements View.OnClickListener, OnLi
                 Spsatuan.setSelection(1);
             } else {
                 Spsatuan.setSelection(2);
+            } else {
+                Spsatuan.setSelection(1);
             }
         }
     }
