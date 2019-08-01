@@ -12,8 +12,8 @@ public class MString {
 
     private boolean isSelectAll = false;
     private float harga_total;
-
     private float margin_harga;
+    private float harga_jual;
     //komponen
 
     private double tenagaKerja = 15; //15 25
@@ -127,5 +127,13 @@ public class MString {
 
     public void setMargin_harga(float margin_harga) {
         this.margin_harga = margin_harga;
+    }
+
+    public float getHarga_jual() {
+        return harga_jual;
+    }
+
+    public void setHarga_jual(float harga_jual) {
+        this.harga_jual = harga_jual;
     }
 }

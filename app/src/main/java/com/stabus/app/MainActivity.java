@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements ISetListener {
     @Override
     public void onBackPressed() {
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frameContainer);
-        if (f instanceof BahanBaku || f instanceof Produk){
+        if (f instanceof BahanBaku || f instanceof Produk|| f instanceof Riwayat){
             navigation.setSelectedItemId(R.id.navKalkulator);
         }else if (f instanceof Kalkulator){
             ((Kalkulator)f).onBackPressed();

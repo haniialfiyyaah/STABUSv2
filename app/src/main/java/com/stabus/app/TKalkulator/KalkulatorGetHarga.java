@@ -1,5 +1,6 @@
 package com.stabus.app.TKalkulator;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -7,8 +8,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.stabus.app.Interface.ISetListener;
 import com.stabus.app.Model.CollectString;
 import com.stabus.app.Model.CollectStringCRUD;
 import com.stabus.app.R;
@@ -24,6 +27,8 @@ public class KalkulatorGetHarga extends Fragment {
     TextView mMargin;
     TextView mHitung;
     TextView mHarga;
+    Button mOk;
+
 
     String produkNama;
     int jumlah;
@@ -34,6 +39,8 @@ public class KalkulatorGetHarga extends Fragment {
     float hargaJual;
 
     CollectStringCRUD stringCRUD;
+
+    ISetListener mISetListener;
 
     @Nullable
     @Override
@@ -47,7 +54,17 @@ public class KalkulatorGetHarga extends Fragment {
         initView();
         initObject();
         initValue();
+        initListener();
         setText();
+    }
+
+    private void initListener() {
+        mOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mISetListener.inflateFragment(getString(R.string.Riwayat),null);
+            }
+        });
     }
 
     private void initView() {
@@ -56,6 +73,7 @@ public class KalkulatorGetHarga extends Fragment {
         mMargin=view.findViewById(R.id.tvMargin);
         mHitung=view.findViewById(R.id.tvHitung);
         mHarga=view.findViewById(R.id.tvHargaJual);
+        mOk=view.findViewById(R.id.ok);
     }
     private void initObject(){
         stringCRUD = new CollectStringCRUD(CollectString.getString());
@@ -66,7 +84,7 @@ public class KalkulatorGetHarga extends Fragment {
         satuan= stringCRUD.getString().get(0).getSatuan();
         totalHarga= stringCRUD.getString().get(0).getHarga_total();
         margin= stringCRUD.getString().get(0).getMargin_harga();
-        hargaJual = (totalHarga+margin)/jumlah;
+        hargaJual = stringCRUD.getString().get(0).getHarga_jual();
         rumusHitung = String.format(Locale.US, "(Rp. %,.0f + Rp. %,.0f) / %s ",totalHarga,margin,jumlah);
 
     }
@@ -77,5 +95,11 @@ public class KalkulatorGetHarga extends Fragment {
         mMargin.setText(String.format(Locale.US,"Rp. %,.0f",margin));
         mHitung.setText(rumusHitung);
         mHarga.setText(String.format(Locale.US,"Rp. %,.0f / %s",hargaJual,satuan));
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mISetListener = (ISetListener) getActivity();
     }
 }

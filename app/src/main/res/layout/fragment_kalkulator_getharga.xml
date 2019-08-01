@@ -104,6 +104,7 @@
     </android.support.v4.widget.NestedScrollView>
 
     <Button
+        android:id="@+id/ok"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
         android:layout_gravity="bottom"

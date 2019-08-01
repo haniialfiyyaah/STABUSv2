@@ -1,6 +1,5 @@
 package com.stabus.app.TKalkulator;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,11 +13,15 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.stabus.app.Database.DBMRiwayat;
 import com.stabus.app.Interface.ISetListener;
 import com.stabus.app.Model.CollectString;
 import com.stabus.app.Model.CollectStringCRUD;
+import com.stabus.app.Model.MRiwayat;
 import com.stabus.app.R;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class KalkulatorSetMargin extends Fragment implements SeekBar.OnSeekBarChangeListener , View.OnClickListener {
@@ -53,6 +56,8 @@ public class KalkulatorSetMargin extends Fragment implements SeekBar.OnSeekBarCh
 
 
     private CollectStringCRUD stringCRUD;
+
+    private DBMRiwayat dbmRiwayat;
 
     @Nullable
     @Override
@@ -106,6 +111,7 @@ public class KalkulatorSetMargin extends Fragment implements SeekBar.OnSeekBarCh
     }
     private void initObject(){
         stringCRUD = new CollectStringCRUD(CollectString.getString());
+        dbmRiwayat = new DBMRiwayat(view);
     }
 
     private void initListener(){
@@ -116,7 +122,6 @@ public class KalkulatorSetMargin extends Fragment implements SeekBar.OnSeekBarCh
         nextLine.setOnClickListener(this);
     }
 
-    @SuppressLint("DefaultLocale")
     private void setMarginHarga(){
         double psT = tenagaKerja/100;
         double psB = biayaOp/100;
@@ -130,9 +135,19 @@ public class KalkulatorSetMargin extends Fragment implements SeekBar.OnSeekBarCh
         float hMarketing = (float) (psM*hargaPP);
 
         float margin = hTenaga+hbiaya+hResiko+hKeuntungan+hMarketing;
-        mTxMarginHarga.setText(String.format("MARGIN : Rp. %,.0f", margin));
+        mTxMarginHarga.setText(String.format(Locale.US,"MARGIN : Rp. %,.0f", margin));
         stringCRUD.getString().get(0).setMargin_harga(margin);
+        setHargaJual();
     }
+
+    private void setHargaJual(){
+        int jumlah= stringCRUD.getString().get(0).getJumlah();
+        float totalHarga= stringCRUD.getString().get(0).getHarga_total();
+        float margin= stringCRUD.getString().get(0).getMargin_harga();
+        float harga_jual =  (totalHarga+margin)/jumlah;
+        stringCRUD.getString().get(0).setHarga_jual(harga_jual);
+    }
+
     private void setSeekBar(){
         tvTenagaKerja.setText(String.format(Locale.US, "%d%%", (int) tenagaKerja));
         tvBiayaOp.setText(String.format(Locale.US, "%d%%", (int) biayaOp));
@@ -146,11 +161,22 @@ public class KalkulatorSetMargin extends Fragment implements SeekBar.OnSeekBarCh
         sMarketing.setProgress((int) marketing-10);
     }
 
-    @SuppressLint("DefaultLocale")
     private void setNamaProduk(){
         mTvProdukName.setText(stringCRUD.getString().get(0).getNama());
-        mTvJmlProduk.setText(String.format("%d %s", stringCRUD.getString().get(0).getJumlah(), stringCRUD.getString().get(0).getSatuan()));
-        mTvHPP.setText(String.format("Rp. %,.0f ", stringCRUD.getString().get(0).getHarga_total()));
+        mTvJmlProduk.setText(String.format(Locale.US,"%d %s", stringCRUD.getString().get(0).getJumlah(), stringCRUD.getString().get(0).getSatuan()));
+        mTvHPP.setText(String.format(Locale.US,"Rp. %,.0f ", stringCRUD.getString().get(0).getHarga_total()));
+    }
+
+    private void saveRiwayat(){
+        String nama = stringCRUD.getString().get(0).getNama();
+        int jumlah = stringCRUD.getString().get(0).getJumlah();
+        String satuan = stringCRUD.getString().get(0).getSatuan();
+        float harga_pokok = stringCRUD.getString().get(0).getHarga_total();
+        float margin = stringCRUD.getString().get(0).getHarga_total();
+        float harga_jual = stringCRUD.getString().get(0).getHarga_jual();
+        dbmRiwayat.saveRiwayat(nama,jumlah,satuan,harga_pokok,margin,harga_jual);
+        Toast toast = Toast.makeText(getContext(), nama, Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     @Override
@@ -188,7 +214,9 @@ public class KalkulatorSetMargin extends Fragment implements SeekBar.OnSeekBarCh
     @Override
     public void onClick(View v) {
         if (v==nextLine){
+            saveRiwayat();
             mISetListener.inflateFragment(getString(R.string.KalkulatorGetHarga),null);
+
         }
     }
 

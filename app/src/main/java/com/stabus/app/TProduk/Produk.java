@@ -36,6 +36,7 @@ import com.stabus.app.RecyclerView.ProdukAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Produk extends Fragment implements OnListener, View.OnClickListener, SearchView.OnQueryTextListener {
 
@@ -158,7 +159,7 @@ public class Produk extends Fragment implements OnListener, View.OnClickListener
         if (produkList.get(position).isHapus()){
             produkList.get(position).setSelected(!produkList.get(position).isSelected());
             selectList(position);
-            titleToolbar.setText(selected +" item terpilih");
+            titleToolbar.setText(String.format(Locale.US,"%d item terpilih", selected));
             mAdapter.notifyDataSetChanged();
             if (selected==0){
                 clearMenu();
@@ -215,7 +216,6 @@ public class Produk extends Fragment implements OnListener, View.OnClickListener
         //search id produk  di relasi
         //jika tidak ada produk makna delete
     }
-
     private void selectList(int position){
         if (produkList.get(position).isSelected()){
             selectedList.add(produkList.get(position));
@@ -236,7 +236,7 @@ public class Produk extends Fragment implements OnListener, View.OnClickListener
         toolbar.setBackground(getResources().getDrawable(R.drawable.shape_cornor_upp));
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white);
 
-        titleToolbar.setText(selected +" item terpilih");
+        titleToolbar.setText(String.format(Locale.US,"%d item terpilih", selected));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
