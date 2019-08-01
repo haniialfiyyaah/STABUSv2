@@ -20,6 +20,10 @@ import com.stabus.app.Interface.ISetListener;
 import com.stabus.app.Interface.OnListener;
 import com.stabus.app.Model.CollectBahanBaku;
 import com.stabus.app.Model.CollectBahanCRUD;
+import com.stabus.app.Model.CollectKebutuhan;
+import com.stabus.app.Model.CollectKebutuhanCRUD;
+import com.stabus.app.Model.CollectKemasan;
+import com.stabus.app.Model.CollectKemasanCRUD;
 import com.stabus.app.Model.CollectString;
 import com.stabus.app.Model.CollectStringCRUD;
 import com.stabus.app.Model.MProdukRelasi;
@@ -42,6 +46,8 @@ public class KalkulatorPilihProduk extends Fragment implements OnListener , Sear
     private List<MProdukRelasi> produkListFull;
     private CollectBahanCRUD crud;
     private CollectStringCRUD stringCRUD;
+    private CollectKemasanCRUD kemasanCRUD;
+    private CollectKebutuhanCRUD kebutuhanCRUD;
     //widget
     private RecyclerView mRV;
     private SearchView searchView;
@@ -73,6 +79,8 @@ public class KalkulatorPilihProduk extends Fragment implements OnListener , Sear
         dbmProduk = new DBMProduk(view);
         crud = new CollectBahanCRUD(CollectBahanBaku.getRelasi());
         stringCRUD = new CollectStringCRUD(CollectString.getString());
+        kemasanCRUD = new CollectKemasanCRUD(CollectKemasan.getKemasanList());
+        kebutuhanCRUD = new CollectKebutuhanCRUD(CollectKebutuhan.getKebutuhanList());
     }
     private void initListener(){
         searchView.setOnQueryTextListener(this);
@@ -115,6 +123,8 @@ public class KalkulatorPilihProduk extends Fragment implements OnListener , Sear
     private void setListener(int position){
         crud.getRelasi().clear();
         stringCRUD.getString().clear();
+        kemasanCRUD.getKemasanList().clear();
+        kebutuhanCRUD.getKebutuhanList().clear();
         //inisiialize
         int id_produk = produkList.get(position).getFk_id_produk();
         String nama = produkList.get(position).getNama_produk();

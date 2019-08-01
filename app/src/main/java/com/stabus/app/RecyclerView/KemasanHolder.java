@@ -8,14 +8,14 @@ import android.widget.TextView;
 import com.stabus.app.Interface.OnListener;
 import com.stabus.app.R;
 
-public class RelasiHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+public class KemasanHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     TextView nameText;
     TextView jumlahText;
     TextView hargaText;
     private OnListener onListener;
 
-    RelasiHolder(@NonNull View itemView, OnListener onListener) {
+    KemasanHolder(@NonNull View itemView, OnListener onListener) {
         super(itemView);
         nameText = itemView.findViewById(R.id.tvNamaDG);
         jumlahText = itemView.findViewById(R.id.tvJumlahDG);

@@ -49,7 +49,8 @@ public class ClassDialogEdit implements View.OnClickListener {
     private boolean cekBahan;
 
 //    private ISetListener mISetListener;
-    TextView title;
+
+    private TextView title;
     private Dialog dialog;
 
     public ClassDialogEdit(TextView title, View view, Activity activity, List<MHargaBahan> hargaBahanList, HargaBahanAdapter mHAdapter, ScrollView scrollView, FrameLayout frameLayout) {
@@ -69,7 +70,7 @@ public class ClassDialogEdit implements View.OnClickListener {
         this.tag=tag;
         dialog = new Dialog(view.getContext());
         showDialog(dialog);
-        mTitle.setText(tag+" "+nama);
+        mTitle.setText(String.format("%s %s", tag, nama));
         getData(id, nama);
         setTextView();
         fabsave.setOnClickListener(this);
@@ -103,6 +104,7 @@ public class ClassDialogEdit implements View.OnClickListener {
             dbmHarga.ubahHarga(idH, validasi.getMerk(), validasi.getIsi(), validasi.getSatuan(), validasi.getTempat(), validasi.getHarga(), idBK);
             refreshList();
         }
+        dialog.dismiss();
     }
     private void showDialog(Dialog dialog){
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

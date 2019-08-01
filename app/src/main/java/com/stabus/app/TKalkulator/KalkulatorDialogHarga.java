@@ -28,6 +28,7 @@ import com.stabus.app.RecyclerView.RelasiAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class KalkulatorDialogHarga implements OnListener , AdapterView.OnItemSelectedListener {
 
@@ -65,7 +66,7 @@ public class KalkulatorDialogHarga implements OnListener , AdapterView.OnItemSel
     private CollectStringCRUD stringCRUD;
     private View.OnClickListener clickListener;
 
-    public KalkulatorDialogHarga(View view, ISetListener mISetListener, RelasiAdapter mAdapter, View.OnClickListener clickListener) {
+    KalkulatorDialogHarga(View view, ISetListener mISetListener, RelasiAdapter mAdapter, View.OnClickListener clickListener) {
         this.view = view;
         this.mISetListener = mISetListener;
         this.mAdapter = mAdapter;
@@ -117,8 +118,8 @@ public class KalkulatorDialogHarga implements OnListener , AdapterView.OnItemSel
         mTvTitle.setText(nama_bahan);
     }
     private void setSPinner(){
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(view.getContext()
-                ,android.R.layout.simple_spinner_dropdown_item, dbmHarga.getTempat(id_bahan));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(view.getContext()
+                , android.R.layout.simple_spinner_dropdown_item, dbmHarga.getTempat(id_bahan));
         mSpTempat.setAdapter(adapter);
     }
     private void setmRV(){
@@ -145,10 +146,7 @@ public class KalkulatorDialogHarga implements OnListener , AdapterView.OnItemSel
         crud.getRelasi().get(pos).setIsi_pilih(isi_pilih);
         crud.getRelasi().get(pos).setSatuan_pilih(satuan_pilih);
         crud.getRelasi().get(pos).setPilihHarga(true);
-
         mAdapter.notifyDataSetChanged();
-
-
     }
 
     private void setHargaSatuan(){
@@ -169,9 +167,8 @@ public class KalkulatorDialogHarga implements OnListener , AdapterView.OnItemSel
             harga_total = hargaKurang + harga_bagi;
         }
         stringCRUD.getString().get(0).setHarga_total(harga_total);
-        mTvJmlHarga.setText(String.format("Rp. %,.0f", harga_total));
+        mTvJmlHarga.setText(String.format(Locale.US,"Rp. %,.0f", harga_total));
     }
-
     private void setJumlah_lama(){
         if (cekPilih){
             harga_lama = 0;

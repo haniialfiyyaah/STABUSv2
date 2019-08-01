@@ -18,34 +18,37 @@ import android.widget.TextView;
 
 import com.stabus.app.Interface.ISetListener;
 import com.stabus.app.Interface.OnListener;
-import com.stabus.app.Model.CollectKemasan;
-import com.stabus.app.Model.CollectKemasanCRUD;
+import com.stabus.app.Model.CollectKebutuhan;
+import com.stabus.app.Model.CollectKebutuhanCRUD;
 import com.stabus.app.Model.CollectString;
 import com.stabus.app.Model.CollectStringCRUD;
 import com.stabus.app.R;
-import com.stabus.app.RecyclerView.KemasanAdapter;
+import com.stabus.app.RecyclerView.KebutuhanAdapter;
 
-public class KalkulatorSetKemasan extends Fragment implements View.OnClickListener, OnListener {
+public class KalkulatorSetKebutuhan extends Fragment implements View.OnClickListener , OnListener {
 
-    View view;
+    private View view;
     private TextView mTvProdukName;
     private TextView mTvJmlProduk;
     private TextView mTvJmlHarga;
     private MaterialButton mBAddKemasan;
     private RecyclerView mRV;
     private LinearLayout nextLine;
+    private TextView mTvTitle;
 
     private ISetListener mISetListener;
-    private KemasanAdapter mAdapter;
-    private CollectKemasanCRUD kemasanCRUD;
-    private CollectStringCRUD stringCRUD;
+    private KebutuhanAdapter mAdapter;
 
-    private KalkulatorDialogKemasan dialogKemasan;
+    private CollectStringCRUD stringCRUD;
+    private CollectKebutuhanCRUD kebutuhanCRUD;
+
+
+    private KalkulatorDialogKebutuhan dialogKebutuhan;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_kalkulator_kemasan,container,false);
+        view = inflater.inflate(R.layout.fragment_kalkulator_kemasan, container, false);
         init();
         return view;
     }
@@ -56,7 +59,7 @@ public class KalkulatorSetKemasan extends Fragment implements View.OnClickListen
         initListener();
         setNamaProduk();
         setRV();
-        dialogKemasan = new KalkulatorDialogKemasan(view,mAdapter);
+        dialogKebutuhan = new KalkulatorDialogKebutuhan(view,mAdapter);
     }
     private void initView(){
         mTvProdukName = view.findViewById(R.id.tvProdukName);
@@ -65,12 +68,12 @@ public class KalkulatorSetKemasan extends Fragment implements View.OnClickListen
         mRV = view.findViewById(R.id.rvPilihHarga);
         nextLine = view.findViewById(R.id.next);
         mBAddKemasan = view.findViewById(R.id.addKemasan);
+        mTvTitle = view.findViewById(R.id.tv);
     }
     private void initObject(){
         //crud = new CollectBahanCRUD(CollectBahanBaku.getRelasi());
         stringCRUD = new CollectStringCRUD(CollectString.getString());
-        kemasanCRUD = new CollectKemasanCRUD(CollectKemasan.getKemasanList());
-
+        kebutuhanCRUD = new CollectKebutuhanCRUD(CollectKebutuhan.getKebutuhanList());
     }
     private void initListener(){
         nextLine.setOnClickListener(this);
@@ -79,7 +82,7 @@ public class KalkulatorSetKemasan extends Fragment implements View.OnClickListen
     private void setRV(){
         mRV.setLayoutManager(new LinearLayoutManager(view.getContext()));
         mRV.setItemAnimator(new DefaultItemAnimator());
-        mAdapter = new KemasanAdapter(kemasanCRUD.getKemasanList(), this);
+        mAdapter = new KebutuhanAdapter(kebutuhanCRUD.getKebutuhanList(), this);
         mISetListener.setRecyclerView(new LinearLayoutManager(view.getContext()), mRV, mAdapter);
         //mAdapter.notifyDataSetChanged();
         mAdapter.notifyDataSetChanged();
@@ -89,21 +92,16 @@ public class KalkulatorSetKemasan extends Fragment implements View.OnClickListen
         mTvProdukName.setText(stringCRUD.getString().get(0).getNama());
         mTvJmlProduk.setText(String.format("%d %s", stringCRUD.getString().get(0).getJumlah(), stringCRUD.getString().get(0).getSatuan()));
         mTvJmlHarga.setText(String.format("Rp. %,.0f", stringCRUD.getString().get(0).getHarga_total()));
+        mTvTitle.setText(getString(R.string.KalkulatorSetKebutuhan));
     }
 
     @Override
     public void onClick(View v) {
         if (v==mBAddKemasan){
-            dialogKemasan.showDialog();
+            dialogKebutuhan.showDialog();
         }if (v==nextLine){
-            mISetListener.inflateFragment(getString(R.string.KalkulatorSetKebutuhan),null);
+            mISetListener.inflateFragment(getString(R.string.KalkulatorSetMargin),null);
         }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mISetListener = (ISetListener) getActivity();
     }
 
     @Override
@@ -114,5 +112,11 @@ public class KalkulatorSetKemasan extends Fragment implements View.OnClickListen
     @Override
     public boolean OnLongListener(int position, View view) {
         return false;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mISetListener = (ISetListener) getActivity();
     }
 }
