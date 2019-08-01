@@ -175,8 +175,6 @@ public class KalkulatorSetMargin extends Fragment implements SeekBar.OnSeekBarCh
         float margin = stringCRUD.getString().get(0).getHarga_total();
         float harga_jual = stringCRUD.getString().get(0).getHarga_jual();
         dbmRiwayat.saveRiwayat(nama,jumlah,satuan,harga_pokok,margin,harga_jual);
-        Toast toast = Toast.makeText(getContext(), nama, Toast.LENGTH_SHORT);
-        toast.show();
     }
 
     @Override

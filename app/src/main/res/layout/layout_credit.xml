@@ -12,7 +12,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:text="CREDITs"
+        android:text="@string/credit"
         android:textAlignment="center"
         android:textStyle="bold"
         android:textColor="@color/backgroundColor"
@@ -22,41 +22,48 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="MPPL Team @UNIKOM 2019"
+        android:text="@string/mppl_team_unikom_2019"
         android:textColor="@color/backgroundColor"
         android:textAlignment="center"
-        android:padding="5dp"/>
+        android:padding="5dp"
+        android:textSize="18sp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Programmer 1 : haniialfiyyaah"
+        android:text="@string/rumus_perhitungan_harga_diambil_dari"
+        android:textColor="@color/backgroundColor"
+        android:padding="5dp"
+        android:textAlignment="center"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/fimela_com"
         android:textStyle="italic"
         android:textColor="@color/backgroundColor"
-        android:padding="5dp"/>
+        android:padding="5dp"
+        android:textAlignment="center"
+        android:textSize="18sp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Programmer 2 : nurulam98"
-        android:textStyle="italic"
-        android:textColor="@color/backgroundColor"
-        android:padding="5dp"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="The Source Code can be access at"
+        android:text="@string/the_source_code_can_be_access_at"
         android:textColor="@color/backgroundColor"
         android:textAlignment="center"
-        android:padding="5dp"/>
+        android:padding="5dp"
+        android:textSize="18sp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="github.com/haniialfiyyaah/STABUSv2"
+        android:text="@string/github_com_haniialfiyyaah_stabusv2"
         android:textStyle="italic"
         android:textColor="@color/backgroundColor"
-        android:padding="5dp"/>
+        android:padding="5dp"
+        android:textAlignment="center"
+        android:textSize="18sp"/>
 
 </LinearLayout>

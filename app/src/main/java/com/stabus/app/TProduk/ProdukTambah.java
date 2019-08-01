@@ -132,6 +132,10 @@ public class ProdukTambah extends Fragment implements View.OnClickListener, OnLi
                     txJumlah.getEditText().setText(String.valueOf(jumlah));
             if ("buah".equals(satuan)) {
                 Spsatuan.setSelection(0);
+            }else if ("potong".equals(satuan)){
+                Spsatuan.setSelection(1);
+            } else {
+                Spsatuan.setSelection(2);
             } else {
                 Spsatuan.setSelection(1);
             }

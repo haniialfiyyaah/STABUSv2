@@ -9,6 +9,7 @@
 
     <string-array name="satuanProduk">
         <item>buah</item>
+        <item>potong</item>
         <item>porsi</item>
     </string-array>
 

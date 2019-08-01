@@ -24,4 +24,14 @@ public class CollectKebutuhanCRUD {
     public List<MKebutuhan> getKebutuhanList() {
         return kebutuhanList;
     }
+    //delete
+    public boolean delete(int position){
+        try {
+            kebutuhanList.remove(position);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
