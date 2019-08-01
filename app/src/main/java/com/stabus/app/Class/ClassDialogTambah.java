@@ -26,6 +26,7 @@ import java.util.List;
 
 public class ClassDialogTambah implements View.OnClickListener {
 
+    private Dialog dialog;
     private TextView mTitle;
     private Spinner mSpSatuan;
     private FloatingActionButton fabsave;
@@ -75,14 +76,14 @@ public class ClassDialogTambah implements View.OnClickListener {
         dbmBahan = new DBMBahan(view);
         dbmHarga = new DBMHarga(view);
         this.sId = sId;
-        Dialog dialog = new Dialog(view.getContext());
-        showDialog(dialog);
+        dialog = new Dialog(view.getContext());
+        showDialog();
         mTitle.setText(title);
         fabsave.setOnClickListener(this);
         setSatuan();
         //clearMenu();
     }
-    private void showDialog(Dialog dialog){
+    private void showDialog(){
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_tambah_bahan);
         mENama = dialog.findViewById(R.id.textNama);
@@ -160,6 +161,7 @@ public class ClassDialogTambah implements View.OnClickListener {
         }
 
         validasi.clearText(cekHarga);
+        dialog.dismiss();
         //refreshList();
     }
     private void saveHarga(int idBK){

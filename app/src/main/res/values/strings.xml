@@ -15,9 +15,13 @@
 
     <string name="Kalkulator">KALKULATOR</string>
     <string name="KalkulatorPilihProduk">KALKULATOR PILIH PRODUK</string>
-    <string name="KalkulatorSetHarga">KALKULATOR SET HARGA</string>
-    <string name="KalkulatorSetKemasan">KALKULATOR SET KEMASAN</string>
+    <string name="KalkulatorSetHarga">PILIH HARGA</string>
+    <string name="KalkulatorSetKemasan">MASUKAN KEMASAN</string>
+    <string name="KalkulatorSetKebutuhan">MASUKAN KEBUTUHAN LAIN</string>
+    <string name="KalkulatorSetMargin">TENTUKAN MARGIN HARGA</string>
+    <string name="KalkulatorGetHarga">HARGA JUAL</string>
 
+    <string name="Riwayat">RIWAYAT</string>
 
     <!-- Bundle tags BK-->
     <string name="selectedId">selected_id</string>
@@ -43,6 +47,22 @@
     <string name="getHarga">get_harga</string>
 
 
+    <string name="Komponen1">Tenaga Kerja</string>
+    <string name="Komponen2">Biaya Operasional</string>
+    <string name="Komponen3">Resiko</string>
+    <string name="Komponen4">Keuntungan</string>
+    <string name="Komponen5">Marketing</string>
+
+    <string name="TESTSTRING">DATA STRING</string>
+    <string name="selanjutnya">SELANJUTNYA</string>
+    <string name="harga_pokok_produksi">HARGA POKOK PRODUKSI</string>
+    <string name="margin">MARGIN</string>
+    <string name="harga_jual_minimum">HARGA JUAL MINIMUM</string>
+    <string name="ok">OK</string>
+    <string name="dapatkan_harga">DAPATKAN HARGA</string>
+    <string name="tambah_kebutuhan">TAMBAH KEBUTUHAN</string>
+    <string name="hint_nama_kebutuhan">Nama Kebutuhan</string>
+    <string name="hint_harga">Harga</string>
 
 
 </resources>

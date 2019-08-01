@@ -12,6 +12,15 @@ public class MString {
 
     private boolean isSelectAll = false;
     private float harga_total;
+    private float margin_harga;
+    private float harga_jual;
+    //komponen
+
+    private double tenagaKerja = 15; //15 25
+    private double biayaOp = 10; //10 20
+    private double resiko = 10;// 10
+    private double keuntungan =30;//30 50
+    private double marketing = 10; //tidak usah //10 50
 
     public MString() {
     }
@@ -70,5 +79,61 @@ public class MString {
 
     public void setSelectAll(boolean selectAll) {
         isSelectAll = selectAll;
+    }
+
+    public double getTenagaKerja() {
+        return tenagaKerja;
+    }
+
+    public void setTenagaKerja(double tenagaKerja) {
+        this.tenagaKerja = tenagaKerja;
+    }
+
+    public double getBiayaOp() {
+        return biayaOp;
+    }
+
+    public void setBiayaOp(double biayaOp) {
+        this.biayaOp = biayaOp;
+    }
+
+    public double getResiko() {
+        return resiko;
+    }
+
+    public void setResiko(double resiko) {
+        this.resiko = resiko;
+    }
+
+    public double getKeuntungan() {
+        return keuntungan;
+    }
+
+    public void setKeuntungan(double keuntungan) {
+        this.keuntungan = keuntungan;
+    }
+
+    public double getMarketing() {
+        return marketing;
+    }
+
+    public void setMarketing(double marketing) {
+        this.marketing = marketing;
+    }
+
+    public float getMargin_harga() {
+        return margin_harga;
+    }
+
+    public void setMargin_harga(float margin_harga) {
+        this.margin_harga = margin_harga;
+    }
+
+    public float getHarga_jual() {
+        return harga_jual;
+    }
+
+    public void setHarga_jual(float harga_jual) {
+        this.harga_jual = harga_jual;
     }
 }

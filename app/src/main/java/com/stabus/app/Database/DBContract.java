@@ -51,14 +51,26 @@ class DBContract {
         static final String TABLE_RIWAYAT = "Riwayat";
         static final String COLS_ID_RIWAYAT = "id_riwayat";
         static final String COLS_NAMA_PRODUK = "nama_produk";
+<<<<<<< HEAD
         static final String COLS_JUMLAH_SATUAN_PRODUK ="jumsat_produk";
         static final String COLS_HARGA_JUAL ="harga_jual";
+=======
+        static final String COLS_JUMLAH_PRODUK ="jumlah_produk";
+        static final String COLS_SATUAN_PRODUK ="satuan_produk";
+        static final String COLS_HARGA_POKOK ="harga_pokok";
+        static final String COLS_MARGIN_HARGA ="margin_harga";
+        static final String COLS_HARGA_JUAL ="harga_jual";
+
+>>>>>>> origin/master
         static final String COLS_TENAGA_KERJA ="tenaga_kerja";
         static final String COLS_BIAYA_OPERASIONAL ="biaya_op";
         static final String COLS_RESIKO = "resiko";
         static final String COLS_KEUNTUNGAN ="keuntungan";
         static final String COLS_MARKETING ="marketing";
+<<<<<<< HEAD
         static final String COLS_MARGIN_HARGA ="margin_harga";
+=======
+>>>>>>> origin/master
 
     }
 
@@ -100,6 +112,7 @@ class DBContract {
             +RiwayatEntry.TABLE_RIWAYAT+"("
             +RiwayatEntry.COLS_ID_RIWAYAT+" INTEGER PRIMARY KEY AUTOINCREMENT,"
             +RiwayatEntry.COLS_NAMA_PRODUK+" TEXT NOT NULL,"
+<<<<<<< HEAD
             +RiwayatEntry.COLS_JUMLAH_SATUAN_PRODUK+" TEXT NOT NULL,"
             +RiwayatEntry.COLS_HARGA_JUAL+" BIGINT NOT NULL,"
             +RiwayatEntry.COLS_TENAGA_KERJA+" INTEGER NOT NULL,"
@@ -108,10 +121,32 @@ class DBContract {
             +RiwayatEntry.COLS_KEUNTUNGAN+" INTEGER NOT NULL,"
             +RiwayatEntry.COLS_MARKETING+" INTEGER NOT NULL,"
             +RiwayatEntry.COLS_MARGIN_HARGA+" BIGINT NOT NULL);";
+=======
+            +RiwayatEntry.COLS_JUMLAH_PRODUK+" INTEGER NOT NULL,"
+            +RiwayatEntry.COLS_SATUAN_PRODUK+" TEXT NOT NULL,"
+            +RiwayatEntry.COLS_HARGA_POKOK+" BIGINT NOT NULL,"
+            +RiwayatEntry.COLS_MARGIN_HARGA+" BIGINT NOT NULL,"
+            +RiwayatEntry.COLS_HARGA_JUAL+" BIGINT NOT NULL,"
+            //use later
+            +RiwayatEntry.COLS_TENAGA_KERJA+" INTEGER,"
+            +RiwayatEntry.COLS_BIAYA_OPERASIONAL+" INTEGER,"
+            +RiwayatEntry.COLS_RESIKO+" INTEGER,"
+            +RiwayatEntry.COLS_KEUNTUNGAN+" INTEGER ,"
+            +RiwayatEntry.COLS_MARKETING+" INTEGER);";
+>>>>>>> origin/master
 
     /*kalkulator
     harga
     komponen 5
+
+    nama produk
+    jumlah
+    satuan
+    hpp/hargatotal
+    margin
+    hargajual
+
+    hargajualsatuan
 
     */
 }

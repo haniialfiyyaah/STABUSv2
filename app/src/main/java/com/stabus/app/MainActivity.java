@@ -17,12 +17,16 @@ import android.widget.TextView;
 import com.stabus.app.Interface.ISetListener;
 import com.stabus.app.TBahanBaku.BahanBaku;
 import com.stabus.app.TBahanBaku.HargaBahanBaku;
+import com.stabus.app.TKalkulator.KalkulatorGetHarga;
 import com.stabus.app.TKalkulator.KalkulatorSetHarga;
+import com.stabus.app.TKalkulator.KalkulatorSetKebutuhan;
 import com.stabus.app.TKalkulator.KalkulatorSetKemasan;
+import com.stabus.app.TKalkulator.KalkulatorSetMargin;
 import com.stabus.app.TProduk.Produk;
 import com.stabus.app.TProduk.ProdukTambah;
 import com.stabus.app.TKalkulator.Kalkulator;
 import com.stabus.app.TKalkulator.KalkulatorPilihProduk;
+import com.stabus.app.TRiwayat.Riwayat;
 
 public class MainActivity extends AppCompatActivity implements ISetListener {
 
@@ -55,24 +59,18 @@ public class MainActivity extends AppCompatActivity implements ISetListener {
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
             switch (menuItem.getItemId()){
                 case R.id.navBahan:
-                    //setmToolbar("Bahan Baku", R.drawable.ic_home_white);
                     inflateFragment(getString(R.string.BahanBaku),null);
                     break;
                 case R.id.navProduk:
-                    //setmToolbar("Produk", R.drawable.ic_home_white);
                     inflateFragment(getString(R.string.Produk),null);
                     break;
                 case R.id.navKalkulator:
-                    //setmToolbar("Kalkulator", R.drawable.ic_home_white);
                     inflateFragment(getString(R.string.Kalkulator), null);
                     break;
                 case R.id.navRiwayat:
-                    //setmToolbar("Riwayat", R.drawable.ic_home_white);
-
+                    inflateFragment(getString(R.string.Riwayat),null);
                     break;
             }
-            //setFragment(fragment,getString(R.string.BahanBaku),false,null);
-
             return true;
         }
     };
@@ -90,6 +88,11 @@ public class MainActivity extends AppCompatActivity implements ISetListener {
             fragmentTransaction.addToBackStack(tag);
         }
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void navigationClikc(int id) {
+        navigation.setSelectedItemId(id);
     }
 
     @Override
@@ -129,12 +132,27 @@ public class MainActivity extends AppCompatActivity implements ISetListener {
             KalkulatorSetKemasan fragment = new KalkulatorSetKemasan();
             setFragment(fragment, fragmentTag, true, null);
         }
+        if (fragmentTag.equals(getString(R.string.KalkulatorSetKebutuhan))){
+            KalkulatorSetKebutuhan fragment = new KalkulatorSetKebutuhan();
+            setFragment(fragment, fragmentTag, true, null);
+        }
+        if (fragmentTag.equals(getString(R.string.KalkulatorSetMargin))){
+            KalkulatorSetMargin fragment = new KalkulatorSetMargin();
+            setFragment(fragment, fragmentTag, true, null);
+        }
+        if (fragmentTag.equals(getString(R.string.KalkulatorGetHarga))){
+            KalkulatorGetHarga fragment = new KalkulatorGetHarga();
+            setFragment(fragment, fragmentTag, true, null);
+        }
+        if (fragmentTag.equals(getString(R.string.Riwayat))){
+            Riwayat fragment = new Riwayat();
+            setFragment(fragment, fragmentTag, false, null);
+        }
     }
 
     @Override
     public void setRecyclerView(RecyclerView.LayoutManager layoutManager, RecyclerView recyclerView, RecyclerView.Adapter mAdapter) {
         recyclerView.setHasFixedSize(false);
-        //RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(mAdapter);
@@ -143,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements ISetListener {
     @Override
     public void onBackPressed() {
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.frameContainer);
-        if (f instanceof BahanBaku || f instanceof Produk){
+        if (f instanceof BahanBaku || f instanceof Produk|| f instanceof Riwayat){
             navigation.setSelectedItemId(R.id.navKalkulator);
         }else if (f instanceof Kalkulator){
             ((Kalkulator)f).onBackPressed();

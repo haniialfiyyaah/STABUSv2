@@ -23,7 +23,6 @@ public class DBMProduk {
         db = new DBAdapter(view.getContext());
 
     }
-
     public void getAllProduk(List<MProdukRelasi> produkRelasiList){
         db.openDB();
         produkRelasiList.clear();
@@ -120,7 +119,7 @@ public class DBMProduk {
         db.closeDB();
         return daftarProduk;
     }
-    public ArrayList<String> getIdBahan(int id_produk){
+    private ArrayList<String> getIdBahan(int id_produk){
         ArrayList<String> nama = new ArrayList<>();
         db.openDB();
         String name = "SELECT "+ProdukBKEntry.TABLE_PRODUK_BAHAN+"."+ProdukBKEntry.COLS_FK_ID_BAHAN+" FROM "
