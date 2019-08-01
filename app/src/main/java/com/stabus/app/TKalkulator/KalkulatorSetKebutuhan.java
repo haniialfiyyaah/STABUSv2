@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,8 @@ import com.stabus.app.Model.CollectString;
 import com.stabus.app.Model.CollectStringCRUD;
 import com.stabus.app.R;
 import com.stabus.app.RecyclerView.KebutuhanAdapter;
+
+import java.util.Locale;
 
 public class KalkulatorSetKebutuhan extends Fragment implements View.OnClickListener , OnListener {
 
@@ -83,15 +86,16 @@ public class KalkulatorSetKebutuhan extends Fragment implements View.OnClickList
         mRV.setLayoutManager(new LinearLayoutManager(view.getContext()));
         mRV.setItemAnimator(new DefaultItemAnimator());
         mAdapter = new KebutuhanAdapter(kebutuhanCRUD.getKebutuhanList(), this);
+        new ItemTouchHelper(callback).attachToRecyclerView(mRV);
         mISetListener.setRecyclerView(new LinearLayoutManager(view.getContext()), mRV, mAdapter);
         //mAdapter.notifyDataSetChanged();
         mAdapter.notifyDataSetChanged();
     }
-    @SuppressLint("DefaultLocale")
+
     private void setNamaProduk(){
         mTvProdukName.setText(stringCRUD.getString().get(0).getNama());
-        mTvJmlProduk.setText(String.format("%d %s", stringCRUD.getString().get(0).getJumlah(), stringCRUD.getString().get(0).getSatuan()));
-        mTvJmlHarga.setText(String.format("Rp. %,.0f", stringCRUD.getString().get(0).getHarga_total()));
+        mTvJmlProduk.setText(String.format(Locale.US, "%d %s", stringCRUD.getString().get(0).getJumlah(), stringCRUD.getString().get(0).getSatuan()));
+        mTvJmlHarga.setText(String.format(Locale.US,"Rp. %,.0f", stringCRUD.getString().get(0).getHarga_total()));
         mTvTitle.setText(getString(R.string.KalkulatorSetKebutuhan));
     }
 
@@ -119,4 +123,24 @@ public class KalkulatorSetKebutuhan extends Fragment implements View.OnClickList
         super.onAttach(context);
         mISetListener = (ISetListener) getActivity();
     }
+
+    ItemTouchHelper.SimpleCallback callback =
+            new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT|ItemTouchHelper.LEFT) {
+                @Override
+                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                    return false;
+                }
+
+                @Override
+                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                    float harga_kemasan = kebutuhanCRUD.getKebutuhanList().get(viewHolder.getAdapterPosition()).getHarga();
+                    float harga_total = stringCRUD.getString().get(0).getHarga_total()-harga_kemasan;
+
+                    stringCRUD.getString().get(0).setHarga_total(harga_total);
+                    kebutuhanCRUD.delete(viewHolder.getAdapterPosition());
+                    mTvJmlHarga.setText(String.format(Locale.US,"Rp. %,.0f ", stringCRUD.getString().get(0).getHarga_total()));
+
+                    mAdapter.notifyDataSetChanged();
+                }
+            };
 }

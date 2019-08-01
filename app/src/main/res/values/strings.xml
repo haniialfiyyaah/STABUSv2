@@ -63,6 +63,12 @@
     <string name="tambah_kebutuhan">TAMBAH KEBUTUHAN</string>
     <string name="hint_nama_kebutuhan">Nama Kebutuhan</string>
     <string name="hint_harga">Harga</string>
+    <string name="credit">CREDIT</string>
+    <string name="mppl_team_unikom_2019">MPPL Team @UNIKOM 2019</string>
+    <string name="rumus_perhitungan_harga_diambil_dari">Rumus Perhitungan Harga Diambil Dari</string>
+    <string name="the_source_code_can_be_access_at">The Source Code can be access at</string>
+    <string name="github_com_haniialfiyyaah_stabusv2">github.com/haniialfiyyaah/STABUSv2</string>
+    <string name="fimela_com">Fimela.com</string>
 
 
 </resources>
